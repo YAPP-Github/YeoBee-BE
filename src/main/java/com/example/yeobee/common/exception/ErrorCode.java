@@ -12,7 +12,15 @@ public enum ErrorCode {
     NOT_FOUND(1001, "Contents Not Found", HttpStatus.NOT_FOUND),
     METHOD_NOT_ALLOWED(1002, "Method Not Allowed", HttpStatus.METHOD_NOT_ALLOWED),
     INTERNAL_SERVER_ERROR(1003, "Internal Server Error Occurred", HttpStatus.INTERNAL_SERVER_ERROR),
-    METHOD_ARGUMENT_NOT_VALID(1004, "Method Argument Is Not Valid", HttpStatus.BAD_REQUEST);
+    METHOD_ARGUMENT_NOT_VALID(1004, "Method Argument Is Not Valid", HttpStatus.BAD_REQUEST),
+    /**
+     * 2XXX -> JWT 에러
+     */
+    JWT_EMPTY(2000, "Access Token Is Empty", HttpStatus.UNAUTHORIZED),
+    JWT_EXPIRED(2001, "Access Token has expired", HttpStatus.UNAUTHORIZED),
+    INVALID_JWT_TOKEN(2002, "Access Token Is Invalid", HttpStatus.UNAUTHORIZED),
+    INVALID_REFRESH_TOKEN(2003, "Refresh Token Is Invalid", HttpStatus.UNAUTHORIZED),
+    INCORRECT_REFRESH_TOKEN(2004, "Refresh Token Mismatched With User's Refresh Token", HttpStatus.UNAUTHORIZED);
 
     private final int code;
     private final String message;

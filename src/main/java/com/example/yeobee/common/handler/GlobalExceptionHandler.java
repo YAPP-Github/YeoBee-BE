@@ -39,8 +39,6 @@ public class GlobalExceptionHandler {
         log.error("MethodArgumentNotValidException: {} {}", e.getMessage(), request.getRequestURL());
         ErrorResponseDto errorResponseDto = ErrorResponseDto.builder()
                 .code(ErrorCode.METHOD_ARGUMENT_NOT_VALID.getCode())
-                .status(ErrorCode.METHOD_ARGUMENT_NOT_VALID.getHttpStatus().value())
-                .error(ErrorCode.METHOD_ARGUMENT_NOT_VALID.getHttpStatus().name())
                 .message(e.getAllErrors().get(0).getDefaultMessage()).build();
 
         return ResponseEntity
@@ -54,8 +52,6 @@ public class GlobalExceptionHandler {
     ) {
         ErrorResponseDto errorResponseDto = ErrorResponseDto.builder()
                 .code(ErrorCode.METHOD_NOT_ALLOWED.getCode())
-                .status(ErrorCode.METHOD_NOT_ALLOWED.getHttpStatus().value())
-                .error(ErrorCode.METHOD_NOT_ALLOWED.getHttpStatus().name())
                 .message(e.getMessage()).build();
 
         return ResponseEntity
