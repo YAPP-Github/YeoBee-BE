@@ -1,6 +1,4 @@
 spring:
-  main:
-    allow-bean-definition-overriding: true
   profiles.active: local
   # 데이터 소스 설정
   datasource:
