@@ -7,11 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Builder
 @Getter
 @NoArgsConstructor
 public class RefreshToken {
     @Id
     private String userId;
     private String refreshToken;
+
+    @Builder
+    public RefreshToken(String userId, String refreshToken) {
+        this.userId = userId;
+        this.refreshToken = refreshToken;
+    }
 }

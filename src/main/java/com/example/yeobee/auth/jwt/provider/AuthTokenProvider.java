@@ -14,12 +14,12 @@ import java.util.Date;
 @Slf4j
 @Component
 public class AuthTokenProvider {
-    @Value("${app.auth.tokenExpiry}")
+    @Value("${auth.jwt.tokenExpiry}")
     private String expiry;
     private final Key key;
 
     @Autowired
-    public AuthTokenProvider(@Value("${app.auth.tokenSecret}") String secretKey) {
+    public AuthTokenProvider(@Value("${auth.jwt.tokenSecret}") String secretKey) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 

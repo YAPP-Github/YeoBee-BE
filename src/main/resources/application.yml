@@ -20,3 +20,14 @@ spring:
         order_inserts: true
         order_updates: true
         format_sql: true
+
+auth:
+    jwt:
+      tokenSecret: ${TOKEN_SECRET}
+      tokenExpiry: ${TOKEN_EXPIRY}
+
+oauth:
+  apple:
+    keyId: ${APPLE_KEY_ID}
+    teamId: ${APPLE_TEAM_ID}
+    clientId: ${APPLE_CLIENT_ID}

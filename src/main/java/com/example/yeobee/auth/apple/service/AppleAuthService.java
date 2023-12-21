@@ -45,13 +45,11 @@ public class AppleAuthService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthTokenProvider authTokenProvider;
-    @Value("${app.auth.keyId}")
-    private String appleSignKeyId;
-    @Value("${app.auth.teamId}")
+    @Value("${oauth.apple.teamId}")
     private String appleTeamId;
-    @Value("${app.auth.appleKeyId}")
+    @Value("${oauth.apple.keyId}")
     private String keyId;
-    @Value("${app.auth.appleClientId}")
+    @Value("${oauth.apple.clientId}")
     private String clientId;
 
     public AuthResponseDto login(AppleLoginRequestDto appleLoginRequest) throws ParseException, IOException {
@@ -101,7 +99,7 @@ public class AppleAuthService {
     private String createClientSecret() throws IOException {
         Date expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant());
         Map<String, Object> jwtHeader = new HashMap<>();
-        jwtHeader.put("kid", appleSignKeyId);
+        jwtHeader.put("kid", keyId);
         jwtHeader.put("alg", "ES256");
 
         return Jwts.builder()

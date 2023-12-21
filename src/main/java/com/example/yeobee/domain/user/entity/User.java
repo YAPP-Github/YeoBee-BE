@@ -13,7 +13,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
 public class User extends BaseEntity {
     @Id
     private String id = UUID.randomUUID().toString();
@@ -22,4 +21,12 @@ public class User extends BaseEntity {
     private LoginProvider loginProvider;
     private RoleType roleType;
     private String appleRefreshToken;
+
+    @Builder
+    public User(String socialLoginId, LoginProvider loginProvider, RoleType roleType, String appleRefreshToken) {
+        this.socialLoginId = socialLoginId;
+        this.loginProvider = loginProvider;
+        this.roleType = roleType;
+        this.appleRefreshToken = appleRefreshToken;
+    }
 }
