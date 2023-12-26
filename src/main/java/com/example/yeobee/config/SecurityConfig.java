@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig{
+public class SecurityConfig {
 
     private final AuthTokenProvider authTokenProvider;
     private final UserService userService;
@@ -26,31 +26,33 @@ public class SecurityConfig{
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring().requestMatchers(
-                "/api/v1/auth/apple/login",
-                "/api/v1/auth/refresh",
-                "/swagger-ui/**",
-                "/v3/api-docs/**"
+            "/api/v1/auth/apple/login",
+            "/api/v1/auth/refresh",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
         );
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .sessionManagement((sessionManagement) ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> {
-                    request.requestMatchers("/api/v1/**").authenticated();
-                    request.anyRequest().permitAll();
-                })
-                .anonymous(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .with(new JwtFilter(), AbstractHttpConfigurer::disable);
+            .sessionManagement((sessionManagement) ->
+                                   sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(request -> {
+                request.requestMatchers("/api/v1/**").authenticated();
+                request.anyRequest().permitAll();
+            })
+            .anonymous(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            .with(new JwtFilter(), AbstractHttpConfigurer::disable);
         return http.build();
     }
+
     public class JwtFilter extends AbstractHttpConfigurer<JwtFilter, HttpSecurity> {
+
         @Override
         public void configure(HttpSecurity http) {
             SecurityUserDetailsService userDetailsService = new SecurityUserDetailsService(userService);

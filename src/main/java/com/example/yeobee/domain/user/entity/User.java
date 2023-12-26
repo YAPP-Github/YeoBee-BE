@@ -1,19 +1,21 @@
 package com.example.yeobee.domain.user.entity;
 
 import com.example.yeobee.common.entity.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 public class User extends BaseEntity {
+
     @Id
     private String id = UUID.randomUUID().toString();
     @Column(unique = true)

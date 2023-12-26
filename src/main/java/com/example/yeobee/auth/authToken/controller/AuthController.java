@@ -20,12 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1.1/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
     private final AuthService authService;
 
     @ApiDocumentResponse
     @Operation(summary = "토큰 refresh", description = "리프레쉬 토큰을 받아 해당 유저의 db에 존재하는 리프레쉬 토큰과 일치하는지 확인 후, 새로운 accessToken을 발급한다.")
     @GetMapping("/refresh")
-    public ResponseEntity<AuthResponseDto> refreshToken (@RequestParam String refreshToken) throws BusinessException {
+    public ResponseEntity<AuthResponseDto> refreshToken(@RequestParam String refreshToken) throws BusinessException {
         return ResponseEntity.ok(authService.refreshToken(refreshToken));
     }
 }

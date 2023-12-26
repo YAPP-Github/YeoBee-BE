@@ -1,9 +1,8 @@
 package com.example.yeobee.domain.user.entity;
 
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor
@@ -16,8 +15,8 @@ public enum RoleType {
 
     public static RoleType of(String code) {
         return Arrays.stream(RoleType.values())
-                .filter(r -> r.getCode().equals(code))
-                .findAny()
-                .orElse(NONE);
+            .filter(r -> r.getCode().equals(code))
+            .findAny()
+            .orElse(NONE);
     }
 }

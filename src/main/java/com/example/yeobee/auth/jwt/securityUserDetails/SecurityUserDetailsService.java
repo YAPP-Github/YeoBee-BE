@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class SecurityUserDetailsService {
+
     private UserService userService;
 
     public UserDetails loadUserByUserId(String userId) {

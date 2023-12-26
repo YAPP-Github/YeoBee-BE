@@ -11,5 +11,4 @@ public class YeobeeApplication {
     public static void main(String[] args) {
         SpringApplication.run(YeobeeApplication.class, args);
     }
-
 }

@@ -9,6 +9,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class ErrorResponseDto {
+
     private final int code;
     private final String message;
 
