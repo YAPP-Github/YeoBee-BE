@@ -14,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Apple v1.1 API", description = "Apple Oauth 관련 api")
+@Tag(name = "Apple v1 API", description = "Apple Oauth 관련 api")
 @Slf4j
 @RestController
-@RequestMapping("/api/v1.1/auth/apple")
+@RequestMapping("/v1/auth/apple")
 @RequiredArgsConstructor
 public class AppleAuthController {
 
