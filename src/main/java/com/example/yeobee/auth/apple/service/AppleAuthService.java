@@ -3,14 +3,12 @@ package com.example.yeobee.auth.apple.service;
 import com.example.yeobee.auth.apple.dto.request.AppleLoginRequestDto;
 import com.example.yeobee.auth.apple.dto.response.AppleAuthTokenResponseDto;
 import com.example.yeobee.auth.authToken.dto.response.AuthResponseDto;
-import com.example.yeobee.auth.jwt.authToken.AuthToken;
-import com.example.yeobee.auth.jwt.provider.AuthTokenProvider;
+import com.example.yeobee.auth.authToken.service.AuthService;
 import com.example.yeobee.common.util.parser.JwtParser;
+import com.example.yeobee.domain.user.entity.AuthProvider;
 import com.example.yeobee.domain.user.entity.LoginProvider;
-import com.example.yeobee.domain.user.entity.RefreshToken;
-import com.example.yeobee.domain.user.entity.RoleType;
 import com.example.yeobee.domain.user.entity.User;
-import com.example.yeobee.domain.user.repository.RefreshTokenRepository;
+import com.example.yeobee.domain.user.repository.AuthProviderRepository;
 import com.example.yeobee.domain.user.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,6 +22,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.openssl.PEMParser;
@@ -46,8 +45,8 @@ import org.springframework.web.client.RestTemplate;
 public class AppleAuthService {
 
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final AuthTokenProvider authTokenProvider;
+    private final AuthProviderRepository authProviderRepository;
+    private final AuthService authService;
     @Value("${oauth.apple.teamId}")
     private String appleTeamId;
     @Value("${oauth.apple.keyId}")
@@ -60,32 +59,21 @@ public class AppleAuthService {
         AppleAuthTokenResponseDto response = this.GenerateAuthToken(appleLoginRequest.getCode(), clientSecret);
         String appleRefreshToken = response.getRefresh_token();
         String socialLoginId = JwtParser.getSocialIdFromJwt(appleLoginRequest.getId_token());
-        User user = userRepository.findBySocialLoginId(socialLoginId)
-            .orElse(User.builder()
-                        .socialLoginId(socialLoginId)
-                        .roleType(RoleType.USER)
-                        .loginProvider(LoginProvider.APPLE)
-                        .build());
-        user.setAppleRefreshToken(appleRefreshToken);
-        userRepository.save(user);
-        User savedUser = userRepository.save(user);
-        AuthToken refreshToken = authTokenProvider.createRefreshToken(savedUser.getId());
-        AuthToken appToken = authTokenProvider.createUserAppToken(savedUser.getId(), RoleType.USER);
-        refreshTokenRepository.save(RefreshToken.builder()
-                                        .userId(savedUser.getId())
-                                        .refreshToken(refreshToken.getToken())
-                                        .build());
-        return AuthResponseDto.builder()
-            .appToken(appToken.getToken())
-            .refreshToken(refreshToken.getToken())
-            .build();
+        AuthProvider authProvider = authService.login(socialLoginId, LoginProvider.APPLE);
+        authProvider.setAppleRefreshToken(appleRefreshToken);
+        authProviderRepository.save(authProvider);
+        return authService.issueToken(authProvider.getUser());
     }
 
     public void unlinkUser(User user) throws IOException {
-        String appleRefreshToken = user.getAppleRefreshToken();
+        String appleRefreshToken = user.getAuthProviderList()
+            .stream()
+            .filter((e) -> e.getLoginProvider() == LoginProvider.APPLE)
+            .collect(Collectors.toList())
+            .get(0)
+            .getAppleRefreshToken();
         userRepository.delete(user);
         String clientSecret = this.createClientSecret();
-
         RestTemplate restTemplate = new RestTemplateBuilder().build();
         String authUrl = "https://appleid.apple.com/auth/oauth2/v2/revoke";
 
@@ -107,7 +95,6 @@ public class AppleAuthService {
         Map<String, Object> jwtHeader = new HashMap<>();
         jwtHeader.put("kid", keyId);
         jwtHeader.put("alg", "ES256");
-
         return Jwts.builder()
             .setHeaderParams(jwtHeader)
             .setIssuer(appleTeamId)

@@ -1,7 +1,6 @@
 package com.example.yeobee.auth.jwt.provider;
 
 import com.example.yeobee.auth.jwt.authToken.AuthToken;
-import com.example.yeobee.domain.user.entity.RoleType;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
@@ -27,13 +26,13 @@ public class AuthTokenProvider {
         return new Date(System.currentTimeMillis() + expiry);
     }
 
-    public AuthToken createToken(String id, RoleType roleType, String expiry) {
+    public AuthToken createToken(String id, String expiry) {
         Date expiryDate = getExpiryDate(Long.parseLong(expiry));
-        return new AuthToken(id, roleType, expiryDate, key);
+        return new AuthToken(id, expiryDate, key);
     }
 
-    public AuthToken createUserAppToken(String id, RoleType roleType) {
-        return createToken(id, roleType, expiry);
+    public AuthToken createUserAppToken(String id) {
+        return createToken(id, expiry);
     }
 
     public AuthToken createRefreshToken(String socialId) {

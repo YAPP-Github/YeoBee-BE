@@ -1,11 +1,13 @@
 package com.example.yeobee.domain.user.entity;
 
 import com.example.yeobee.common.entity.BaseEntity;
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,17 +20,13 @@ public class User extends BaseEntity {
 
     @Id
     private String id = UUID.randomUUID().toString();
-    @Column(unique = true)
-    private String socialLoginId;
-    private LoginProvider loginProvider;
-    private RoleType roleType;
-    private String appleRefreshToken;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<AuthProvider> authProviderList = new ArrayList<>();
 
-    @Builder
-    public User(String socialLoginId, LoginProvider loginProvider, RoleType roleType, String appleRefreshToken) {
-        this.socialLoginId = socialLoginId;
-        this.loginProvider = loginProvider;
-        this.roleType = roleType;
-        this.appleRefreshToken = appleRefreshToken;
+    public void addAuthProvider(AuthProvider authProvider) {
+        authProviderList.add(authProvider);
+        if (authProvider.getUser() == null) {
+            authProvider.setUser(this);
+        }
     }
 }

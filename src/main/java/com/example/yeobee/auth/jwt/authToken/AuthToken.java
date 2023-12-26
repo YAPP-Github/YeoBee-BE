@@ -2,7 +2,6 @@ package com.example.yeobee.auth.jwt.authToken;
 
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
-import com.example.yeobee.domain.user.entity.RoleType;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import java.security.Key;
@@ -20,29 +19,14 @@ public class AuthToken {
     private final String token;
     private final Key key;
 
-    public AuthToken(String socialId, RoleType roleType, Date expiry, Key key) {
-        String role = roleType.getCode();
-        this.key = key;
-        this.token = createAuthToken(socialId, role, expiry);
-    }
-
     public AuthToken(String socialId, Date expiry, Key key) {
         this.key = key;
-        this.token = createRefreshToken(socialId, expiry);
+        this.token = createAuthToken(socialId, expiry);
     }
 
-    private String createAuthToken(String socialId, String role, Date expiry) {
+    private String createAuthToken(String socialId, Date expiry) {
         return Jwts.builder()
             .setSubject(socialId)
-            .claim(AUTHORITIES_KEY, role)
-            .signWith(key, SignatureAlgorithm.HS256)
-            .setExpiration(expiry)
-            .compact();
-    }
-
-    private String createRefreshToken(String subject, Date expiry) {
-        return Jwts.builder()
-            .setSubject(subject)
             .signWith(key, SignatureAlgorithm.HS256)
             .setExpiration(expiry)
             .compact();
