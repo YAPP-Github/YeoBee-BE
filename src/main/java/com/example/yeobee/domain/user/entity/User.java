@@ -22,6 +22,8 @@ public class User extends BaseEntity {
     private String id = UUID.randomUUID().toString();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AuthProvider> authProviderList = new ArrayList<>();
+    private String nickname;
+    private String profile_image;
 
     public void addAuthProvider(AuthProvider authProvider) {
         authProviderList.add(authProvider);
