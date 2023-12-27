@@ -35,7 +35,7 @@ public class KakaoAuthService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(oauthToken);
-        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
             ResponseEntity<KakaoUserResponseDto> response = restTemplate.exchange(
