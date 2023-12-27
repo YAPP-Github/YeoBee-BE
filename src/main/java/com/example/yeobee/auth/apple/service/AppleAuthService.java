@@ -56,9 +56,9 @@ public class AppleAuthService {
 
     public AuthResponseDto login(AppleLoginRequestDto appleLoginRequest) throws ParseException, IOException {
         String clientSecret = this.createClientSecret();
-        AppleAuthTokenResponseDto response = this.GenerateAuthToken(appleLoginRequest.getCode(), clientSecret);
-        String appleRefreshToken = response.getRefresh_token();
-        String socialLoginId = JwtParser.getSocialIdFromJwt(appleLoginRequest.getId_token());
+        AppleAuthTokenResponseDto response = this.GenerateAuthToken(appleLoginRequest.code(), clientSecret);
+        String appleRefreshToken = response.refresh_token();
+        String socialLoginId = JwtParser.getSocialIdFromJwt(appleLoginRequest.id_token());
         AuthProvider authProvider = authService.login(socialLoginId, LoginProvider.APPLE);
         authProvider.setAppleRefreshToken(appleRefreshToken);
         authProviderRepository.save(authProvider);

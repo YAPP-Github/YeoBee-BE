@@ -1,6 +1,7 @@
 package com.example.yeobee.auth.authToken.service;
 
 import com.example.yeobee.auth.authToken.dto.response.AuthResponseDto;
+import com.example.yeobee.auth.authToken.dto.response.RefreshResponseDto;
 import com.example.yeobee.auth.jwt.authToken.AuthToken;
 import com.example.yeobee.auth.jwt.provider.AuthTokenProvider;
 import com.example.yeobee.common.exception.BusinessException;
@@ -24,7 +25,7 @@ public class AuthService {
     private final AuthTokenProvider authTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public AuthResponseDto refreshToken(String refreshToken) throws BusinessException {
+    public RefreshResponseDto refreshToken(String refreshToken) throws BusinessException {
         AuthToken authToken = authTokenProvider.convertAuthToken(refreshToken);
         if (!authToken.validate()) {
             throw new BusinessException(ErrorCode.INVALID_JWT_TOKEN);
@@ -36,7 +37,10 @@ public class AuthService {
             throw new BusinessException(ErrorCode.INCORRECT_REFRESH_TOKEN);
         }
         AuthToken newAuthToken = authTokenProvider.createUserAppToken(userId);
-        return new AuthResponseDto(newAuthToken.getToken(), refreshToken);
+        return RefreshResponseDto.builder()
+            .appToken(newAuthToken.getToken())
+            .refreshToken(refreshToken)
+            .build();
     }
 
     public AuthProvider login(String socialLoginId, LoginProvider loginProvider) {
@@ -60,6 +64,7 @@ public class AuthService {
         return AuthResponseDto.builder()
             .appToken(appToken.getToken())
             .refreshToken(refreshToken.getToken())
+            .isNew(user.getNickname() == null)
             .build();
     }
 }

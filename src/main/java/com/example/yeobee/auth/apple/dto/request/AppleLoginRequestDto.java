@@ -1,12 +1,5 @@
 package com.example.yeobee.auth.apple.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+public record AppleLoginRequestDto(String code, String id_token) {
 
-@Getter
-@AllArgsConstructor
-public class AppleLoginRequestDto {
-
-    private String code;
-    private String id_token;
 }

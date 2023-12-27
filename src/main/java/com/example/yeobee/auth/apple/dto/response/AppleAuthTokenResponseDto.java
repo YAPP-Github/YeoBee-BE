@@ -1,11 +1,5 @@
 package com.example.yeobee.auth.apple.dto.response;
 
-import lombok.Getter;
+public record AppleAuthTokenResponseDto(String access_token, String refresh_token, String id_token) {
 
-@Getter
-public class AppleAuthTokenResponseDto {
-
-    private String access_token;
-    private String refresh_token;
-    private String id_token;
 }
