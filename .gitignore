@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 .env
 application-local.yml
+AuthKey_*.p8
 ### STS ###
 .apt_generated
 .classpath
