@@ -14,13 +14,15 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(1003, "Internal Server Error Occurred", HttpStatus.INTERNAL_SERVER_ERROR),
     METHOD_ARGUMENT_NOT_VALID(1004, "Method Argument Is Not Valid", HttpStatus.BAD_REQUEST),
     /**
-     * 2XXX -> JWT 에러
+     * 2XXX -> 인가 관련 에러
      */
     JWT_EMPTY(2000, "Access Token Is Empty", HttpStatus.UNAUTHORIZED),
-    JWT_EXPIRED(2001, "Access Token has expired", HttpStatus.UNAUTHORIZED),
+    JWT_EXPIRED(2001, "Access Token Has Expired", HttpStatus.UNAUTHORIZED),
     INVALID_JWT_TOKEN(2002, "Access Token Is Invalid", HttpStatus.UNAUTHORIZED),
     INVALID_REFRESH_TOKEN(2003, "Refresh Token Is Invalid", HttpStatus.UNAUTHORIZED),
     INCORRECT_REFRESH_TOKEN(2004, "Refresh Token Mismatched With User's Refresh Token", HttpStatus.UNAUTHORIZED),
+    INVALID_KAKAO_AUTH_TOKEN(2005, "Kakao Auth Token Is Invalid", HttpStatus.BAD_REQUEST),
+    KAKAO_USER_NOT_FOUND(2006, "Kakao User Not Found", HttpStatus.NOT_FOUND),
     /**
      * 3XXX -> User 에러
      */
