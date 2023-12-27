@@ -1,11 +1,4 @@
 spring:
-  profiles.active: local
-  # 데이터 소스 설정
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:43306/yeobee
-    username: root
-    password: password
   # JPA 설정
   jpa:
     generate-ddl: true
@@ -21,13 +14,16 @@ spring:
         order_updates: true
         format_sql: true
 
-auth:
-    jwt:
-      tokenSecret: ${TOKEN_SECRET}
-      tokenExpiry: ${TOKEN_EXPIRY}
+---
 
-oauth:
-  apple:
-    keyId: ${APPLE_KEY_ID}
-    teamId: ${APPLE_TEAM_ID}
-    clientId: ${APPLE_CLIENT_ID}
+spring:
+  profiles:
+    active: local
+
+---
+
+spring:
+  profiles:
+    active: prod
+
+---

@@ -1,0 +1,17 @@
+spring:
+  # 데이터 소스 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:43306/yeobee # Todo: rds 주소, username, password로 대체
+    username: root
+    password: password
+auth:
+  jwt:
+    tokenSecret: ${TOKEN_SECRET}
+    tokenExpiry: ${TOKEN_EXPIRY}
+
+oauth:
+  apple:
+    keyId: ${APPLE_KEY_ID}
+    teamId: ${APPLE_TEAM_ID}
+    clientId: ${APPLE_CLIENT_ID}
