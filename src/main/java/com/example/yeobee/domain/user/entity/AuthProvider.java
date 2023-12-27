@@ -18,6 +18,7 @@ public class AuthProvider {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+    @Column(unique = true)
     private String socialLoginId;
     @Enumerated(EnumType.STRING)
     private LoginProvider loginProvider;
