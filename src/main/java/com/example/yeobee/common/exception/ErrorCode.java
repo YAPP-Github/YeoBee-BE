@@ -22,7 +22,7 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(2003, "Refresh Token Is Invalid", HttpStatus.UNAUTHORIZED),
     INCORRECT_REFRESH_TOKEN(2004, "Refresh Token Mismatched With User's Refresh Token", HttpStatus.UNAUTHORIZED),
     INVALID_KAKAO_AUTH_TOKEN(2005, "Kakao Auth Token Is Invalid", HttpStatus.BAD_REQUEST),
-    KAKAO_USER_NOT_FOUND(2006, "Kakao User Not Found", HttpStatus.NOT_FOUND),
+    KAKAO_USER_NOT_FOUND(2006, "Kakao User Not Found", HttpStatus.BAD_REQUEST),
     /**
      * 3XXX -> User 에러
      */
