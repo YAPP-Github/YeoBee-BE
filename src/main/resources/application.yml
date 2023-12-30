@@ -1,5 +1,9 @@
 spring:
-  # JPA 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:43306/yeobee?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: password
   jpa:
     generate-ddl: true
     hibernate:
@@ -13,17 +17,3 @@ spring:
         order_inserts: true
         order_updates: true
         format_sql: true
-
----
-
-spring:
-  profiles:
-    active: local
-
----
-
-spring:
-  profiles:
-    active: prod
-
----
