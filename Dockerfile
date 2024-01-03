@@ -53,4 +53,5 @@ COPY --chown=1000:1000 ./build/libs/*SNAPSHOT.jar /app/app.jar
 WORKDIR /app
 
 EXPOSE 8080
-ENTRYPOINT [ "/jre/bin/java", "-jar", "/app/app.jar" ]
+ENV APP_PROFILE=prod
+ENTRYPOINT [ "/jre/bin/java", "-Dspring.profiles.active=${APP_PROFILE}", "-jar", "/app/app.jar" ]
