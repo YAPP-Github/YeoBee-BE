@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+auth:
+  jwt:
+    secret-key: secret-key
+    refresh-token-expiry: 86400000
+    access-token-expiry: 3600000
+
+oauth:
+  apple:
+    key-id: key-id
+    team-id: team-id
+    client-id: client-id

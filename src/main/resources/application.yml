@@ -1,12 +1,9 @@
 spring:
-  profiles.active: local
-  # 데이터 소스 설정
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:43306/yeobee
+    url: jdbc:mysql://localhost:43306/yeobee?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password: password
-  # JPA 설정
   jpa:
     generate-ddl: true
     hibernate:

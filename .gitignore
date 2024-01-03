@@ -4,7 +4,10 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+.env
+application-local.yml
+AuthKey_*.p8
+.DS_Store
 ### STS ###
 .apt_generated
 .classpath
