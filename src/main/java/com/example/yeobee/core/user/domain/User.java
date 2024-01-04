@@ -1,4 +1,4 @@
-package com.example.yeobee.core.user.entity;
+package com.example.yeobee.core.user.domain;
 
 import com.example.yeobee.common.entity.BaseEntity;
 import com.example.yeobee.core.auth.domain.AuthProvider;

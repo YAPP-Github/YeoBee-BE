@@ -1,6 +1,6 @@
 package com.example.yeobee.core.auth.domain;
 
-import com.example.yeobee.core.user.entity.User;
+import com.example.yeobee.core.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
