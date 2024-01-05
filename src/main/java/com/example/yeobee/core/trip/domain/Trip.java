@@ -2,6 +2,7 @@ package com.example.yeobee.core.trip.domain;
 
 import com.example.yeobee.common.entity.BaseEntity;
 import com.example.yeobee.core.expense.domain.Expense;
+import com.example.yeobee.core.tripCountry.domain.TripCountry;
 import com.example.yeobee.core.tripUser.domain.TripUser;
 import jakarta.persistence.*;
 
@@ -29,4 +30,7 @@ public class Trip extends BaseEntity {
 
     @OneToMany(mappedBy = "trip")
     private List<TripUser> tripUserList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "trip")
+    private List<TripCountry> tripCountryList = new ArrayList<>();
 }

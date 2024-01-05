@@ -1,6 +1,7 @@
 package com.example.yeobee.core.country.domain;
 
 import com.example.yeobee.core.currencyUnit.domain.CurrencyUnit;
+import com.example.yeobee.core.tripCountry.domain.TripCountry;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -23,4 +24,7 @@ public class Country {
 
     @OneToMany(mappedBy = "country")
     private List<CurrencyUnit> currencyUnitList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "country")
+    private List<TripCountry> tripCountryList = new ArrayList<>();
 }
