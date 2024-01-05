@@ -1,5 +1,6 @@
 package com.example.yeobee.core.expense.domain;
 
+import com.example.yeobee.core.currencyUnit.domain.CurrencyUnit;
 import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.userExpense.domain.UserExpense;
 import jakarta.persistence.*;
@@ -33,6 +34,10 @@ public class Expense {
     @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "trip_id")
     private Trip trip;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "unit_id")
+    private CurrencyUnit unit;
 
     @OneToMany(mappedBy = "expense")
     private List<ExpensePhoto> expensePhotoList = new ArrayList<>();

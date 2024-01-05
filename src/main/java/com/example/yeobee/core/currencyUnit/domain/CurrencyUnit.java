@@ -1,7 +1,11 @@
 package com.example.yeobee.core.currencyUnit.domain;
 
 import com.example.yeobee.core.country.domain.Country;
+import com.example.yeobee.core.expense.domain.Expense;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class CurrencyUnit {
@@ -16,4 +20,7 @@ public class CurrencyUnit {
     @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "country_id")
     private Country country;
+
+    @OneToMany(mappedBy = "unit")
+    private List<Expense> expenseList = new ArrayList<>();
 }
