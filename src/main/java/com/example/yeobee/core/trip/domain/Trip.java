@@ -1,9 +1,11 @@
 package com.example.yeobee.core.trip.domain;
 
 import com.example.yeobee.common.entity.BaseEntity;
+import com.example.yeobee.core.expense.domain.Expense;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Trip extends BaseEntity {
@@ -19,4 +21,7 @@ public class Trip extends BaseEntity {
 
     @Embedded
     private Budget budget;
+
+    @OneToMany(mappedBy = "trip")
+    private List<Expense> expenseList;
 }

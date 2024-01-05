@@ -1,10 +1,7 @@
 package com.example.yeobee.core.expense.domain;
 
 import com.example.yeobee.common.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class ExpensePhoto extends BaseEntity {
@@ -13,5 +10,9 @@ public class ExpensePhoto extends BaseEntity {
     private Long id;
 
     private String imageUrl;
+
+    @ManyToOne
+    @Column(name="expense_id")
+    private Expense expense;
 
 }
