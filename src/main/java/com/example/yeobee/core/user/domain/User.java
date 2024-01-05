@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     private List<AuthProvider> authProviderList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<TripUser> tripUserList;
+    private List<TripUser> tripUserList = new ArrayList<>();
 
     public User(AuthProvider authProvider) {
         addAuthProvider(authProvider);

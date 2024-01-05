@@ -1,6 +1,7 @@
 package com.example.yeobee.core.expense.domain;
 
 import com.example.yeobee.core.trip.domain.Trip;
+import com.example.yeobee.core.userExpense.domain.UserExpense;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -35,4 +36,7 @@ public class Expense {
 
     @OneToMany(mappedBy = "expense")
     private List<ExpensePhoto> expensePhotoList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "expense")
+    private List<UserExpense> userExpenseList = new ArrayList<>();
 }

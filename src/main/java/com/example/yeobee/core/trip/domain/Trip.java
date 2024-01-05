@@ -6,6 +6,7 @@ import com.example.yeobee.core.tripUser.domain.TripUser;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,8 +25,8 @@ public class Trip extends BaseEntity {
     private Budget budget;
 
     @OneToMany(mappedBy = "trip")
-    private List<Expense> expenseList;
+    private List<Expense> expenseList = new ArrayList<>();
 
     @OneToMany(mappedBy = "trip")
-    private List<TripUser> tripUserList;
+    private List<TripUser> tripUserList = new ArrayList<>();
 }

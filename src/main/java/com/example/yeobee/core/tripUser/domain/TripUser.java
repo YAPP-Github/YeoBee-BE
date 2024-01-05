@@ -2,7 +2,11 @@ package com.example.yeobee.core.tripUser.domain;
 
 import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.user.domain.User;
+import com.example.yeobee.core.userExpense.domain.UserExpense;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class TripUser {
@@ -22,4 +26,7 @@ public class TripUser {
     @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "trip_id")
     private Trip trip;
+
+    @OneToMany(mappedBy = "tripUser")
+    private List<UserExpense> userExpenseList = new ArrayList<>();
 }
