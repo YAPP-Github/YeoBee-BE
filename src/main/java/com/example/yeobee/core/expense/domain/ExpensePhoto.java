@@ -7,6 +7,7 @@ import lombok.Getter;
 @Entity
 @Getter
 public class ExpensePhoto extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

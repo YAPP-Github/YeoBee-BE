@@ -9,6 +9,7 @@ import lombok.Getter;
 @Entity
 @Getter
 public class TripCountry {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

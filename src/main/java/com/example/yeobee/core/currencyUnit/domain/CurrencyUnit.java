@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 public class CurrencyUnit {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
