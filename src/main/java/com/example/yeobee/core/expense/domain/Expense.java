@@ -29,7 +29,7 @@ public class Expense {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "trip_id")
     private Trip trip;
 

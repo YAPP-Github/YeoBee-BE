@@ -11,8 +11,8 @@ public class ExpensePhoto extends BaseEntity {
 
     private String imageUrl;
 
-    @ManyToOne
-    @Column(name="expense_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "expense_id")
     private Expense expense;
 
 }
