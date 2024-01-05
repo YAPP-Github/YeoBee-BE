@@ -4,11 +4,13 @@ import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.user.domain.User;
 import com.example.yeobee.core.userExpense.domain.UserExpense;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class TripUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

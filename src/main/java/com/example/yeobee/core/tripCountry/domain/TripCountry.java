@@ -4,8 +4,10 @@ import com.example.yeobee.core.country.domain.Country;
 import com.example.yeobee.core.currencyUnit.domain.CurrencyUnit;
 import com.example.yeobee.core.trip.domain.Trip;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class TripCountry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

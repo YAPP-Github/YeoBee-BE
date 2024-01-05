@@ -4,11 +4,14 @@ import com.example.yeobee.core.country.domain.Country;
 import com.example.yeobee.core.expense.domain.Expense;
 import com.example.yeobee.core.tripCountry.domain.TripCountry;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class CurrencyUnit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

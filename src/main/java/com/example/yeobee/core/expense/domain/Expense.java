@@ -4,12 +4,14 @@ import com.example.yeobee.core.currencyUnit.domain.CurrencyUnit;
 import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.userExpense.domain.UserExpense;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class Expense {
 
     @Id
