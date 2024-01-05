@@ -13,11 +13,15 @@ public class TokenService {
     private final JwtProperties jwtProperties;
 
     public AuthToken createAccessToken(long id) {
-        return new AuthToken(id, jwtProperties.accessTokenExpiry(), generateShaKey(jwtProperties.secretKey()));
+        return new AuthToken(id,
+                             Long.parseLong(jwtProperties.accessTokenExpiry()),
+                             generateShaKey(jwtProperties.secretKey()));
     }
 
     public AuthToken createRefreshToken(long id) {
-        return new AuthToken(id, jwtProperties.refreshTokenExpiry(), generateShaKey(jwtProperties.secretKey()));
+        return new AuthToken(id,
+                             Long.parseLong(jwtProperties.refreshTokenExpiry()),
+                             generateShaKey(jwtProperties.secretKey()));
     }
 
     public AuthToken convertToken(String token) {
