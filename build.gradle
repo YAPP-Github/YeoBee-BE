@@ -27,6 +27,8 @@ dependencies {
     // database
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
 
     // auth
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15to18', version: '1.71'
