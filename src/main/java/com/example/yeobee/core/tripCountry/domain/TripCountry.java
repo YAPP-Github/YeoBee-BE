@@ -17,14 +17,14 @@ public class TripCountry {
     private ExchangeRate exchangeRate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "currency_unit_id")
+    @JoinColumn(name = "currency_unit_id")
     private CurrencyUnit currencyUnit;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "country_id")
+    @JoinColumn(name = "country_id")
     private Country country;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "trip_id")
+    @JoinColumn(name = "trip_id")
     private Trip trip;
 }

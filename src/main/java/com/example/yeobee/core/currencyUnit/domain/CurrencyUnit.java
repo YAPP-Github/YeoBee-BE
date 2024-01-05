@@ -22,7 +22,7 @@ public class CurrencyUnit {
     private String symbol;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "country_id")
+    @JoinColumn(name = "country_id")
     private Country country;
 
     @OneToMany(mappedBy = "unit")

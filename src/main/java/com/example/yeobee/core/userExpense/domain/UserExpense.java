@@ -13,10 +13,10 @@ public class UserExpense {
     private double amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "trip_user_id")
+    @JoinColumn(name = "trip_user_id")
     private TripUser tripUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "expense_id")
+    @JoinColumn(name = "expense_id")
     private Expense expense;
 }
