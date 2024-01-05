@@ -11,10 +11,8 @@ public class TripCountry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private ExchangeRateType exchangeRateType;
-
-    private Double exchangeRateValue;
+    @Embedded
+    private ExchangeRate exchangeRate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "currency_unit_id")
