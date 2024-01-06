@@ -1,6 +1,6 @@
-package com.example.yeobee.core.user.service;
+package com.example.yeobee.core.user.application;
 
-import com.example.yeobee.core.user.repository.UserRepository;
+import com.example.yeobee.core.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

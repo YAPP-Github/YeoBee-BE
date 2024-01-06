@@ -6,16 +6,15 @@ import com.example.yeobee.core.auth.domain.AuthProviderType;
 import com.example.yeobee.core.auth.dto.request.AppleLoginRequestDto;
 import com.example.yeobee.core.auth.dto.response.AppleAuthTokenResponseDto;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
+import com.example.yeobee.core.user.domain.User;
+import com.example.yeobee.core.user.domain.UserRepository;
 import com.example.yeobee.core.auth.util.JwtParser;
-import com.example.yeobee.core.user.entity.User;
-import com.example.yeobee.core.user.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.Reader;
 import java.io.StringReader;
 import java.security.PrivateKey;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -101,7 +100,7 @@ public class AppleAuthService {
     }
 
     private String createClientSecret() {
-        Date expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant());
+        Date expirationDate = Date.from(ZonedDateTime.now().plusDays(30).toInstant());
         Map<String, Object> jwtHeader = new HashMap<>();
         jwtHeader.put("kid", appleAuthProperties.keyId());
         jwtHeader.put("alg", "ES256");

@@ -7,7 +7,7 @@ import com.example.yeobee.core.auth.application.KakaoAuthService;
 import com.example.yeobee.core.auth.dto.request.AppleLoginRequestDto;
 import com.example.yeobee.core.auth.dto.request.KakaoLoginRequestDto;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
-import com.example.yeobee.core.user.entity.User;
+import com.example.yeobee.core.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

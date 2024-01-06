@@ -1,7 +1,8 @@
-package com.example.yeobee.core.user.entity;
+package com.example.yeobee.core.user.domain;
 
 import com.example.yeobee.common.entity.BaseEntity;
 import com.example.yeobee.core.auth.domain.AuthProvider;
+import com.example.yeobee.core.tripUser.domain.TripUser;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AuthProvider> authProviderList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<TripUser> tripUserList = new ArrayList<>();
 
     public User(AuthProvider authProvider) {
         addAuthProvider(authProvider);
