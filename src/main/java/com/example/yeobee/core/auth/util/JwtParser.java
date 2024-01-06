@@ -1,4 +1,4 @@
-package com.example.yeobee.common.util;
+package com.example.yeobee.core.auth.util;
 
 import java.util.Base64;
 import lombok.SneakyThrows;

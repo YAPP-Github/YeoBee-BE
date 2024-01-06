@@ -1,12 +1,12 @@
 package com.example.yeobee.core.auth.application;
 
-import com.example.yeobee.common.util.JwtParser;
 import com.example.yeobee.core.auth.domain.AuthProvider;
 import com.example.yeobee.core.auth.domain.AuthProviderRepository;
 import com.example.yeobee.core.auth.domain.AuthProviderType;
 import com.example.yeobee.core.auth.dto.request.AppleLoginRequestDto;
 import com.example.yeobee.core.auth.dto.response.AppleAuthTokenResponseDto;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
+import com.example.yeobee.core.auth.util.JwtParser;
 import com.example.yeobee.core.user.entity.User;
 import com.example.yeobee.core.user.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
