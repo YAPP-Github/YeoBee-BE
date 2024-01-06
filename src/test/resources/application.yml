@@ -6,6 +6,8 @@ spring:
     show-sql: false
   cloud:
     aws:
+      region:
+        static: ap-northeast-2
       s3:
         bucket: yeobee-bucket
       cdn:
