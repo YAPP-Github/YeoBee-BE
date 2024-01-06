@@ -9,6 +9,17 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: false
+  cloud:
+    aws:
+      region:
+        static: ${AWS_REGION}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      s3:
+        bucket: ${AWS_BUCKET_NAME}
+      cdn:
+        url: ${AWS_CDN_URL}
 
 auth:
   jwt:

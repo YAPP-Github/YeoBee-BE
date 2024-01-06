@@ -1,8 +1,8 @@
 package com.example.yeobee.core.auth.presentation;
 
-import com.example.yeobee.common.util.AuthHeaderParser;
 import com.example.yeobee.core.auth.annotation.AuthUser;
 import com.example.yeobee.core.auth.application.AuthService;
+import com.example.yeobee.core.auth.util.AuthHeaderParser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
