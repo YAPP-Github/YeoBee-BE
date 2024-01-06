@@ -1,7 +1,7 @@
 package com.example.yeobee.core.presigned.presentation;
 
 import com.example.yeobee.core.presigned.application.PresignedService;
-import com.example.yeobee.core.presigned.presentation.dto.response.PresignedUrlResponseDto;
+import com.example.yeobee.core.presigned.dto.response.PresignedUrlResponseDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +17,9 @@ public class PresignedController {
     private final PresignedService presignedService;
 
     @GetMapping
-    public List<PresignedUrlResponseDto> getPresignedUrl(@RequestParam List<String> fileNames) {
-        return fileNames.stream()
-            .map(presignedService::getPresignedUrl)
-            .toList();
+    public PresignedUrlResponseDto getPresignedUrl(@RequestParam List<String> fileNames) {
+        return new PresignedUrlResponseDto(fileNames.stream()
+                                               .map(presignedService::getPresignedUrl)
+                                               .toList());
     }
 }

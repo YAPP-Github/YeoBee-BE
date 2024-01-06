@@ -1,7 +1,7 @@
 package com.example.yeobee.core.presigned.application;
 
 import com.example.yeobee.common.util.UrlUtil;
-import com.example.yeobee.core.presigned.presentation.dto.response.PresignedUrlResponseDto;
+import com.example.yeobee.core.presigned.dto.PresignedUrl;
 import com.example.yeobee.core.presigned.util.FileNameGenerator;
 import java.time.Duration;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class PresignedService {
         this.cdnUrl = cdnUrl;
     }
 
-    public PresignedUrlResponseDto getPresignedUrl(String fileName) {
+    public PresignedUrl getPresignedUrl(String fileName) {
         final String newFileName = FileNameGenerator.generateFileName(fileName);
         final String filePath = "images/" + newFileName;
 
@@ -49,6 +49,6 @@ public class PresignedService {
         String presignedUrl = s3Presigner.presignPutObject(preSignRequest).url().toString();
         String fileUrl = UrlUtil.join(cdnUrl, filePath);
 
-        return new PresignedUrlResponseDto(presignedUrl, fileUrl);
+        return new PresignedUrl(presignedUrl, fileUrl);
     }
 }
