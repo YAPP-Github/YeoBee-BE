@@ -13,4 +13,6 @@ public class ExchangeRate {
     private ExchangeRateType exchangeRateType;
 
     private Double exchangeRateValue;
+
+    private Long exchangeRateStandard;
 }
