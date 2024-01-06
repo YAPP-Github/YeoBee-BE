@@ -7,7 +7,7 @@ import com.example.yeobee.core.auth.dto.request.AppleLoginRequestDto;
 import com.example.yeobee.core.auth.dto.response.AppleAuthTokenResponseDto;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
 import com.example.yeobee.core.user.domain.User;
-import com.example.yeobee.core.user.domain.UserRepository;]
+import com.example.yeobee.core.user.domain.UserRepository;
 import com.example.yeobee.core.auth.util.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
