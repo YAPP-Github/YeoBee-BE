@@ -3,7 +3,7 @@ package com.example.yeobee.core.expense.domain;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum Category {
+public enum ExpenseCategory {
     FOOD("식비"),
     TRANSPORT("교통"),
     LODGE("숙박"),

@@ -1,6 +1,6 @@
 package com.example.yeobee.core.tripUser.domain;
 
-public enum State {
+public enum TripUserState {
 
     CONNECTED,
     UNCONNECTED

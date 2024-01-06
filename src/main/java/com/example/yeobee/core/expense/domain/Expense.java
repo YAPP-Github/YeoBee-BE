@@ -25,7 +25,7 @@ public class Expense {
     private ZonedDateTime payedAt;
 
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private ExpenseCategory expenseCategory;
 
     @Enumerated(EnumType.STRING)
     private ExpenseMethod expenseMethod;

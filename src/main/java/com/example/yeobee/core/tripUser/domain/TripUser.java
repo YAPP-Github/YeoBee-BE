@@ -20,7 +20,7 @@ public class TripUser {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private State state;
+    private TripUserState tripUserState;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
