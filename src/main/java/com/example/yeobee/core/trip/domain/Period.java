@@ -3,13 +3,13 @@ package com.example.yeobee.core.trip.domain;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @Embeddable
 @Getter
 public class Period {
 
-    private LocalDate startDate;
+    private ZonedDateTime startDate;
 
-    private LocalDate endDate;
+    private ZonedDateTime endDate;
 }

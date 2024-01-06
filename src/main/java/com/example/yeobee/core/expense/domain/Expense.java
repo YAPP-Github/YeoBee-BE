@@ -6,7 +6,7 @@ import com.example.yeobee.core.userExpense.domain.UserExpense;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +22,16 @@ public class Expense {
 
     private String name;
 
-    private LocalDate payedAt;
+    private ZonedDateTime payedAt;
 
     @Enumerated(EnumType.STRING)
     private Category category;
 
     @Enumerated(EnumType.STRING)
-    private Method method;
+    private ExpenseMethod expenseMethod;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private ExpenseType expenseType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trip_id")

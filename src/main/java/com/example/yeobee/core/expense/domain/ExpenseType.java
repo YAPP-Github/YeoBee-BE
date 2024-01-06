@@ -1,6 +1,6 @@
 package com.example.yeobee.core.expense.domain;
 
-public enum Type {
+public enum ExpenseType {
 
     SHARED,
     INDIVIDUAL,
