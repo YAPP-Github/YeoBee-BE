@@ -1,4 +1,4 @@
-package com.example.yeobee.common.util;
+package com.example.yeobee.core.auth.util;
 
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
