@@ -18,11 +18,11 @@ create table currency_unit (
 create table expense (
     id bigint not null auto_increment,
     amount float(53),
-    category enum ('FOOD','TRANSPORT','LODGE','TRAVEL','ACTIVITY','FLIGHT','SHOPPING','ETC'),
-    method enum ('CARD','CASH'),
+    expense_category enum ('FOOD','TRANSPORT','LODGE','TRAVEL','ACTIVITY','FLIGHT','SHOPPING','ETC'),
+    expense_method enum ('CARD','CASH'),
     name varchar(255),
     payed_at date,
-    type enum ('SHARED','INDIVIDUAL','SHARED_BUDGET_INCOME','INDIVIDUAL_BUDGET_EXPENSE'),
+    expense_type enum ('SHARED','INDIVIDUAL','SHARED_BUDGET_INCOME','INDIVIDUAL_BUDGET_EXPENSE'),
     trip_id bigint,
     unit_id bigint,
     primary key (id)
@@ -63,7 +63,7 @@ create table trip_country (
 create table trip_user (
     id bigint not null auto_increment,
     name varchar(255),
-    state enum ('CONNECTED','UNCONNECTED'),
+    trip_user_state enum ('CONNECTED','UNCONNECTED'),
     trip_id bigint,
     user_id bigint,
     primary key (id)
