@@ -21,7 +21,7 @@ public class User extends BaseEntity {
 
     private String nickname;
 
-    private String profileImage;
+    private String profileImageUrl;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AuthProvider> authProviderList = new ArrayList<>();
@@ -38,5 +38,10 @@ public class User extends BaseEntity {
         if (authProvider.getUser() == null) {
             authProvider.setUser(this);
         }
+    }
+
+    public void updateInfo(String nickname, String profileImage) {
+        this.nickname = nickname;
+        this.profileImageUrl = profileImage;
     }
 }
