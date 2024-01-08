@@ -21,7 +21,7 @@ create table expense (
     expense_category enum ('FOOD','TRANSPORT','LODGE','TRAVEL','ACTIVITY','FLIGHT','SHOPPING','ETC'),
     expense_method enum ('CARD','CASH'),
     name varchar(255),
-    payed_at date,
+    payed_at datetime(6),
     expense_type enum ('SHARED','INDIVIDUAL','SHARED_BUDGET_INCOME','INDIVIDUAL_BUDGET_EXPENSE'),
     trip_id bigint,
     unit_id bigint,
@@ -43,8 +43,8 @@ create table trip (
     modified_at datetime(6),
     individual_budget bigint,
     shared_budget bigint,
-    end_date date,
-    start_date date,
+    end_date datetime(6),
+    start_date datetime(6),
     title varchar(255),
     primary key (id)
 ) engine=InnoDB;
