@@ -26,8 +26,8 @@ public enum ErrorCode {
     /**
      * 3XXX -> User 에러
      */
-    USER_NOT_FOUND(2004, "User Not found", HttpStatus.NOT_FOUND);
-
+    USER_NOT_FOUND(3000, "User Not found", HttpStatus.NOT_FOUND),
+    AUTH_PROVIDER_NOT_FOUND(3001, "Auth Provider Not Found", HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;
