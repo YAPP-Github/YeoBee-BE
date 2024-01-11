@@ -28,4 +28,10 @@ public class UserController {
         @RequestBody UserUpdateRequestDto request) {
         return ResponseEntity.ok(userService.updateUserInfo(user, request));
     }
+
+    @DeleteMapping(value = "/me")
+    public ResponseEntity<Void> deleteUser(@AuthUser User user) {
+        userService.deleteUser(user);
+        return ResponseEntity.noContent().build();
+    }
 }

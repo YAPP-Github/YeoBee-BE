@@ -1,7 +1,10 @@
 package com.example.yeobee.core.user.domain;
 
 import com.example.yeobee.common.entity.BaseEntity;
+import com.example.yeobee.common.exception.BusinessException;
+import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.auth.domain.AuthProvider;
+import com.example.yeobee.core.auth.domain.AuthProviderType;
 import com.example.yeobee.core.tripUser.domain.TripUser;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -43,5 +46,12 @@ public class User extends BaseEntity {
     public void updateInfo(String nickname, String profileImage) {
         this.nickname = nickname;
         this.profileImageUrl = profileImage;
+    }
+
+    public AuthProvider getAuthProvider() {
+        if (authProviderList.isEmpty()) {
+            throw new BusinessException(ErrorCode.AUTH_PROVIDER_NOT_FOUND);
+        }
+        return authProviderList.get(0);
     }
 }

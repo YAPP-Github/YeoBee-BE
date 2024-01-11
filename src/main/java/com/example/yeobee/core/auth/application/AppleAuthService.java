@@ -6,8 +6,6 @@ import com.example.yeobee.core.auth.domain.AuthProviderType;
 import com.example.yeobee.core.auth.dto.request.AppleLoginRequestDto;
 import com.example.yeobee.core.auth.dto.response.AppleAuthTokenResponseDto;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
-import com.example.yeobee.core.user.domain.User;
-import com.example.yeobee.core.user.domain.UserRepository;
 import com.example.yeobee.core.auth.util.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -41,20 +39,13 @@ public class AppleAuthService {
 
     private static final String OAUTH_ENDPOINT = "https://appleid.apple.com/auth/oauth2/v2/token";
 
-    private final UserRepository userRepository;
     private final AuthProviderRepository authProviderRepository;
     private final AuthService authService;
     private final AppleAuthProperties appleAuthProperties;
     private final RestTemplate restTemplate;
 
-    public void unlinkUser(User user) {
-        String appleRefreshToken = user.getAuthProviderList()
-            .stream()
-            .filter((e) -> e.getType() == AuthProviderType.APPLE)
-            .toList()
-            .get(0)
-            .getAppleRefreshToken();
-        userRepository.delete(user);
+    public void revoke(AuthProvider authProvider) {
+        String appleRefreshToken = authProvider.getAppleRefreshToken();
         String clientSecret = this.createClientSecret();
         String authUrl = "https://appleid.apple.com/auth/oauth2/v2/revoke";
 

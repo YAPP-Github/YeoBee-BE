@@ -8,12 +8,11 @@ import com.example.yeobee.core.auth.dto.request.KakaoLoginRequestDto;
 import com.example.yeobee.core.auth.dto.response.KakaoUserResponseDto;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +23,9 @@ import org.springframework.web.client.RestTemplate;
 public class KakaoAuthService {
 
     private static final String OAUTH_ENDPOINT = "https://kapi.kakao.com/v2/user/me";
+    private static final String OAUTH_UNLINK_ENDPOINT = "https://kapi.kakao.com/v1/user/unlink";
 
+    private final KakaoAuthProperties kakaoAuthProperties;
     private final AuthService authService;
     private final RestTemplate restTemplate;
 
@@ -56,5 +57,23 @@ public class KakaoAuthService {
         } catch (HttpServerErrorException e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public void revoke(AuthProvider authProvider) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.set("Authorization", "KakaoAK " + kakaoAuthProperties.adminKey());
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("target_id_type", "user_id");
+        map.add("target_id", authProvider.getSocialLoginId());
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+            "https://kapi.kakao.com/v1/user/unlink",
+            HttpMethod.POST,
+            request,
+            String.class);
     }
 }
