@@ -12,10 +12,15 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE shop SET isDeleted = true WHERE id = ?")
+@SQLRestriction("isDeleted = false")
 public class User extends BaseEntity {
 
     @Id
@@ -25,6 +30,8 @@ public class User extends BaseEntity {
     private String nickname;
 
     private String profileImageUrl;
+
+    private boolean isDeleted = Boolean.FALSE;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AuthProvider> authProviderList = new ArrayList<>();
