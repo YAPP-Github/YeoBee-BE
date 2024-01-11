@@ -70,8 +70,8 @@ public class KakaoAuthService {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(
-            "https://kapi.kakao.com/v1/user/unlink",
+        restTemplate.exchange(
+            OAUTH_UNLINK_ENDPOINT,
             HttpMethod.POST,
             request,
             String.class);
