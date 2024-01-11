@@ -33,6 +33,7 @@ public class UserService {
         return new UserUpdateResponseDto(userRepository.save(user));
     }
 
+    @Transactional
     public void deleteUser(User user) {
         AuthProvider authProvider = user.getAuthProvider();
         switch (authProvider.getType()) {
