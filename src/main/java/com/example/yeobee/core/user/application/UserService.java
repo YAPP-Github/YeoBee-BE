@@ -5,6 +5,7 @@ import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.auth.application.AppleAuthService;
 import com.example.yeobee.core.auth.application.KakaoAuthService;
 import com.example.yeobee.core.auth.domain.AuthProvider;
+import com.example.yeobee.core.auth.domain.AuthProviderRepository;
 import com.example.yeobee.core.auth.domain.AuthProviderType;
 import com.example.yeobee.core.user.domain.User;
 import com.example.yeobee.core.user.domain.UserRepository;
@@ -22,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final AppleAuthService appleAuthService;
     private final KakaoAuthService kakaoAuthService;
+    private final AuthProviderRepository authProviderRepository;
 
     public UserInfoResponseDto getUserInfo(User user) {
         return new UserInfoResponseDto(user);
@@ -41,6 +43,7 @@ public class UserService {
             case KAKAO -> kakaoAuthService.revoke(authProvider);
             default -> throw new BusinessException(ErrorCode.AUTH_PROVIDER_TYPE_INVALID);
         }
+        authProviderRepository.delete(authProvider);
         userRepository.delete(user);
     }
 }
