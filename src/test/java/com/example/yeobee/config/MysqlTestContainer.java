@@ -8,7 +8,7 @@ import org.testcontainers.utility.DockerImageName;
 @Component
 public class MysqlTestContainer {
 
-    public static final String DATABASE_NAME = "ddip";
+    public static final String DATABASE_NAME = "yeobee";
     public static final String USERNAME = "root";
     public static final String PASSWORD = "password";
     private static final DockerImageName IMAGE_NAME = DockerImageName.parse("mysql:8.0.33");
