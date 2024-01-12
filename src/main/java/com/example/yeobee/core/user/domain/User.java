@@ -19,8 +19,8 @@ import org.hibernate.annotations.Where;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE shop SET isDeleted = true WHERE id = ?")
-@SQLRestriction("isDeleted = false")
+@SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE id = ?")
+@SQLRestriction("is_deleted = false")
 public class User extends BaseEntity {
 
     @Id

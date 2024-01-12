@@ -30,7 +30,7 @@ public class UserService {
     @Transactional
     public UserUpdateResponseDto updateUserInfo(User user, UserUpdateRequestDto request) {
         user.updateInfo(request.nickname(), request.profileImageUrl());
-        return new UserUpdateResponseDto(userRepository.save(user));
+        return new UserUpdateResponseDto(user);
     }
 
     @Transactional
