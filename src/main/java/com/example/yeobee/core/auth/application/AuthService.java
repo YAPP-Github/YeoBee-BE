@@ -6,6 +6,7 @@ import com.example.yeobee.core.auth.domain.*;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
 import com.example.yeobee.core.user.domain.User;
 import com.example.yeobee.core.user.domain.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,7 @@ public class AuthService {
         return authProvider;
     }
 
-    public void logout(User user){
+    public void logout(User user) {
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findById(user.getId());
         optionalRefreshToken.ifPresent(refreshTokenRepository::delete);
     }
@@ -64,5 +65,11 @@ public class AuthService {
         long userId = Long.parseLong(authToken.getClaims().getSubject());
         return userRepository.findById(userId)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    @Transactional
+    public void deleteUser(User user) {
+        authProviderRepository.delete(user.getAuthProvider());
+        userRepository.delete(user);
     }
 }

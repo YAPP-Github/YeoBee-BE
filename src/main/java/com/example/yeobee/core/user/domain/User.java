@@ -31,7 +31,7 @@ public class User extends BaseEntity {
 
     private String profileImageUrl;
 
-    private boolean isDeleted = Boolean.FALSE;
+    private boolean isDeleted = false;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AuthProvider> authProviderList = new ArrayList<>();

@@ -34,16 +34,4 @@ public class UserService {
         user.updateInfo(request.nickname(), request.profileImageUrl());
         return new UserUpdateResponseDto(user);
     }
-
-    @Transactional
-    public void deleteUser(User user) {
-        AuthProvider authProvider = user.getAuthProvider();
-        switch (authProvider.getType()) {
-            case APPLE -> appleAuthService.revoke(authProvider);
-            case KAKAO -> kakaoAuthService.revoke(authProvider);
-            default -> throw new BusinessException(ErrorCode.AUTH_PROVIDER_TYPE_INVALID);
-        }
-        authProviderRepository.delete(authProvider);
-        userRepository.delete(user);
-    }
 }

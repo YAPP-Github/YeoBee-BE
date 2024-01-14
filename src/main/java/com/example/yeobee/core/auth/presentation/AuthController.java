@@ -1,9 +1,12 @@
 package com.example.yeobee.core.auth.presentation;
 
+import com.example.yeobee.common.exception.BusinessException;
+import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.auth.annotation.AuthUser;
 import com.example.yeobee.core.auth.application.AppleAuthService;
 import com.example.yeobee.core.auth.application.AuthService;
 import com.example.yeobee.core.auth.application.KakaoAuthService;
+import com.example.yeobee.core.auth.domain.AuthProvider;
 import com.example.yeobee.core.auth.dto.request.AppleLoginRequestDto;
 import com.example.yeobee.core.auth.dto.request.KakaoLoginRequestDto;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
@@ -38,8 +41,20 @@ public class AuthController {
     }
 
     @DeleteMapping(value = "/logout")
-    public ResponseEntity<Void> logout(@AuthUser User user){
+    public ResponseEntity<Void> logout(@AuthUser User user) {
         authService.logout(user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(value = "/revoke")
+    public ResponseEntity<Void> deleteUser(@AuthUser User user) {
+        AuthProvider authProvider = user.getAuthProvider();
+        switch (authProvider.getType()) {
+            case APPLE -> appleAuthService.revoke(authProvider);
+            case KAKAO -> kakaoAuthService.revoke(authProvider);
+            default -> throw new BusinessException(ErrorCode.AUTH_PROVIDER_TYPE_INVALID);
+        }
+        authService.deleteUser(user);
         return ResponseEntity.noContent().build();
     }
 }
