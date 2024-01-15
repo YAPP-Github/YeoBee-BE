@@ -35,6 +35,7 @@ public class AuthService {
         return issueToken(authProvider.getUser());
     }
 
+    @Transactional
     public TokenResponseDto login(KakaoLoginRequestDto kakaoLoginRequest) {
         String socialLoginId = kakaoAuthService.getSocialLoginId(kakaoLoginRequest.oauthToken());
         AuthProvider authProvider = getOrCreateAuthProvider(socialLoginId, AuthProviderType.KAKAO);
@@ -55,8 +56,7 @@ public class AuthService {
         return new TokenResponseDto(newAuthToken.getToken(), refreshToken);
     }
 
-    @Transactional
-    public AuthProvider getOrCreateAuthProvider(String socialLoginId, AuthProviderType authProviderType) {
+    private AuthProvider getOrCreateAuthProvider(String socialLoginId, AuthProviderType authProviderType) {
         AuthProvider authProvider = authProviderRepository.findBySocialLoginId(socialLoginId)
             .orElse(new AuthProvider(socialLoginId, authProviderType));
 
@@ -73,7 +73,7 @@ public class AuthService {
         optionalRefreshToken.ifPresent(refreshTokenRepository::delete);
     }
 
-    public TokenResponseDto issueToken(User user) {
+    private TokenResponseDto issueToken(User user) {
         AuthToken refreshToken = tokenService.createRefreshToken(user.getId());
         AuthToken accessToken = tokenService.createAccessToken(user.getId());
         refreshTokenRepository.save(new RefreshToken(user.getId(), refreshToken.getToken()));

@@ -17,7 +17,6 @@ import lombok.SneakyThrows;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +35,7 @@ public class AppleAuthService {
     private static final String OAUTH_UNLINK_ENDPOINT = "https://appleid.apple.com/auth/oauth2/v2/revoke";
 
     private final AppleAuthProperties appleAuthProperties;
-    private final RestTemplate restTemplate = new RestTemplateBuilder().build();
+    private final RestTemplate restTemplate;
 
     public void revoke(AuthProvider authProvider) {
         String appleRefreshToken = authProvider.getAppleRefreshToken();

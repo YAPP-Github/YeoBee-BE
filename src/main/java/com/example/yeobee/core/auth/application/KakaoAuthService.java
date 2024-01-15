@@ -5,7 +5,6 @@ import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.auth.domain.AuthProvider;
 import com.example.yeobee.core.auth.dto.response.KakaoUserResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -23,7 +22,7 @@ public class KakaoAuthService {
     private static final String OAUTH_UNLINK_ENDPOINT = "https://kapi.kakao.com/v1/user/unlink";
 
     private final KakaoAuthProperties kakaoAuthProperties;
-    private final RestTemplate restTemplate = new RestTemplateBuilder().build();
+    private final RestTemplate restTemplate;
 
     public String getSocialLoginId(String oauthToken) {
         try {
