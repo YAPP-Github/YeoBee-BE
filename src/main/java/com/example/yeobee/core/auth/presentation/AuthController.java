@@ -1,9 +1,7 @@
 package com.example.yeobee.core.auth.presentation;
 
 import com.example.yeobee.core.auth.annotation.AuthUser;
-import com.example.yeobee.core.auth.application.AppleAuthService;
 import com.example.yeobee.core.auth.application.AuthService;
-import com.example.yeobee.core.auth.application.KakaoAuthService;
 import com.example.yeobee.core.auth.dto.request.AppleLoginRequestDto;
 import com.example.yeobee.core.auth.dto.request.KakaoLoginRequestDto;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    private final AppleAuthService appleAuthService;
-    private final KakaoAuthService kakaoAuthService;
 
     @GetMapping("/refresh")
     public ResponseEntity<TokenResponseDto> refreshToken(@RequestParam String refreshToken) {
@@ -28,18 +24,23 @@ public class AuthController {
 
     @PostMapping(value = "/login/apple")
     public ResponseEntity<TokenResponseDto> appleLogin(@RequestBody AppleLoginRequestDto appleLoginRequest) {
-        TokenResponseDto tokenResponseDto = appleAuthService.login(appleLoginRequest);
-        return ResponseEntity.ok(tokenResponseDto);
+        return ResponseEntity.ok(authService.login(appleLoginRequest));
     }
 
     @PostMapping(value = "/login/kakao")
     public ResponseEntity<TokenResponseDto> kakaoLogin(@RequestBody KakaoLoginRequestDto kakaoLoginRequest) {
-        return ResponseEntity.ok(kakaoAuthService.login(kakaoLoginRequest));
+        return ResponseEntity.ok(authService.login(kakaoLoginRequest));
     }
 
     @DeleteMapping(value = "/logout")
-    public ResponseEntity<Void> logout(@AuthUser User user){
+    public ResponseEntity<Void> logout(@AuthUser User user) {
         authService.logout(user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(value = "/revoke")
+    public ResponseEntity<Void> deleteUser(@AuthUser User user) {
+        authService.deleteUser(user);
         return ResponseEntity.noContent().build();
     }
 }
