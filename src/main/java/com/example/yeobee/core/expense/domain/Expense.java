@@ -1,14 +1,13 @@
 package com.example.yeobee.core.expense.domain;
 
-import com.example.yeobee.core.currencyUnit.domain.CurrencyUnit;
+import com.example.yeobee.core.currency.domain.TripCurrency;
 import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.userExpense.domain.UserExpense;
 import jakarta.persistence.*;
-import lombok.Getter;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
 @Entity
 @Getter
@@ -38,8 +37,8 @@ public class Expense {
     private Trip trip;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "unit_id")
-    private CurrencyUnit unit;
+    @JoinColumn(name = "currency_code")
+    private TripCurrency tripCurrency;
 
     @OneToMany(mappedBy = "expense")
     private List<ExpensePhoto> expensePhotoList = new ArrayList<>();

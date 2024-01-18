@@ -1,4 +1,4 @@
-package com.example.yeobee.core.tripCountry.domain;
+package com.example.yeobee.core.currency.domain;
 
 public enum ExchangeRateType {
 
