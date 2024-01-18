@@ -24,5 +24,5 @@ public class Country {
     private List<TripCountry> tripCountryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "country")
-    private List<CountryCurrency> countryCurrency = new ArrayList<>();
+    private List<CountryCurrency> countryCurrencyList = new ArrayList<>();
 }
