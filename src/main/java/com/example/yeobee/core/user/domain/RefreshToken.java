@@ -1,4 +1,4 @@
-package com.example.yeobee.core.auth.domain;
+package com.example.yeobee.core.user.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

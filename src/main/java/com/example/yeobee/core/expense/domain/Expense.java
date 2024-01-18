@@ -2,7 +2,6 @@ package com.example.yeobee.core.expense.domain;
 
 import com.example.yeobee.core.currency.domain.TripCurrency;
 import com.example.yeobee.core.trip.domain.Trip;
-import com.example.yeobee.core.userExpense.domain.UserExpense;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;

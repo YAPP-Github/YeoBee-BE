@@ -1,7 +1,7 @@
 package com.example.yeobee.core.auth.application;
 
-import com.example.yeobee.core.auth.domain.AuthProvider;
 import com.example.yeobee.core.auth.dto.response.AppleAuthTokenResponseDto;
+import com.example.yeobee.core.user.domain.AuthProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.Reader;

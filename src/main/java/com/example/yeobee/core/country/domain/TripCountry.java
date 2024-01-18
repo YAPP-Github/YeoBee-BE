@@ -1,6 +1,5 @@
-package com.example.yeobee.core.tripCountry.domain;
+package com.example.yeobee.core.country.domain;
 
-import com.example.yeobee.core.country.domain.Country;
 import com.example.yeobee.core.trip.domain.Trip;
 import jakarta.persistence.*;
 import lombok.Getter;

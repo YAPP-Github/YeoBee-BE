@@ -2,13 +2,13 @@ package com.example.yeobee.core.auth.application;
 
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
-import com.example.yeobee.core.auth.domain.*;
+import com.example.yeobee.core.auth.domain.AuthProviderType;
+import com.example.yeobee.core.auth.domain.AuthToken;
 import com.example.yeobee.core.auth.dto.request.AppleLoginRequestDto;
 import com.example.yeobee.core.auth.dto.request.KakaoLoginRequestDto;
 import com.example.yeobee.core.auth.dto.response.TokenResponseDto;
 import com.example.yeobee.core.auth.util.JwtParser;
-import com.example.yeobee.core.user.domain.User;
-import com.example.yeobee.core.user.domain.UserRepository;
+import com.example.yeobee.core.user.domain.*;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

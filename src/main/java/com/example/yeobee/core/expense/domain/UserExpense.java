@@ -1,7 +1,6 @@
-package com.example.yeobee.core.userExpense.domain;
+package com.example.yeobee.core.expense.domain;
 
-import com.example.yeobee.core.expense.domain.Expense;
-import com.example.yeobee.core.tripUser.domain.TripUser;
+import com.example.yeobee.core.trip.domain.TripUser;
 import jakarta.persistence.*;
 
 @Entity

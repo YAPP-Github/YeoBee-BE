@@ -1,4 +1,4 @@
-package com.example.yeobee.core.tripUser.domain;
+package com.example.yeobee.core.trip.domain;
 
 public enum TripUserState {
 
