@@ -35,7 +35,7 @@ create table currency
 create table expense
 (
     id               bigint not null auto_increment,
-    amount           float(53),
+    amount           decimal(38, 2),
     expense_category enum ('FOOD','TRANSPORT','LODGE','TRAVEL','ACTIVITY','FLIGHT','SHOPPING','ETC'),
     expense_method   enum ('CARD','CASH'),
     expense_type     enum ('SHARED','INDIVIDUAL','SHARED_BUDGET_INCOME','INDIVIDUAL_BUDGET_EXPENSE'),
@@ -89,7 +89,7 @@ create table trip_currency
     id                     bigint not null auto_increment,
     exchange_rate_standard bigint,
     exchange_rate_type     enum ('CUSTOM','AUTO'),
-    exchange_rate_value    float(53),
+    exchange_rate_value    decimal(38, 2),
     currency_code          varchar(255),
     trip_id                bigint,
     primary key (id)
@@ -119,7 +119,7 @@ create table user
 create table user_expense
 (
     id           bigint not null auto_increment,
-    amount       float(53),
+    amount       decimal(38, 2),
     expense_id   bigint,
     trip_user_id bigint,
     primary key (id)

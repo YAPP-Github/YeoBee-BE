@@ -3,6 +3,7 @@ package com.example.yeobee.core.expense.domain;
 import com.example.yeobee.core.currency.domain.TripCurrency;
 import com.example.yeobee.core.trip.domain.Trip;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double amount;
+    private BigDecimal amount;
 
     private String name;
 

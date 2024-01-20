@@ -2,6 +2,7 @@ package com.example.yeobee.core.expense.domain;
 
 import com.example.yeobee.core.trip.domain.TripUser;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class UserExpense {
@@ -10,7 +11,7 @@ public class UserExpense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double amount;
+    private BigDecimal amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trip_user_id")
