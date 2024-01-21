@@ -42,7 +42,7 @@ create table expense
     name             varchar(255),
     payed_at         datetime(6),
     trip_id          bigint,
-    currency_code    bigint,
+    trip_currency_id bigint,
     primary key (id)
 ) engine = InnoDB;
 
@@ -149,8 +149,8 @@ alter table expense
             references trip (id);
 
 alter table expense
-    add constraint FK_expense_currency_code
-        foreign key (currency_code)
+    add constraint FK_expense_trip_currency_id
+        foreign key (trip_currency_id)
             references trip_currency (id);
 
 alter table expense_photo

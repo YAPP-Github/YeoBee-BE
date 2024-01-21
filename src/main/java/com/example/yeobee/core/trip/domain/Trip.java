@@ -22,18 +22,22 @@ public class Trip extends BaseEntity {
     @Embedded
     private Period period;
 
-    @Embedded
-    private Budget budget;
-
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<Expense> expenseList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<TripUser> tripUserList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<TripCountry> tripCountryList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<TripCurrency> tripCurrencyList = new ArrayList<>();
+
+    public void addExpense(Expense expense) {
+        expenseList.add(expense);
+        if (expense.getTrip() == null) {
+            expense.setTrip(this);
+        }
+    }
 }

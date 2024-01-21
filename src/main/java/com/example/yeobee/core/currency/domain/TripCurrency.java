@@ -5,7 +5,9 @@ import com.example.yeobee.core.trip.domain.Trip;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
+@Getter
 @Entity
 public class TripCurrency {
 
@@ -26,4 +28,11 @@ public class TripCurrency {
 
     @OneToMany(mappedBy = "tripCurrency")
     private List<Expense> expenseList = new ArrayList<>();
+
+    public void addExpense(Expense expense) {
+        expenseList.add(expense);
+        if (expense.getTripCurrency() == null) {
+            expense.setTripCurrency(this);
+        }
+    }
 }
