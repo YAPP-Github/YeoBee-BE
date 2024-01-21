@@ -37,7 +37,7 @@ public class Expense {
     private Trip trip;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "currency_code")
+    @JoinColumn(name = "trip_currency_id")
     private TripCurrency tripCurrency;
 
     @OneToMany(mappedBy = "expense")
