@@ -1,13 +1,11 @@
-package com.example.yeobee.core.tripUser.domain;
+package com.example.yeobee.core.trip.domain;
 
-import com.example.yeobee.core.trip.domain.Trip;
+import com.example.yeobee.core.expense.domain.UserExpense;
 import com.example.yeobee.core.user.domain.User;
-import com.example.yeobee.core.userExpense.domain.UserExpense;
 import jakarta.persistence.*;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
 @Entity
 @Getter

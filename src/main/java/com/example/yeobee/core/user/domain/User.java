@@ -3,9 +3,7 @@ package com.example.yeobee.core.user.domain;
 import com.example.yeobee.common.entity.BaseEntity;
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
-import com.example.yeobee.core.auth.domain.AuthProvider;
-import com.example.yeobee.core.auth.domain.AuthProviderType;
-import com.example.yeobee.core.tripUser.domain.TripUser;
+import com.example.yeobee.core.trip.domain.TripUser;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.Where;
 
 @Entity
 @Getter

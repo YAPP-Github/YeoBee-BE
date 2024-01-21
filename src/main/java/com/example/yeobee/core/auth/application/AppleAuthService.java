@@ -1,7 +1,7 @@
 package com.example.yeobee.core.auth.application;
 
-import com.example.yeobee.core.auth.domain.AuthProvider;
 import com.example.yeobee.core.auth.dto.response.AppleAuthTokenResponseDto;
+import com.example.yeobee.core.user.domain.AuthProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.Reader;
@@ -17,7 +17,6 @@ import lombok.SneakyThrows;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -90,9 +89,7 @@ public class AppleAuthService {
 
     @SneakyThrows
     private PrivateKey getPrivateKey() {
-        ClassPathResource resource = new ClassPathResource("static/AuthKey_" + appleAuthProperties.keyId() + ".p8");
-        String privateKey = new String(resource.getInputStream().readAllBytes());
-        Reader pemReader = new StringReader(privateKey);
+        Reader pemReader = new StringReader(appleAuthProperties.authKey());
         PEMParser pemParser = new PEMParser(pemReader);
         JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
         PrivateKeyInfo object = (PrivateKeyInfo) pemParser.readObject();

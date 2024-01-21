@@ -2,8 +2,8 @@ package com.example.yeobee.core.auth.application;
 
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
-import com.example.yeobee.core.auth.domain.AuthProvider;
 import com.example.yeobee.core.auth.dto.response.KakaoUserResponseDto;
+import com.example.yeobee.core.user.domain.AuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

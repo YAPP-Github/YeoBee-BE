@@ -1,4 +1,4 @@
-package com.example.yeobee.core.auth.domain;
+package com.example.yeobee.core.user.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
