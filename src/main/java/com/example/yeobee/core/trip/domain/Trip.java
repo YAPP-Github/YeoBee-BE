@@ -36,7 +36,7 @@ public class Trip extends BaseEntity {
 
     public void addExpense(Expense expense) {
         expenseList.add(expense);
-        if (expense.getTrip() == null) {
+        if (expense.getTrip() != this) {
             expense.setTrip(this);
         }
     }

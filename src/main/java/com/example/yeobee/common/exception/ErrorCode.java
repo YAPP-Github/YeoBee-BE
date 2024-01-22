@@ -34,7 +34,11 @@ public enum ErrorCode {
      */
     TRIP_NOT_FOUND(4000, "Trip Not found", HttpStatus.NOT_FOUND),
     TRIP_USER_NOT_FOUND(4001, "Trip User Not found", HttpStatus.NOT_FOUND),
-    TRIP_CURRENCY_NOT_FOUND(4002, "Trip Currency Not found", HttpStatus.NOT_FOUND);
+    TRIP_CURRENCY_NOT_FOUND(4002, "Trip Currency Not found", HttpStatus.NOT_FOUND),
+    /**
+     * 5XXX -> Expense 관련 에러
+     */
+    EXPENSE_NOT_FOUND(5000, "Expense Not found", HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;

@@ -44,7 +44,7 @@ public class TripUser {
 
     public void addExpense(Expense expense) {
         expenseList.add(expense);
-        if (expense.getPayer() == null) {
+        if (expense.getPayer() != this) {
             expense.setPayer(this);
         }
     }

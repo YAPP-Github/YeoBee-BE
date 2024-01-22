@@ -31,7 +31,7 @@ public class TripCurrency {
 
     public void addExpense(Expense expense) {
         expenseList.add(expense);
-        if (expense.getTripCurrency() == null) {
+        if (expense.getTripCurrency() != this) {
             expense.setTripCurrency(this);
         }
     }

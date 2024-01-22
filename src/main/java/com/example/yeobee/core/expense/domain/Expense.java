@@ -2,6 +2,7 @@ package com.example.yeobee.core.expense.domain;
 
 import com.example.yeobee.core.currency.domain.TripCurrency;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
+import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
 import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.trip.domain.TripUser;
 import jakarta.persistence.*;
@@ -53,20 +54,31 @@ public class Expense {
     @JoinColumn(name = "payer_id")
     private TripUser payer;
 
-    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExpensePhoto> expensePhotoList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserExpense> userExpenseList = new ArrayList<>();
 
-    public Expense(ExpenseCreateRequestDto requestDto) {
-        amount = requestDto.amount();
-        name = requestDto.name();
-        payedAt = requestDto.payedAt();
-        expenseCategory = requestDto.expenseCategory();
-        expenseMethod = requestDto.expenseMethod();
-        expenseType = requestDto.expenseType();
-        requestDto.imageList().forEach((e) -> addExpensePhoto(new ExpensePhoto(e)));
+    public Expense(ExpenseCreateRequestDto request) {
+        amount = request.amount();
+        name = request.name();
+        payedAt = request.payedAt();
+        expenseCategory = request.expenseCategory();
+        expenseMethod = request.expenseMethod();
+        expenseType = request.expenseType();
+        request.imageList().forEach((e) -> addExpensePhoto(new ExpensePhoto(e)));
+    }
+
+    public void update(ExpenseUpdateRequestDto request) {
+        clear();
+        amount = request.amount();
+        name = request.name();
+        payedAt = request.payedAt();
+        expenseCategory = request.expenseCategory();
+        expenseMethod = request.expenseMethod();
+        expenseType = request.expenseType();
+        request.imageList().forEach((e) -> addExpensePhoto(new ExpensePhoto(e)));
     }
 
     private void addExpensePhoto(ExpensePhoto expensePhoto) {
@@ -81,5 +93,12 @@ public class Expense {
         if (userExpense.getExpense() == null) {
             userExpense.setExpense(this);
         }
+    }
+
+    private void clear() {
+        expensePhotoList.forEach((e) -> e.setExpense(null));
+        userExpenseList.forEach((e) -> e.setExpense(null));
+        expensePhotoList.clear();
+        userExpenseList.clear();
     }
 }
