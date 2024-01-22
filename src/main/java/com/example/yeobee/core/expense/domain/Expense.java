@@ -67,7 +67,6 @@ public class Expense {
         expenseMethod = requestDto.expenseMethod();
         expenseType = requestDto.expenseType();
         requestDto.imageList().forEach((e) -> addExpensePhoto(new ExpensePhoto(e)));
-        requestDto.payerList().forEach((e) -> addUserExpense(new UserExpense(e)));
     }
 
     private void addExpensePhoto(ExpensePhoto expensePhoto) {
@@ -77,7 +76,7 @@ public class Expense {
         }
     }
 
-    private void addUserExpense(UserExpense userExpense) {
+    public void addUserExpense(UserExpense userExpense) {
         userExpenseList.add(userExpense);
         if (userExpense.getExpense() == null) {
             userExpense.setExpense(this);

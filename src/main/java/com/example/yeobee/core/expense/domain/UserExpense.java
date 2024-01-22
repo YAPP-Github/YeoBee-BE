@@ -33,4 +33,14 @@ public class UserExpense {
     public UserExpense(Payer payer) {
         amount = payer.amount();
     }
+
+    @Override
+    public String toString() {
+        return "UserExpense{" +
+               "id=" + id +
+               ", amount=" + amount +
+               ", tripUser=" + tripUser +
+               ", expense=" + expense +
+               '}';
+    }
 }

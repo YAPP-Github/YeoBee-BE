@@ -6,6 +6,7 @@ import com.example.yeobee.core.currency.domain.TripCurrency;
 import com.example.yeobee.core.currency.domain.TripCurrencyRepository;
 import com.example.yeobee.core.expense.domain.Expense;
 import com.example.yeobee.core.expense.domain.ExpenseRepository;
+import com.example.yeobee.core.expense.domain.UserExpense;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseImage;
 import com.example.yeobee.core.expense.dto.request.Payer;
@@ -30,28 +31,30 @@ public class ExpenseService {
     @Transactional
     public ExpenseCreateResponseDto createExpense(ExpenseCreateRequestDto request) {
         Expense expense = new Expense(request);
+        expenseRepository.save(expense);
+
         // trip 에 expense 추가
         Trip trip = tripRepository.findById(request.tripId())
             .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
         trip.addExpense(expense);
-        tripRepository.save(trip);
+
         // tripCurrency 에 expense 추가
         TripCurrency tripCurrency = tripCurrencyRepository.findByTripIdAndCurrencyCode(trip.getId(),
                                                                                        request.currencyCode())
             .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_CURRENCY_NOT_FOUND));
         tripCurrency.addExpense(expense);
-        tripCurrencyRepository.save(tripCurrency);
-        // tripUser 에 userExpense 추가
+
+        // tripUser, expense 에 userExpense 추가
         request.payerList().forEach((payer) -> {
             TripUser tripUser = tripUserRepository.findById(payer.tripUserId()).orElseThrow(() -> new BusinessException(
                 ErrorCode.TRIP_USER_NOT_FOUND));
-            expense.getUserExpenseList()
-                .stream()
-                .filter((e) -> e.getTripUser().getId().equals(tripUser.getId()))
-                .forEach(
-                    tripUser::addUserExpense);
+            UserExpense userExpense = new UserExpense(payer);
+            tripUser.addUserExpense(userExpense);
             tripUserRepository.save(tripUser);
+            expense.addUserExpense(userExpense);
+            expenseRepository.save(expense);
         });
+
         // payer 에 expense 추가
         if (request.payerId() != null) {
             TripUser payer = tripUserRepository.findById(request.payerId()).orElseThrow(() -> new BusinessException(
