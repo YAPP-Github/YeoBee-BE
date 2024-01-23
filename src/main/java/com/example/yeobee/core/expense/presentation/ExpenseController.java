@@ -30,4 +30,10 @@ public class ExpenseController {
         @RequestBody ExpenseUpdateRequestDto request) {
         return ResponseEntity.ok(expenseService.updateExpense(expenseId, request));
     }
+
+    @DeleteMapping("/{expenseId}")
+    public ResponseEntity<Void> deleteExpense(@PathVariable Long expenseId) {
+        expenseService.deleteExpense(expenseId);
+        return ResponseEntity.noContent().build();
+    }
 }

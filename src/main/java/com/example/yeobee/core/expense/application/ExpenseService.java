@@ -80,6 +80,12 @@ public class ExpenseService {
                                             expense.getExpensePhotoList().stream().map(ExpenseImage::new).toList());
     }
 
+    public void deleteExpense(Long expenseId) {
+        Expense expense = expenseRepository.findById(expenseId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.EXPENSE_NOT_FOUND));
+        expenseRepository.delete(expense);
+    }
+
     private Trip setTrip(Long tripId, Expense expense) {
         if (!tripId.equals(expense.getTrip().getId())) {
             Trip trip = tripRepository.findById(tripId)
