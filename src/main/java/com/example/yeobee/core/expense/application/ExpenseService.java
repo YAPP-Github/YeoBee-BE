@@ -7,16 +7,18 @@ import com.example.yeobee.core.currency.domain.TripCurrencyRepository;
 import com.example.yeobee.core.expense.domain.Expense;
 import com.example.yeobee.core.expense.domain.ExpenseRepository;
 import com.example.yeobee.core.expense.domain.UserExpense;
+import com.example.yeobee.core.expense.dto.common.ExpensePhotoDto;
+import com.example.yeobee.core.expense.dto.common.UserExpenseDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
-import com.example.yeobee.core.expense.dto.request.ExpenseImage;
 import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
-import com.example.yeobee.core.expense.dto.request.Payer;
 import com.example.yeobee.core.expense.dto.response.ExpenseCreateResponseDto;
+import com.example.yeobee.core.expense.dto.response.ExpenseDetailRetrieveResponseDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseUpdateResponseDto;
 import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.trip.domain.TripRepository;
 import com.example.yeobee.core.trip.domain.TripUser;
 import com.example.yeobee.core.trip.domain.TripUserRepository;
+import com.example.yeobee.core.user.domain.User;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +53,8 @@ public class ExpenseService {
                                             expense.getName(),
                                             expense.getPayer().getId(),
                                             expense.getUserExpenseList().stream().map(
-                                                Payer::new).toList(),
-                                            expense.getExpensePhotoList().stream().map(ExpenseImage::new).toList());
+                                                UserExpenseDto::new).toList(),
+                                            expense.getExpensePhotoList().stream().map(ExpensePhotoDto::new).toList());
     }
 
     @Transactional
@@ -68,7 +70,6 @@ public class ExpenseService {
 
         return new ExpenseUpdateResponseDto(expense.getId(),
                                             trip.getId(),
-                                            expense.getPayedAt(),
                                             expense.getExpenseType(),
                                             expense.getAmount(),
                                             tripCurrency.getCurrency().getCode(),
@@ -76,8 +77,8 @@ public class ExpenseService {
                                             expense.getName(),
                                             expense.getPayer().getId(),
                                             expense.getUserExpenseList().stream().map(
-                                                Payer::new).toList(),
-                                            expense.getExpensePhotoList().stream().map(ExpenseImage::new).toList());
+                                                UserExpenseDto::new).toList(),
+                                            expense.getExpensePhotoList().stream().map(ExpensePhotoDto::new).toList());
     }
 
     public void deleteExpense(Long expenseId) {
@@ -106,7 +107,7 @@ public class ExpenseService {
         return expense.getTripCurrency();
     }
 
-    private void setUserExpense(List<Payer> payerList, Expense expense) {
+    private void setUserExpense(List<UserExpenseDto> payerList, Expense expense) {
         payerList.forEach((payer) -> {
             TripUser tripUser = tripUserRepository.findById(payer.tripUserId()).orElseThrow(() -> new BusinessException(
                 ErrorCode.TRIP_USER_NOT_FOUND));

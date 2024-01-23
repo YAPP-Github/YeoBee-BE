@@ -1,11 +1,11 @@
-package com.example.yeobee.core.expense.dto.request;
+package com.example.yeobee.core.expense.dto.common;
 
 import com.example.yeobee.core.expense.domain.UserExpense;
 import java.math.BigDecimal;
 
-public record Payer(Long id, Long tripUserId, BigDecimal amount) {
+public record UserExpenseDto(Long id, Long tripUserId, BigDecimal amount) {
 
-    public Payer(UserExpense userExpense) {
+    public UserExpenseDto(UserExpense userExpense) {
         this(userExpense.getId(), userExpense.getTripUser().getId(), userExpense.getAmount());
     }
 }

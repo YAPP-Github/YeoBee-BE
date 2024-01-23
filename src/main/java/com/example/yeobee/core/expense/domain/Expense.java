@@ -74,7 +74,6 @@ public class Expense {
         clear();
         amount = request.amount();
         name = request.name();
-        payedAt = request.payedAt();
         expenseCategory = request.expenseCategory();
         expenseMethod = request.expenseMethod();
         expenseType = request.expenseType();
