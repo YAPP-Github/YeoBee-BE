@@ -59,8 +59,7 @@ public class ExpenseService {
 
     @Transactional
     public ExpenseUpdateResponseDto updateExpense(Long expenseId, ExpenseUpdateRequestDto request) {
-        Expense expense = expenseRepository.findById(expenseId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.EXPENSE_NOT_FOUND));
+        Expense expense = findExpenseById(expenseId);
 
         expense.update(request);
         Trip trip = setTrip(request.tripId(), expense);
@@ -82,8 +81,7 @@ public class ExpenseService {
     }
 
     public void deleteExpense(Long expenseId) {
-        Expense expense = expenseRepository.findById(expenseId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.EXPENSE_NOT_FOUND));
+        Expense expense = findExpenseById(expenseId);
         expenseRepository.delete(expense);
     }
 
@@ -128,5 +126,14 @@ public class ExpenseService {
         } else {
             expense.setPayer(null);
         }
+    }
+
+    public ExpenseDetailRetrieveResponseDto retrieveExpenseDetail(Long expenseId, User user) {
+        Expense expense = findExpenseById(expenseId);
+    }
+
+    private Expense findExpenseById(Long expenseId) {
+        return expenseRepository.findById(expenseId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.EXPENSE_NOT_FOUND));
     }
 }
