@@ -5,10 +5,11 @@ import java.math.BigDecimal;
 
 public record UserExpenseDetailDto(Long id, Long tripUserId, String tripUserName, BigDecimal amount) {
 
-    public UserExpenseDetailDto(UserExpense userExpense) {
+    public UserExpenseDetailDto(UserExpense userExpense, Long userId) {
         this(userExpense.getId(),
              userExpense.getTripUser().getId(),
-             userExpense.getTripUser().getName(),
+             !userId.equals(userExpense.getTripUser().getId()) ? userExpense.getTripUser().getName()
+                 : userExpense.getTripUser().getName() + " (나)",
              userExpense.getAmount());
     }
 }

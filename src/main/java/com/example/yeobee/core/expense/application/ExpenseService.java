@@ -8,6 +8,7 @@ import com.example.yeobee.core.expense.domain.Expense;
 import com.example.yeobee.core.expense.domain.ExpenseRepository;
 import com.example.yeobee.core.expense.domain.UserExpense;
 import com.example.yeobee.core.expense.dto.common.ExpensePhotoDto;
+import com.example.yeobee.core.expense.dto.common.UserExpenseDetailDto;
 import com.example.yeobee.core.expense.dto.common.UserExpenseDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
@@ -20,6 +21,7 @@ import com.example.yeobee.core.trip.domain.TripUser;
 import com.example.yeobee.core.trip.domain.TripUserRepository;
 import com.example.yeobee.core.user.domain.User;
 import jakarta.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -130,6 +132,23 @@ public class ExpenseService {
 
     public ExpenseDetailRetrieveResponseDto retrieveExpenseDetail(Long expenseId, User user) {
         Expense expense = findExpenseById(expenseId);
+        BigDecimal amount = expense.getAmount();
+        return new ExpenseDetailRetrieveResponseDto(amount,
+                                                    expense.getTripCurrency().getCurrency().getCode(),
+                                                    expense.getTripCurrency().getExchangeRate().getKoreanAmount(amount),
+                                                    expense.getExpenseMethod(),
+                                                    expense.getExpenseCategory().name(),
+                                                    expense.getName(),
+                                                    expense.getPayer().getName(),
+                                                    expense.getUserExpenseList()
+                                                        .stream()
+                                                        .map((e) -> new UserExpenseDetailDto(e,
+                                                                                             user.getId()))
+                                                        .toList(),
+                                                    expense.getExpensePhotoList()
+                                                        .stream()
+                                                        .map(ExpensePhotoDto::new)
+                                                        .toList());
     }
 
     private Expense findExpenseById(Long expenseId) {
