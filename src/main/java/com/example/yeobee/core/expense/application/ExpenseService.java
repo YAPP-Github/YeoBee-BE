@@ -87,8 +87,33 @@ public class ExpenseService {
         expenseRepository.delete(expense);
     }
 
+    public ExpenseDetailRetrieveResponseDto retrieveExpenseDetail(Long expenseId, User user) {
+        Expense expense = findExpenseById(expenseId);
+        TripUser userTripUser = tripUserRepository.findByTripIdAndUserId(expense.getTrip().getId(), user.getId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED));
+        BigDecimal amount = expense.getAmount();
+        String payerName = (!userTripUser.getId().equals(expense.getPayer().getId())) ? expense.getPayer().getName()
+            : expense.getPayer().getName() + " (나)";
+        return new ExpenseDetailRetrieveResponseDto(amount,
+                                                    expense.getTripCurrency().getCurrency().getCode(),
+                                                    expense.getTripCurrency().getExchangeRate().getKoreanAmount(amount),
+                                                    expense.getExpenseMethod(),
+                                                    expense.getExpenseCategory().name(),
+                                                    expense.getName(),
+                                                    payerName,
+                                                    expense.getUserExpenseList()
+                                                        .stream()
+                                                        .map((e) -> new UserExpenseDetailDto(e,
+                                                                                             userTripUser.getId()))
+                                                        .toList(),
+                                                    expense.getExpensePhotoList()
+                                                        .stream()
+                                                        .map(ExpensePhotoDto::new)
+                                                        .toList());
+    }
+
     private Trip setTrip(Long tripId, Expense expense) {
-        if (!tripId.equals(expense.getTrip().getId())) {
+        if (expense.getTrip() == null || !tripId.equals(expense.getTrip().getId())) {
             Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
             trip.addExpense(expense);
@@ -98,7 +123,9 @@ public class ExpenseService {
     }
 
     private TripCurrency setTripCurrency(Long tripId, String currencyCode, Expense expense) {
-        if (!currencyCode.equals(expense.getTripCurrency().getCurrency().getCode())) {
+        if (expense.getTripCurrency() == null || !currencyCode.equals(expense.getTripCurrency()
+                                                                          .getCurrency()
+                                                                          .getCode())) {
             TripCurrency tripCurrency = tripCurrencyRepository.findByTripIdAndCurrencyCode(tripId, currencyCode)
                 .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_CURRENCY_NOT_FOUND));
             tripCurrency.addExpense(expense);
@@ -128,27 +155,6 @@ public class ExpenseService {
         } else {
             expense.setPayer(null);
         }
-    }
-
-    public ExpenseDetailRetrieveResponseDto retrieveExpenseDetail(Long expenseId, User user) {
-        Expense expense = findExpenseById(expenseId);
-        BigDecimal amount = expense.getAmount();
-        return new ExpenseDetailRetrieveResponseDto(amount,
-                                                    expense.getTripCurrency().getCurrency().getCode(),
-                                                    expense.getTripCurrency().getExchangeRate().getKoreanAmount(amount),
-                                                    expense.getExpenseMethod(),
-                                                    expense.getExpenseCategory().name(),
-                                                    expense.getName(),
-                                                    expense.getPayer().getName(),
-                                                    expense.getUserExpenseList()
-                                                        .stream()
-                                                        .map((e) -> new UserExpenseDetailDto(e,
-                                                                                             user.getId()))
-                                                        .toList(),
-                                                    expense.getExpensePhotoList()
-                                                        .stream()
-                                                        .map(ExpensePhotoDto::new)
-                                                        .toList());
     }
 
     private Expense findExpenseById(Long expenseId) {

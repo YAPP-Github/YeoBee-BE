@@ -35,6 +35,7 @@ public enum ErrorCode {
     TRIP_NOT_FOUND(4000, "Trip Not found", HttpStatus.NOT_FOUND),
     TRIP_USER_NOT_FOUND(4001, "Trip User Not found", HttpStatus.NOT_FOUND),
     TRIP_CURRENCY_NOT_FOUND(4002, "Trip Currency Not found", HttpStatus.NOT_FOUND),
+    TRIP_ACCESS_UNAUTHORIZED(4003, "Trip Access Unauthorized", HttpStatus.UNAUTHORIZED),
     /**
      * 5XXX -> Expense 관련 에러
      */
