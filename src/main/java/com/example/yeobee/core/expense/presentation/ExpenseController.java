@@ -3,13 +3,16 @@ package com.example.yeobee.core.expense.presentation;
 import com.example.yeobee.core.auth.annotation.AuthUser;
 import com.example.yeobee.core.expense.application.ExpenseService;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
+import com.example.yeobee.core.expense.dto.request.ExpenseListRetrieveRequestDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseCreateResponseDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseDetailRetrieveResponseDto;
+import com.example.yeobee.core.expense.dto.response.ExpenseListRetrieveResponseDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseUpdateResponseDto;
 import com.example.yeobee.core.user.domain.User;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +48,11 @@ public class ExpenseController {
         @PathVariable Long expenseId,
         @AuthUser User user) {
         return ResponseEntity.ok(expenseService.retrieveExpenseDetail(expenseId, user));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ExpenseListRetrieveResponseDto>> retrieveExpenseList(
+        ExpenseListRetrieveRequestDto request) {
+        return ResponseEntity.ok(expenseService.retrieveExpenseList(request));
     }
 }

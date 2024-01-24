@@ -7,13 +7,16 @@ import com.example.yeobee.core.currency.domain.TripCurrencyRepository;
 import com.example.yeobee.core.expense.domain.Expense;
 import com.example.yeobee.core.expense.domain.ExpenseRepository;
 import com.example.yeobee.core.expense.domain.UserExpense;
+import com.example.yeobee.core.expense.dto.common.ExpenseListFilter;
 import com.example.yeobee.core.expense.dto.common.ExpensePhotoDto;
 import com.example.yeobee.core.expense.dto.common.UserExpenseDetailDto;
 import com.example.yeobee.core.expense.dto.common.UserExpenseDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
+import com.example.yeobee.core.expense.dto.request.ExpenseListRetrieveRequestDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseCreateResponseDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseDetailRetrieveResponseDto;
+import com.example.yeobee.core.expense.dto.response.ExpenseListRetrieveResponseDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseUpdateResponseDto;
 import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.trip.domain.TripRepository;
@@ -24,6 +27,8 @@ import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -110,6 +115,12 @@ public class ExpenseService {
                                                         .stream()
                                                         .map(ExpensePhotoDto::new)
                                                         .toList());
+    }
+
+    public Page<ExpenseListRetrieveResponseDto> retrieveExpenseList(ExpenseListRetrieveRequestDto request) {
+        return expenseRepository.findByFilter(new ExpenseListFilter(request),
+                                              PageRequest.of(request.pageIndex().intValue(),
+                                                             request.pageSize().intValue()));
     }
 
     private Trip setTrip(Long tripId, Expense expense) {
