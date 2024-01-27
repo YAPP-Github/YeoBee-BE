@@ -18,7 +18,10 @@ public class TripUser {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private TripUserState tripUserState;
+    private TripUserState state;
+
+    @Enumerated(EnumType.STRING)
+    private TripUserDefaultProfileImageType profileImageType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
