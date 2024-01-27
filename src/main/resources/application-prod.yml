@@ -4,11 +4,11 @@ spring:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-  jpa:
-    generate-ddl: false
+  jpa: # TODO: 비활성화
+    generate-ddl: true
     hibernate:
-      ddl-auto: validate
-    show-sql: false
+      ddl-auto: update
+    show-sql: true
   cloud:
     aws:
       region:
@@ -20,6 +20,8 @@ spring:
         bucket: ${AWS_BUCKET_NAME}
       cdn:
         url: ${AWS_CDN_URL}
+  flyway: # TODO: 활성화
+    enabled: false
 
 auth:
   jwt:
