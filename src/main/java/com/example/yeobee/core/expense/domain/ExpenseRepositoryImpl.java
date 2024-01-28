@@ -11,7 +11,9 @@ import com.example.yeobee.core.expense.dto.response.ExpenseListRetrieveResponseD
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -62,8 +64,13 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
         return expenseType != null ? expense.expenseType.eq(expenseType) : null;
     }
 
-    private BooleanExpression payedAtEq(ZonedDateTime payedAt) {
-        return payedAt != null ? expense.payedAt.eq(payedAt) : null;
+    private BooleanExpression payedAtEq(LocalDate payedAt) {
+        if (payedAt != null) {
+            LocalDateTime startOfDay = payedAt.atStartOfDay();
+            LocalDateTime endOfDay = payedAt.atTime(LocalTime.MAX);
+            return expense.payedAt.between(startOfDay, endOfDay);
+        }
+        return null;
     }
 
     private BooleanExpression expenseMethodEq(ExpenseMethod expenseMethod) {

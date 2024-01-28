@@ -9,10 +9,8 @@ public record UserExpenseDetailDto(Long id, Long tripUserId, String tripUserName
     public UserExpenseDetailDto(UserExpense userExpense, Long userId) {
         this(userExpense.getId(),
              userExpense.getTripUser().getId(),
-             !userId.equals(userExpense.getTripUser().getId()) ? userExpense.getTripUser().getName()
-                 : userExpense.getTripUser().getName() + " (나)",
-             userExpense.getTripUser().getUser() == null ? null
-                 : userExpense.getTripUser().getUser().getProfileImageUrl(),
+             userExpense.getTripUser().getTripUserName(userId),
+             userExpense.getTripUser().getProfileImageUrl(),
              userExpense.getAmount());
     }
 }

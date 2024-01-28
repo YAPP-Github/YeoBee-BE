@@ -7,9 +7,9 @@ import com.example.yeobee.core.currency.domain.TripCurrencyRepository;
 import com.example.yeobee.core.expense.domain.Expense;
 import com.example.yeobee.core.expense.domain.ExpenseRepository;
 import com.example.yeobee.core.expense.domain.UserExpense;
+import com.example.yeobee.core.expense.domain.UserExpenseRepository;
+import com.example.yeobee.core.expense.dto.common.CreateOrUpdateExpenseDto;
 import com.example.yeobee.core.expense.dto.common.ExpenseListFilter;
-import com.example.yeobee.core.expense.dto.common.ExpensePhotoDto;
-import com.example.yeobee.core.expense.dto.common.UserExpenseDetailDto;
 import com.example.yeobee.core.expense.dto.common.UserExpenseDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseListRetrieveRequestDto;
@@ -24,7 +24,6 @@ import com.example.yeobee.core.trip.domain.TripUser;
 import com.example.yeobee.core.trip.domain.TripUserRepository;
 import com.example.yeobee.core.user.domain.User;
 import jakarta.transaction.Transactional;
-import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,54 +38,26 @@ public class ExpenseService {
     private final TripRepository tripRepository;
     private final TripUserRepository tripUserRepository;
     private final TripCurrencyRepository tripCurrencyRepository;
+    private final UserExpenseRepository userExpenseRepository;
 
     @Transactional
     public ExpenseCreateResponseDto createExpense(ExpenseCreateRequestDto request) {
         Expense expense = new Expense(request);
+        createOrUpdateExpense(expense, new CreateOrUpdateExpenseDto(request));
         expenseRepository.save(expense);
-
-        Trip trip = setTrip(request.tripId(), expense);
-        TripCurrency tripCurrency = setTripCurrency(request.tripId(), request.currencyCode(), expense);
-        setUserExpense(request.payerList(), expense);
-        setPayer(request.payerId(), expense);
-
-        return new ExpenseCreateResponseDto(expense.getId(),
-                                            trip.getId(),
-                                            expense.getPayedAt(),
-                                            expense.getExpenseType(),
-                                            expense.getAmount(),
-                                            tripCurrency.getCurrency().getCode(),
-                                            expense.getExpenseMethod(),
-                                            expense.getName(),
-                                            expense.getPayer().getId(),
-                                            expense.getUserExpenseList().stream().map(
-                                                UserExpenseDto::new).toList(),
-                                            expense.getExpensePhotoList().stream().map(ExpensePhotoDto::new).toList());
+        return new ExpenseCreateResponseDto(expense);
     }
 
     @Transactional
     public ExpenseUpdateResponseDto updateExpense(Long expenseId, ExpenseUpdateRequestDto request) {
         Expense expense = findExpenseById(expenseId);
-
         expense.update(request);
-        Trip trip = setTrip(request.tripId(), expense);
-        TripCurrency tripCurrency = setTripCurrency(request.tripId(), request.currencyCode(), expense);
-        setUserExpense(request.payerList(), expense);
-        setPayer(request.payerId(), expense);
-
-        return new ExpenseUpdateResponseDto(expense.getId(),
-                                            trip.getId(),
-                                            expense.getExpenseType(),
-                                            expense.getAmount(),
-                                            tripCurrency.getCurrency().getCode(),
-                                            expense.getExpenseMethod(),
-                                            expense.getName(),
-                                            expense.getPayer().getId(),
-                                            expense.getUserExpenseList().stream().map(
-                                                UserExpenseDto::new).toList(),
-                                            expense.getExpensePhotoList().stream().map(ExpensePhotoDto::new).toList());
+        createOrUpdateExpense(expense, new CreateOrUpdateExpenseDto(request));
+        expenseRepository.save(expense);
+        return new ExpenseUpdateResponseDto(expense);
     }
 
+    @Transactional
     public void deleteExpense(Long expenseId) {
         Expense expense = findExpenseById(expenseId);
         expenseRepository.delete(expense);
@@ -96,53 +67,40 @@ public class ExpenseService {
         Expense expense = findExpenseById(expenseId);
         TripUser userTripUser = tripUserRepository.findByTripIdAndUserId(expense.getTrip().getId(), user.getId())
             .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED));
-        BigDecimal amount = expense.getAmount();
-        String payerName = (!userTripUser.getId().equals(expense.getPayer().getId())) ? expense.getPayer().getName()
-            : expense.getPayer().getName() + " (나)";
-        return new ExpenseDetailRetrieveResponseDto(amount,
-                                                    expense.getTripCurrency().getCurrency().getCode(),
-                                                    expense.getTripCurrency().getExchangeRate().getKoreanAmount(amount),
-                                                    expense.getExpenseMethod(),
-                                                    expense.getExpenseCategory().name(),
-                                                    expense.getName(),
-                                                    payerName,
-                                                    expense.getUserExpenseList()
-                                                        .stream()
-                                                        .map((e) -> new UserExpenseDetailDto(e,
-                                                                                             userTripUser.getId()))
-                                                        .toList(),
-                                                    expense.getExpensePhotoList()
-                                                        .stream()
-                                                        .map(ExpensePhotoDto::new)
-                                                        .toList());
+        return new ExpenseDetailRetrieveResponseDto(expense, userTripUser.getId());
     }
 
     public Page<ExpenseListRetrieveResponseDto> retrieveExpenseList(ExpenseListRetrieveRequestDto request) {
+        if (request.pageIndex() == null || request.pageSize() == null || request.tripId() == null) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST);
+        }
         return expenseRepository.findByFilter(new ExpenseListFilter(request),
-                                              PageRequest.of(request.pageIndex().intValue(),
-                                                             request.pageSize().intValue()));
+                                              PageRequest.of(request.pageIndex(), request.pageSize()));
     }
 
-    private Trip setTrip(Long tripId, Expense expense) {
+    private void createOrUpdateExpense(Expense expense, CreateOrUpdateExpenseDto dto) {
+        setTrip(dto.tripId(), expense);
+        setTripCurrency(dto.tripId(), dto.currencyCode(), expense);
+        setUserExpense(dto.payerList(), expense);
+        setPayer(dto.payerId(), expense);
+    }
+
+    private void setTrip(Long tripId, Expense expense) {
         if (expense.getTrip() == null || !tripId.equals(expense.getTrip().getId())) {
             Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
-            trip.addExpense(expense);
-            return tripRepository.save(trip);
+            expense.setTrip(trip);
         }
-        return expense.getTrip();
     }
 
-    private TripCurrency setTripCurrency(Long tripId, String currencyCode, Expense expense) {
+    private void setTripCurrency(Long tripId, String currencyCode, Expense expense) {
         if (expense.getTripCurrency() == null || !currencyCode.equals(expense.getTripCurrency()
                                                                           .getCurrency()
                                                                           .getCode())) {
             TripCurrency tripCurrency = tripCurrencyRepository.findByTripIdAndCurrencyCode(tripId, currencyCode)
                 .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_CURRENCY_NOT_FOUND));
-            tripCurrency.addExpense(expense);
-            return tripCurrencyRepository.save(tripCurrency);
+            expense.setTripCurrency(tripCurrency);
         }
-        return expense.getTripCurrency();
     }
 
     private void setUserExpense(List<UserExpenseDto> payerList, Expense expense) {
@@ -150,10 +108,9 @@ public class ExpenseService {
             TripUser tripUser = tripUserRepository.findById(payer.tripUserId()).orElseThrow(() -> new BusinessException(
                 ErrorCode.TRIP_USER_NOT_FOUND));
             UserExpense userExpense = new UserExpense(payer);
-            tripUser.addUserExpense(userExpense);
-            tripUserRepository.save(tripUser);
+            userExpense.setTripUser(tripUser);
             expense.addUserExpense(userExpense);
-            expenseRepository.save(expense);
+            userExpenseRepository.save(userExpense);
         });
     }
 
@@ -161,8 +118,7 @@ public class ExpenseService {
         if (payerId != null) {
             TripUser payer = tripUserRepository.findById(payerId).orElseThrow(() -> new BusinessException(
                 ErrorCode.TRIP_USER_NOT_FOUND));
-            payer.addExpense(expense);
-            tripUserRepository.save(payer);
+            expense.setPayer(payer);
         } else {
             expense.setPayer(null);
         }

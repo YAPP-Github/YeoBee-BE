@@ -33,11 +33,4 @@ public class Trip extends BaseEntity {
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<TripCurrency> tripCurrencyList = new ArrayList<>();
-
-    public void addExpense(Expense expense) {
-        expenseList.add(expense);
-        if (expense.getTrip() != this) {
-            expense.setTrip(this);
-        }
-    }
 }

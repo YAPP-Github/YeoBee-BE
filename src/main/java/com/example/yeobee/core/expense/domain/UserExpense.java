@@ -21,7 +21,7 @@ public class UserExpense {
     private BigDecimal amount;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "trip_user_id")
     private TripUser tripUser;
 

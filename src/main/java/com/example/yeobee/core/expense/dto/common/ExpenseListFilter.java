@@ -3,9 +3,9 @@ package com.example.yeobee.core.expense.dto.common;
 import com.example.yeobee.core.expense.domain.ExpenseMethod;
 import com.example.yeobee.core.expense.domain.ExpenseType;
 import com.example.yeobee.core.expense.dto.request.ExpenseListRetrieveRequestDto;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
-public record ExpenseListFilter(Long tripId, ExpenseType expenseType, ZonedDateTime payedAt,
+public record ExpenseListFilter(Long tripId, ExpenseType expenseType, LocalDate payedAt,
                                 ExpenseMethod expenseMethod, String currencyCode) {
 
     public ExpenseListFilter(ExpenseListRetrieveRequestDto request) {

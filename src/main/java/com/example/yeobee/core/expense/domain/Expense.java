@@ -7,7 +7,7 @@ import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.trip.domain.TripUser;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -28,7 +28,7 @@ public class Expense {
 
     private String name;
 
-    private ZonedDateTime payedAt;
+    private LocalDateTime payedAt;
 
     @Enumerated(EnumType.STRING)
     private ExpenseCategory expenseCategory;
@@ -40,17 +40,17 @@ public class Expense {
     private ExpenseType expenseType;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "trip_id")
     private Trip trip;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "trip_currency_id")
     private TripCurrency tripCurrency;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "payer_id")
     private TripUser payer;
 
@@ -99,5 +99,17 @@ public class Expense {
         userExpenseList.forEach((e) -> e.setExpense(null));
         expensePhotoList.clear();
         userExpenseList.clear();
+    }
+
+    public Long getPayerId() {
+        return (payer == null) ? null : payer.getId();
+    }
+
+    public String getPayerName() {
+        return (payer == null) ? "공동경비" : payer.getTripUserName(trip.getId());
+    }
+
+    public Long getKoreanAmount() {
+        return tripCurrency.getExchangeRate().getKoreanAmount(amount);
     }
 }
