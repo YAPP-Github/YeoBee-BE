@@ -1,8 +1,6 @@
 package com.example.yeobee.core.trip.domain;
 
 import com.example.yeobee.common.entity.BaseEntity;
-import com.example.yeobee.core.country.domain.TripCountry;
-import com.example.yeobee.core.currency.domain.TripCurrency;
 import com.example.yeobee.core.expense.domain.Expense;
 import jakarta.persistence.*;
 import java.util.ArrayList;

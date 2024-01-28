@@ -1,6 +1,6 @@
-package com.example.yeobee.core.country.domain;
+package com.example.yeobee.core.trip.domain;
 
-import com.example.yeobee.core.trip.domain.Trip;
+import com.example.yeobee.core.country.domain.Country;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -19,4 +19,9 @@ public class TripCountry {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trip_id")
     private Trip trip;
+
+    public TripCountry(Country country, Trip trip) {
+        this.country = country;
+        this.trip = trip;
+    }
 }

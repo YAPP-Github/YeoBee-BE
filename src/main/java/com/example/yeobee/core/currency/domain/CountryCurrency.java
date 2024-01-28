@@ -2,7 +2,9 @@ package com.example.yeobee.core.currency.domain;
 
 import com.example.yeobee.core.country.domain.Country;
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 public class CountryCurrency {
 

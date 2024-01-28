@@ -1,4 +1,4 @@
-package com.example.yeobee.core.country.domain;
+package com.example.yeobee.core.trip.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

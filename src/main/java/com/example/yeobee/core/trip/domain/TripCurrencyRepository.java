@@ -1,4 +1,4 @@
-package com.example.yeobee.core.currency.domain;
+package com.example.yeobee.core.trip.domain;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
