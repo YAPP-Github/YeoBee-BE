@@ -1,14 +1,13 @@
 package com.example.yeobee.core.country.domain;
 
 import com.example.yeobee.core.currency.domain.CountryCurrency;
-import com.example.yeobee.core.trip.domain.TripCountry;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
-@Entity
 @Getter
+@Entity
 public class Country {
 
     @Id
@@ -20,9 +19,6 @@ public class Country {
 
     @Enumerated(EnumType.STRING)
     private Continent continent;
-
-    @OneToMany(mappedBy = "country")
-    private List<TripCountry> tripCountryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "country")
     private List<CountryCurrency> countryCurrencyList = new ArrayList<>();
