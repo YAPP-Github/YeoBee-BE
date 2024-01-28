@@ -12,7 +12,7 @@ public record ExpenseListRetrieveResponseDto(Long id, ExpenseCategory expenseCat
              expense.getExpenseCategory(),
              expense.getName(),
              expense.getAmount(),
-             expense.getTripCurrency().getCurrency().getCode(),
-             expense.getTripCurrency().getExchangeRate().getKoreanAmount(expense.getAmount()));
+             expense.getCurrencyCode(),
+             expense.getKoreanAmount());
     }
 }

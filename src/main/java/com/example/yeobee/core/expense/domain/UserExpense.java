@@ -33,4 +33,20 @@ public class UserExpense {
     public UserExpense(UserExpenseDto payer) {
         amount = payer.amount();
     }
+
+    public String getExpenseName() {
+        return expense.getName();
+    }
+
+    public ExpenseCategory getExpenseCategory() {
+        return expense.getExpenseCategory();
+    }
+
+    public String getCurrencyCode() {
+        return expense.getCurrencyCode();
+    }
+
+    public Long getKoreanAmount() {
+        return expense.getTripCurrency().getExchangeRate().getKoreanAmount(amount);
+    }
 }

@@ -31,12 +31,14 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
         List<Expense> expenseList = queryFactory
             .selectFrom(expense)
             .leftJoin(expense.tripCurrency, tripCurrency)
+            .fetchJoin()
             .leftJoin(expense.trip, trip)
             .where(getPredicates(filter))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
-        Long count = queryFactory.select(expense.count())
+        Long count = queryFactory
+            .select(expense.count())
             .from(expense)
             .leftJoin(expense.tripCurrency, tripCurrency)
             .leftJoin(expense.trip, trip)

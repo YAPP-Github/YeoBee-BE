@@ -112,4 +112,8 @@ public class Expense {
     public Long getKoreanAmount() {
         return tripCurrency.getExchangeRate().getKoreanAmount(amount);
     }
+
+    public String getCurrencyCode() {
+        return tripCurrency.getCurrency().getCode();
+    }
 }

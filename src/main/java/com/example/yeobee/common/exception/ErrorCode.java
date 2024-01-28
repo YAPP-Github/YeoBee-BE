@@ -39,7 +39,8 @@ public enum ErrorCode {
     /**
      * 5XXX -> Expense 관련 에러
      */
-    EXPENSE_NOT_FOUND(5000, "Expense Not found", HttpStatus.NOT_FOUND);
+    EXPENSE_NOT_FOUND(5000, "Expense Not found", HttpStatus.NOT_FOUND),
+    USER_EXPENSE_NOT_FOUND(5001, "User Expense Not found", HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;
