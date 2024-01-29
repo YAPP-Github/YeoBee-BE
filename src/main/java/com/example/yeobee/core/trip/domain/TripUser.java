@@ -35,8 +35,11 @@ public class TripUser {
         return user.getProfileImageUrl();
     }
 
-    public String getTripUserName(Long tripUserId) {
-        String userName = (user == null) ? name : user.getNickname();
-        return (id.equals(tripUserId)) ? userName + " (나)" : userName;
+    public String getTripUserName() {
+        return (user == null) ? name : user.getNickname();
+    }
+
+    public Long getUserId() {
+        return (user == null) ? null : user.getId();
     }
 }

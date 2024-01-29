@@ -95,8 +95,8 @@ public class Expense {
         return (payer == null) ? null : payer.getId();
     }
 
-    public String getPayerName(Long tripUserId) {
-        return (payer == null) ? "공동경비" : payer.getTripUserName(tripUserId);
+    public String getPayerName() {
+        return (payer == null) ? "공동경비" : payer.getTripUserName();
     }
 
     public Long getKoreanAmount() {

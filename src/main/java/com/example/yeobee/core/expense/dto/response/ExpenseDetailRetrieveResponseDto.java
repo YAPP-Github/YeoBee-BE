@@ -8,7 +8,7 @@ import java.util.List;
 
 public record ExpenseDetailRetrieveResponseDto(BigDecimal amount, String currencyCode, Long koreanAmount,
                                                ExpenseMethod expenseMethod, String expenseCategoryName,
-                                               String name, String payerName,
+                                               String name, Long payerUserId, String payerName,
                                                List<UserExpenseDetailDto> payerList, List<ExpensePhotoDto> imageList) {
 
     public ExpenseDetailRetrieveResponseDto(Expense expense, Long tripUserId) {
@@ -18,10 +18,11 @@ public record ExpenseDetailRetrieveResponseDto(BigDecimal amount, String currenc
              expense.getExpenseMethod(),
              expense.getExpenseCategory().getName(),
              expense.getName(),
-             expense.getPayerName(tripUserId),
+             expense.getPayer().getUserId(),
+             expense.getPayerName(),
              expense.getUserExpenseList()
                  .stream()
-                 .map((e) -> new UserExpenseDetailDto(e, tripUserId))
+                 .map(UserExpenseDetailDto::new)
                  .toList(),
              expense.getExpensePhotoList()
                  .stream()

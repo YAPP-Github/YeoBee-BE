@@ -61,7 +61,7 @@ public class ExpenseService {
 
     public ExpenseDetailRetrieveResponseDto retrieveExpenseDetail(Long expenseId, User user) {
         Expense expense = findExpenseById(expenseId);
-        TripUser userTripUser = tripUserRepository.findByTripIdAndUserId(expense.getTrip().getId(), user.getId())
+        TripUser userTripUser = tripUserRepository.findByTripAndUser(expense.getTrip(), user)
             .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED));
         return new ExpenseDetailRetrieveResponseDto(expense, userTripUser.getId());
     }
