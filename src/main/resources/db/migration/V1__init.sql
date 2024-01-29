@@ -42,7 +42,6 @@ create table expense
     name             varchar(255),
     payed_at         datetime(6),
     trip_id          bigint,
-    currency_code    bigint,
     trip_currency_id bigint,
     primary key (id)
 ) engine = InnoDB;

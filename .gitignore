@@ -41,3 +41,6 @@ out/
 
 ### DB ###
 /db/
+
+### QueryDsl
+**/generated/**/Q*

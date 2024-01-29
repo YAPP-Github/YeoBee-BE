@@ -4,6 +4,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import lombok.Getter;
 
 @Embeddable
@@ -16,4 +17,10 @@ public class ExchangeRate {
     private BigDecimal exchangeRateValue;
 
     private Long exchangeRateStandard;
+
+    public Long getKoreanAmount(BigDecimal amount) {
+        return exchangeRateValue.divide(BigDecimal.valueOf(exchangeRateStandard), 2, RoundingMode.HALF_UP)
+            .multiply(amount)
+            .longValue();
+    }
 }

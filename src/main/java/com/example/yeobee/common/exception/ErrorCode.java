@@ -24,11 +24,23 @@ public enum ErrorCode {
     INVALID_KAKAO_AUTH_TOKEN(2005, "Kakao Auth Token Is Invalid", HttpStatus.BAD_REQUEST),
     KAKAO_USER_NOT_FOUND(2006, "Kakao User Not Found", HttpStatus.BAD_REQUEST),
     /**
-     * 3XXX -> User 에러
+     * 3XXX -> User 관련 에러
      */
     USER_NOT_FOUND(3000, "User Not found", HttpStatus.NOT_FOUND),
     AUTH_PROVIDER_NOT_FOUND(3001, "Auth Provider Not Found", HttpStatus.INTERNAL_SERVER_ERROR),
-    AUTH_PROVIDER_TYPE_INVALID(3002, "Auth Provider Type Is Invalid", HttpStatus.INTERNAL_SERVER_ERROR);
+    AUTH_PROVIDER_TYPE_INVALID(3002, "Auth Provider Type Is Invalid", HttpStatus.INTERNAL_SERVER_ERROR),
+    /**
+     * 4XXX -> Trip 관련 에러
+     */
+    TRIP_NOT_FOUND(4000, "Trip Not found", HttpStatus.NOT_FOUND),
+    TRIP_USER_NOT_FOUND(4001, "Trip User Not found", HttpStatus.NOT_FOUND),
+    TRIP_CURRENCY_NOT_FOUND(4002, "Trip Currency Not found", HttpStatus.NOT_FOUND),
+    TRIP_ACCESS_UNAUTHORIZED(4003, "Trip Access Unauthorized", HttpStatus.UNAUTHORIZED),
+    /**
+     * 5XXX -> Expense 관련 에러
+     */
+    EXPENSE_NOT_FOUND(5000, "Expense Not found", HttpStatus.NOT_FOUND),
+    USER_EXPENSE_NOT_FOUND(5001, "User Expense Not found", HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;
