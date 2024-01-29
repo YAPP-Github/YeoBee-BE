@@ -22,7 +22,7 @@ import org.springframework.data.domain.Pageable;
 
 
 @RequiredArgsConstructor
-public class ExpenseRepositoryImpl implements CustomExpenseRepository {
+public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
 
     private final JPAQueryFactory queryFactory;
 
