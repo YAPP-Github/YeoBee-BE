@@ -1,8 +1,7 @@
-package com.example.yeobee.core.expense.dto.common;
+package com.example.yeobee.core.expense.dto.request;
 
 import com.example.yeobee.core.expense.domain.ExpenseMethod;
 import com.example.yeobee.core.expense.domain.ExpenseType;
-import com.example.yeobee.core.expense.dto.request.ExpenseListRetrieveRequestDto;
 import java.time.LocalDate;
 
 public record ExpenseListFilter(Long tripId, ExpenseType expenseType, LocalDate payedAt,

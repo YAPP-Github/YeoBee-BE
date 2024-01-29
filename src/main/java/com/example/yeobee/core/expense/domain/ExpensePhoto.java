@@ -1,7 +1,7 @@
 package com.example.yeobee.core.expense.domain;
 
 import com.example.yeobee.common.entity.BaseEntity;
-import com.example.yeobee.core.expense.dto.common.ExpensePhotoDto;
+import com.example.yeobee.core.expense.dto.ExpensePhotoDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,7 +24,8 @@ public class ExpensePhoto extends BaseEntity {
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
-    public ExpensePhoto(ExpensePhotoDto expenseImage) {
+    public ExpensePhoto(ExpensePhotoDto expenseImage, Expense expense) {
         imageUrl = expenseImage.imageUrl();
+        this.expense = expense;
     }
 }

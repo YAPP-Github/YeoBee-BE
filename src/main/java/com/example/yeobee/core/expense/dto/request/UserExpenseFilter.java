@@ -1,7 +1,6 @@
-package com.example.yeobee.core.expense.dto.common;
+package com.example.yeobee.core.expense.dto.request;
 
 import com.example.yeobee.core.expense.domain.ExpenseMethod;
-import com.example.yeobee.core.expense.dto.request.UserExpenseListRetrieveRequestDto;
 
 public record UserExpenseFilter(Long tripUserId, ExpenseMethod expenseMethod) {
 

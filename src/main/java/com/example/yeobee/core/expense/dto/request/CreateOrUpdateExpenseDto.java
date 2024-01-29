@@ -1,7 +1,6 @@
-package com.example.yeobee.core.expense.dto.common;
+package com.example.yeobee.core.expense.dto.request;
 
-import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
-import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
+import com.example.yeobee.core.expense.dto.UserExpenseDto;
 import java.util.List;
 
 public record CreateOrUpdateExpenseDto(Long tripId, String currencyCode,

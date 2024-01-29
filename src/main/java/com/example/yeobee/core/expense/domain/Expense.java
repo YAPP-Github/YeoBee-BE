@@ -67,7 +67,7 @@ public class Expense {
         expenseCategory = request.expenseCategory();
         expenseMethod = request.expenseMethod();
         expenseType = request.expenseType();
-        request.imageList().forEach((e) -> addExpensePhoto(new ExpensePhoto(e)));
+        request.imageList().forEach((e) -> expensePhotoList.add(new ExpensePhoto(e, this)));
     }
 
     public void update(ExpenseUpdateRequestDto request) {
@@ -77,21 +77,11 @@ public class Expense {
         expenseCategory = request.expenseCategory();
         expenseMethod = request.expenseMethod();
         expenseType = request.expenseType();
-        request.imageList().forEach((e) -> addExpensePhoto(new ExpensePhoto(e)));
-    }
-
-    private void addExpensePhoto(ExpensePhoto expensePhoto) {
-        expensePhotoList.add(expensePhoto);
-        if (expensePhoto.getExpense() == null) {
-            expensePhoto.setExpense(this);
-        }
+        request.imageList().forEach((e) -> expensePhotoList.add(new ExpensePhoto(e, this)));
     }
 
     public void addUserExpense(UserExpense userExpense) {
         userExpenseList.add(userExpense);
-        if (userExpense.getExpense() == null) {
-            userExpense.setExpense(this);
-        }
     }
 
     private void clear() {
@@ -105,8 +95,8 @@ public class Expense {
         return (payer == null) ? null : payer.getId();
     }
 
-    public String getPayerName() {
-        return (payer == null) ? "공동경비" : payer.getTripUserName(trip.getId());
+    public String getPayerName(Long tripUserId) {
+        return (payer == null) ? "공동경비" : payer.getTripUserName(tripUserId);
     }
 
     public Long getKoreanAmount() {

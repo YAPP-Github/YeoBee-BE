@@ -1,4 +1,4 @@
-package com.example.yeobee.core.expense.dto.common;
+package com.example.yeobee.core.expense.dto.response;
 
 import com.example.yeobee.core.expense.domain.UserExpense;
 import java.math.BigDecimal;

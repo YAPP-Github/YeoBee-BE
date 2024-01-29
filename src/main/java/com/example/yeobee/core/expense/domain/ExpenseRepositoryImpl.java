@@ -6,7 +6,7 @@ import static com.example.yeobee.core.trip.domain.QTrip.trip;
 
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
-import com.example.yeobee.core.expense.dto.common.ExpenseListFilter;
+import com.example.yeobee.core.expense.dto.request.ExpenseListFilter;
 import com.example.yeobee.core.expense.dto.response.ExpenseListRetrieveResponseDto;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -22,7 +22,7 @@ import org.springframework.data.domain.Pageable;
 
 
 @RequiredArgsConstructor
-public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom {
+public class ExpenseRepositoryImpl implements CustomExpenseRepository {
 
     private final JPAQueryFactory queryFactory;
 

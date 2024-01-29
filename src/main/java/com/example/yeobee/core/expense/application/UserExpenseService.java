@@ -3,7 +3,7 @@ package com.example.yeobee.core.expense.application;
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.expense.domain.UserExpenseRepository;
-import com.example.yeobee.core.expense.dto.common.UserExpenseFilter;
+import com.example.yeobee.core.expense.dto.request.UserExpenseFilter;
 import com.example.yeobee.core.expense.dto.request.UserExpenseListRetrieveRequestDto;
 import com.example.yeobee.core.expense.dto.response.UserExpenseListRetrieveResponseDto;
 import lombok.RequiredArgsConstructor;

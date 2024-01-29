@@ -8,12 +8,8 @@ import com.example.yeobee.core.expense.domain.Expense;
 import com.example.yeobee.core.expense.domain.ExpenseRepository;
 import com.example.yeobee.core.expense.domain.UserExpense;
 import com.example.yeobee.core.expense.domain.UserExpenseRepository;
-import com.example.yeobee.core.expense.dto.common.CreateOrUpdateExpenseDto;
-import com.example.yeobee.core.expense.dto.common.ExpenseListFilter;
-import com.example.yeobee.core.expense.dto.common.UserExpenseDto;
-import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
-import com.example.yeobee.core.expense.dto.request.ExpenseListRetrieveRequestDto;
-import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
+import com.example.yeobee.core.expense.dto.UserExpenseDto;
+import com.example.yeobee.core.expense.dto.request.*;
 import com.example.yeobee.core.expense.dto.response.ExpenseCreateResponseDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseDetailRetrieveResponseDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseListRetrieveResponseDto;
@@ -107,9 +103,7 @@ public class ExpenseService {
         payerList.forEach((payer) -> {
             TripUser tripUser = tripUserRepository.findById(payer.tripUserId()).orElseThrow(() -> new BusinessException(
                 ErrorCode.TRIP_USER_NOT_FOUND));
-            UserExpense userExpense = new UserExpense(payer);
-            userExpense.setTripUser(tripUser);
-            expense.addUserExpense(userExpense);
+            UserExpense userExpense = new UserExpense(payer, tripUser, expense);
             userExpenseRepository.save(userExpense);
         });
     }

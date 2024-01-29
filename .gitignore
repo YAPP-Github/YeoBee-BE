@@ -8,7 +8,6 @@ build/
 application-local.yml
 AuthKey_*.p8
 .DS_Store
-Q*
 ### STS ###
 .apt_generated
 .classpath
@@ -42,3 +41,6 @@ out/
 
 ### DB ###
 /db/
+
+### QueryDsl
+**/generated/**/Q*
