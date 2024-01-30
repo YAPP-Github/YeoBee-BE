@@ -62,7 +62,7 @@ public class User extends BaseEntity {
         return authProviderList.get(0);
     }
 
-    public void updateState(UserState userState) {
+    public void updateUserState(UserState userState) {
         this.userState = userState;
     }
 }

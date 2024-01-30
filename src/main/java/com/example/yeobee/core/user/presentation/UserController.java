@@ -34,7 +34,7 @@ public class UserController {
     @PatchMapping(value = "/me/state")
     public ResponseEntity<UserStateUpdateResponseDto> updateUserState(
         @AuthUser User user,
-        UserStateUpdateRequestDto request) {
+        @RequestBody UserStateUpdateRequestDto request) {
         return ResponseEntity.ok(userService.updateUserState(user, request));
     }
 }

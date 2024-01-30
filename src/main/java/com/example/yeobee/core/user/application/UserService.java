@@ -26,7 +26,7 @@ public class UserService {
 
     @Transactional
     public UserStateUpdateResponseDto updateUserState(User user, UserStateUpdateRequestDto request) {
-        user.updateState(request.userState());
+        user.updateUserState(request.userState());
         return new UserStateUpdateResponseDto(user.getUserState());
     }
 }
