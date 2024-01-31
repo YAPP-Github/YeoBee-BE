@@ -12,6 +12,6 @@ public record UserInfoResponseDto(Long id, String nickname, String profileImage,
              user.getNickname(),
              user.getProfileImageUrl(),
              user.getAuthProvider().getType(),
-             user.getUserState());
+             user.getState());
     }
 }

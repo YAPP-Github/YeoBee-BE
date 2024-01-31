@@ -29,7 +29,7 @@ public class User extends BaseEntity {
     private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
-    private UserState userState = UserState.ONBOARDING_NEEDED;
+    private UserState state = UserState.ONBOARDING_NEEDED;
 
     private boolean isDeleted = false;
 
@@ -63,6 +63,6 @@ public class User extends BaseEntity {
     }
 
     public void updateUserState(UserState userState) {
-        this.userState = userState;
+        this.state = userState;
     }
 }
