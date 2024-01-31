@@ -62,6 +62,7 @@ public class User extends BaseEntity {
         return authProviderList.get(0);
     }
 
+    // Todo: state 관련 정책 정해지면 validation 추가
     public void updateUserState(UserState userState) {
         this.state = userState;
     }
