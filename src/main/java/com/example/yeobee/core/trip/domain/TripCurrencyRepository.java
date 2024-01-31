@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TripCurrencyRepository extends JpaRepository<TripCurrency, Long> {
 
-    public Optional<TripCurrency> findByTripIdAndCurrencyCode(Long tripId, String currencyCode);
+    Optional<TripCurrency> findByTripIdAndCurrencyCode(Long tripId, String currencyCode);
 }

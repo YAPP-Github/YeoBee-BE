@@ -1,9 +1,9 @@
 package com.example.yeobee.core.expense.domain;
 
-import com.example.yeobee.core.currency.domain.TripCurrency;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
 import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
 import com.example.yeobee.core.trip.domain.Trip;
+import com.example.yeobee.core.trip.domain.TripCurrency;
 import com.example.yeobee.core.trip.domain.TripUser;
 import jakarta.persistence.*;
 import java.math.BigDecimal;

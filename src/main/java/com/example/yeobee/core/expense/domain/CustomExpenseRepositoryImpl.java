@@ -1,8 +1,8 @@
 package com.example.yeobee.core.expense.domain;
 
-import static com.example.yeobee.core.currency.domain.QTripCurrency.tripCurrency;
 import static com.example.yeobee.core.expense.domain.QExpense.expense;
 import static com.example.yeobee.core.trip.domain.QTrip.trip;
+import static com.example.yeobee.core.trip.domain.QTripCurrency.tripCurrency;
 
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
