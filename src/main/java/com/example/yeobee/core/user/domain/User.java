@@ -28,6 +28,9 @@ public class User extends BaseEntity {
 
     private String profileImageUrl;
 
+    @Enumerated(EnumType.STRING)
+    private UserState state = UserState.ONBOARDING_NEEDED;
+
     private boolean isDeleted = false;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -57,5 +60,10 @@ public class User extends BaseEntity {
             throw new BusinessException(ErrorCode.AUTH_PROVIDER_NOT_FOUND);
         }
         return authProviderList.get(0);
+    }
+
+    // Todo: state 관련 정책 정해지면 validation 추가
+    public void updateUserState(UserState userState) {
+        this.state = userState;
     }
 }
