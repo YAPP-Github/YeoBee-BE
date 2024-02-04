@@ -4,8 +4,10 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class Currency {
 
@@ -16,4 +18,13 @@ public class Currency {
 
     @Embedded
     private ExchangeRate exchangeRate;
+
+    public Currency(String code) {
+        this.code = code;
+    }
+
+    public Currency(String name, ExchangeRate exchangeRate) {
+        this.name = name;
+        this.exchangeRate = exchangeRate;
+    }
 }
