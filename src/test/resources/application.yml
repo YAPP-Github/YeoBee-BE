@@ -11,7 +11,7 @@ spring:
       s3:
         bucket: yeobee-bucket
       cdn:
-        url: https://cdn.test.ddip.me/
+        url: https://cdn.test.yeobee.me/
 
 auth:
   jwt:
