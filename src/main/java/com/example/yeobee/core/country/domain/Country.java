@@ -5,9 +5,11 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Getter
+@NoArgsConstructor
+@Entity
 public class Country {
 
     @Id
@@ -21,8 +23,16 @@ public class Country {
     private Continent continent;
 
     @OneToMany(mappedBy = "country")
-    private List<TripCountry> tripCountryList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "country")
     private List<CountryCurrency> countryCurrencyList = new ArrayList<>();
+
+    public Country(String name) {
+        this.name = name;
+    }
+
+    public Country(String name, String flagImageUrl, String coverImageUrl, Continent continent) {
+        this.name = name;
+        this.flagImageUrl = flagImageUrl;
+        this.coverImageUrl = coverImageUrl;
+        this.continent = continent;
+    }
 }

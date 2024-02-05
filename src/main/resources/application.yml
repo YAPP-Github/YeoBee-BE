@@ -27,3 +27,6 @@ spring:
         url: https://cdn.dev.yeobee.me/
   flyway:
     enabled: false
+
+yeobee:
+  init: false

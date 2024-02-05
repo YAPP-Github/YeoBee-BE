@@ -1,15 +1,22 @@
 package com.example.yeobee.core.trip.domain;
 
 import jakarta.persistence.Embeddable;
+import java.time.LocalDate;
+import lombok.AccessLevel;
 import lombok.Getter;
-
-import java.time.ZonedDateTime;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Period {
 
-    private ZonedDateTime startDate;
+    private LocalDate startDate;
 
-    private ZonedDateTime endDate;
+    private LocalDate endDate;
+
+    public Period(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }
