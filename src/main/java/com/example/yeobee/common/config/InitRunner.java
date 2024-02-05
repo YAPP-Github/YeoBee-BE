@@ -36,6 +36,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 public class InitRunner implements ApplicationRunner {
 
     private static final String S3_FLAG_KEY_PATH = "static/country/flag/";
+    private static final String S3_COVER_KEY_PATH = "static/country/cover/";
 
     private final EntityManager em;
     private final S3Client s3Client;
@@ -66,11 +67,13 @@ public class InitRunner implements ApplicationRunner {
 
     @SneakyThrows
     private void initS3() {
-        String resourcePattern = "classpath*:init/s3/country/flag/**/*.*"; // Adjust path and pattern as needed
-        List<Resource> resources = listResources(resourcePattern);
-        for (Resource resource : resources) {
+        for (Resource resource : listResources("classpath*:init/s3/country/flag/**/*.*")) {
             Path file = Path.of(resource.getURI());
-            uploadFileToS3(file);
+            uploadFileToS3(S3_FLAG_KEY_PATH, file);
+        }
+        for (Resource resource : listResources("classpath*:init/s3/country/cover/**/*.*")) {
+            Path file = Path.of(resource.getURI());
+            uploadFileToS3(S3_COVER_KEY_PATH, file);
         }
     }
 
@@ -88,8 +91,8 @@ public class InitRunner implements ApplicationRunner {
     }
 
     @SneakyThrows
-    private void uploadFileToS3(Path filePath) {
-        String key = UrlUtil.join(S3_FLAG_KEY_PATH, filePath.getFileName().toString());
+    private void uploadFileToS3(String keyPath, Path filePath) {
+        String key = UrlUtil.join(keyPath, filePath.getFileName().toString());
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
             .bucket(bucket)
@@ -112,10 +115,27 @@ public class InitRunner implements ApplicationRunner {
             .parse();
 
         Field flagImageUrlField = Country.class.getDeclaredField("flagImageUrl");
+        Field coverImageUrlField = Country.class.getDeclaredField("coverImageUrl");
         flagImageUrlField.setAccessible(true);
-        for (Country country : countries) {
-            flagImageUrlField.set(country, UrlUtil.join(cdnUrl, S3_FLAG_KEY_PATH, country.getName() + ".svg"));
+        coverImageUrlField.setAccessible(true);
+
+        for (Resource resource : listResources("classpath*:init/s3/country/flag/**/*.*")) {
+            String flagFileName = resource.getFilename();
+            for (Country country : countries) {
+                if ((country.getName() + ".svg").equals(flagFileName)) {
+                    flagImageUrlField.set(country, UrlUtil.join(cdnUrl, S3_FLAG_KEY_PATH, flagFileName));
+                }
+            }
         }
+        for (Resource resource : listResources("classpath*:init/s3/country/cover/**/*.*")) {
+            String coverFileName = resource.getFilename();
+            for (Country country : countries) {
+                if ((country.getName() + ".png").equals(coverFileName)) {
+                    coverImageUrlField.set(country, UrlUtil.join(cdnUrl, S3_COVER_KEY_PATH, coverFileName));
+                }
+            }
+        }
+
         for (Country country : countries) {
             upsert(country);
         }
