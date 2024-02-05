@@ -29,10 +29,8 @@ public class TripUser {
     private Trip trip;
 
     public String getProfileImageUrl() {
-        if (user == null || user.getProfileImageUrl() == null) {
-            return profileImageType.getImageUrl();
-        }
-        return user.getProfileImageUrl();
+        return (user == null || user.getProfileImageUrl() == null) ?
+            profileImageType.getImageUrl() : user.getProfileImageUrl();
     }
 
     public String getTripUserName() {
