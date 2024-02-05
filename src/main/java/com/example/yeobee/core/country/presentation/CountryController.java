@@ -15,7 +15,7 @@ public class CountryController {
     private final CountryService countryService;
 
     @GetMapping
-    public CountryListResponseDto getAllCountries() {
-        return countryService.getAllCountries();
+    public CountryListResponseDto findAllCountriesWithMostTrips() {
+        return countryService.findAllCountriesWithMostTrips();
     }
 }

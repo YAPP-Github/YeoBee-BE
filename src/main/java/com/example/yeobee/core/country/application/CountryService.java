@@ -13,8 +13,8 @@ public class CountryService {
 
     private final CountryRepository countryRepository;
 
-    public CountryListResponseDto getAllCountries() {
-        List<Country> countries = countryRepository.findAll();
+    public CountryListResponseDto findAllCountriesWithMostTrips() {
+        List<Country> countries = countryRepository.findAllCountriesWithMostTrips();
         return CountryListResponseDto.of(countries);
     }
 }

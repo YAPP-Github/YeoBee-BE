@@ -3,9 +3,11 @@ package com.example.yeobee.core.trip.domain;
 import com.example.yeobee.core.country.domain.Country;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Getter
+@NoArgsConstructor
+@Entity
 public class TripCountry {
 
     @Id
