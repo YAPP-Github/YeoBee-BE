@@ -37,3 +37,6 @@ oauth:
     authKey: ${APPLE_AUTH_KEY}
   kakao:
     admin-key: ${KAKAO_ADMIN_KEY}
+
+yeobee:
+  init: ${APP_INIT}
