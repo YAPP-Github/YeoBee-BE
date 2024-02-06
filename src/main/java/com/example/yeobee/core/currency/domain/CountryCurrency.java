@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(uniqueConstraints = {
+    @UniqueConstraint(name = "country_currency_unique", columnNames = {"country_name", "currency_code"})
+})
 public class CountryCurrency {
 
     @Id

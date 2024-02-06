@@ -2,11 +2,12 @@ package com.example.yeobee.common.config;
 
 import com.example.yeobee.common.util.UrlUtil;
 import com.example.yeobee.core.country.domain.Country;
+import com.example.yeobee.core.country.domain.CountryRepository;
 import com.example.yeobee.core.currency.domain.CountryCurrency;
+import com.example.yeobee.core.currency.domain.CountryCurrencyRepository;
 import com.example.yeobee.core.currency.domain.Currency;
+import com.example.yeobee.core.currency.domain.CurrencyRepository;
 import com.opencsv.bean.CsvToBeanBuilder;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Id;
 import java.io.BufferedReader;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -38,7 +39,9 @@ public class InitRunner implements ApplicationRunner {
     private static final String S3_FLAG_KEY_PATH = "static/country/flag/";
     private static final String S3_COVER_KEY_PATH = "static/country/cover/";
 
-    private final EntityManager em;
+    private final CountryRepository countryRepository;
+    private final CurrencyRepository currencyRepository;
+    private final CountryCurrencyRepository countryCurrencyRepository;
     private final S3Client s3Client;
 
     @Value("${yeobee.init:false}")
@@ -130,14 +133,15 @@ public class InitRunner implements ApplicationRunner {
         for (Resource resource : listResources("classpath*:init/s3/country/cover/**/*.*")) {
             String coverFileName = resource.getFilename();
             for (Country country : countries) {
-                if ((country.getName() + ".png").equals(coverFileName)) {
+                if ((country.getName() + ".jpg").equals(coverFileName)) {
                     coverImageUrlField.set(country, UrlUtil.join(cdnUrl, S3_COVER_KEY_PATH, coverFileName));
                 }
             }
         }
 
         for (Country country : countries) {
-            upsert(country);
+            log.info("upsert country: {}", country.getName());
+            countryRepository.save(country);
         }
 
         // currency
@@ -147,7 +151,8 @@ public class InitRunner implements ApplicationRunner {
             .build()
             .parse();
         for (Currency currency : currencies) {
-            upsert(currency);
+            log.info("upsert currency: {}", currency.getCode());
+            currencyRepository.save(currency);
         }
 
         // country_currency
@@ -158,46 +163,17 @@ public class InitRunner implements ApplicationRunner {
             .build()
             .parse();
         for (CountryCurrencyDto countryCurrencyDto : countryCurrencies) {
-            CountryCurrency countryCurrency = new CountryCurrency(
-                new Country(countryCurrencyDto.getCountryName()),
-                new Currency(countryCurrencyDto.getCurrencyCode())
-            );
-            upsert(countryCurrency);
-        }
-    }
+            CountryCurrency countryCurrency = countryCurrencyRepository.findByCountryNameAndCurrencyCode(
+                    countryCurrencyDto.getCountryName(),
+                    countryCurrencyDto.getCurrencyCode())
+                .orElseGet(() -> new CountryCurrency(
+                    new Country(countryCurrencyDto.getCountryName()),
+                    new Currency(countryCurrencyDto.getCurrencyCode())));
 
-    @SneakyThrows
-    private void upsert(Object entity) {
-        Class<?> clazz = entity.getClass();
-        Field[] declaredFields = clazz.getDeclaredFields();
-
-        Field idField = null;
-        for (Field field : declaredFields) {
-            if (field.isAnnotationPresent(Id.class)) {
-                idField = field;
-            }
-        }
-
-        if (idField == null) {
-            throw new RuntimeException("@Id not found - not a valid entity");
-        }
-
-        idField.setAccessible(true);
-        Object id = idField.get(entity);
-        if (id != null) {
-            Object foundEntity = em.find(clazz, id);
-            if (foundEntity != null) {
-                for (Field field : declaredFields) {
-                    if (!field.equals(idField)) {
-                        field.setAccessible(true);
-                        field.set(foundEntity, field.get(entity));
-                    }
-                }
-            } else {
-                em.persist(entity);
-            }
-        } else {
-            em.persist(entity);
+            log.info("insert country currency: {}, {}",
+                     countryCurrencyDto.getCountryName(),
+                     countryCurrencyDto.getCurrencyCode());
+            countryCurrencyRepository.save(countryCurrency);
         }
     }
 

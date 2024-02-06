@@ -136,7 +136,7 @@ countryName,currencyCode
 적도 기니,XAF
 조지아,GEL
 중국,CNY
-중앙아프리카 공화국 ,XAF
+중앙아프리카 공화국,XAF
 지부티,DJF
 짐바브웨,ZWL
 차드,XAF
@@ -209,11 +209,9 @@ countryName,currencyCode
 북마리아나제도,USD
 아랍에미리트,AED
 캄보디아,KHR
-홍콩,HKD
 미국,USD
 팔레스타인,ILS
 팔레스타인,JOD
-지부티,DJF
 몬테네그로,EUR
 몰도바 공화국,MDL
 사모아,USD
