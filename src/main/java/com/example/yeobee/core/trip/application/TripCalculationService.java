@@ -47,8 +47,10 @@ public class TripCalculationService {
         List<CalculationResult> calculationResultList = tripUserRepository
             .getTotalExpensePerTripUser(tripId, ExpenseType.SHARED);
         // 남은 공동경비 계산
-        Long leftSharedBudget = expenseRepository.getTotalSharedBudgetIncome()
-                                - expenseRepository.getTotalSharedBudgetExpense();
+        Long sharedBudgetIncome = expenseRepository.getTotalSharedBudgetIncome();
+        Long sharedBudgetExpense = expenseRepository.getTotalSharedBudgetExpense();
+        // 충전한 공동경비가 없을 경우 null
+        Long leftSharedBudget = (sharedBudgetIncome == 0L) ? null : sharedBudgetIncome - sharedBudgetExpense;
         return new TotalExpenseResponseDto(calculationResultList, leftSharedBudget);
     }
 }
