@@ -2,16 +2,15 @@ package com.example.yeobee.core.calculation.application;
 
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
+import com.example.yeobee.core.calculation.domain.CalculationRepository;
 import com.example.yeobee.core.calculation.domain.CalculationResult;
 import com.example.yeobee.core.calculation.dto.response.Calculation;
 import com.example.yeobee.core.calculation.dto.response.TotalExpenseResponseDto;
 import com.example.yeobee.core.calculation.dto.response.TripCalculationResponseDto;
-import com.example.yeobee.core.expense.domain.ExpenseRepository;
 import com.example.yeobee.core.expense.domain.ExpenseType;
 import com.example.yeobee.core.expense.domain.UserExpenseRepository;
 import com.example.yeobee.core.trip.domain.TripRepository;
 import com.example.yeobee.core.trip.domain.TripUser;
-import com.example.yeobee.core.trip.domain.TripUserRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,9 +24,8 @@ import org.springframework.stereotype.Service;
 public class TripCalculationService {
 
     private final UserExpenseRepository userExpenseRepository;
-    private final ExpenseRepository expenseRepository;
-    private final TripUserRepository tripUserRepository;
     private final TripRepository tripRepository;
+    private final CalculationRepository calculationRepository;
 
     public TripCalculationResponseDto calculateTrip(Long tripId) {
         tripRepository.findById(tripId).orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
@@ -38,7 +36,7 @@ public class TripCalculationService {
         sharedCalculationResultList.addAll(setCalculationSumToMinus(userExpenseRepository.getCalculationResult(
             tripId, ExpenseType.SHARED_BUDGET_INCOME)));
         // 결제자로 등록된 지출 총합 차감
-        sharedCalculationResultList.addAll(setCalculationSumToMinus(expenseRepository.getCalculationResult(
+        sharedCalculationResultList.addAll(setCalculationSumToMinus(calculationRepository.getCalculationResult(
             tripId)));
         // 계산 결과 종합
         List<CalculationResult> calculationResultList = mergeCalculationResults(
@@ -50,11 +48,11 @@ public class TripCalculationService {
     public TotalExpenseResponseDto getTotalExpense(Long tripId) {
         tripRepository.findById(tripId).orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
         // 동행자별 총 지출 계산
-        List<CalculationResult> calculationResultList = tripUserRepository
+        List<CalculationResult> calculationResultList = calculationRepository
             .getTotalExpensePerTripUser(tripId, ExpenseType.SHARED);
         // 남은 공동경비 계산
-        Long sharedBudgetIncome = expenseRepository.getTotalSharedBudgetIncome();
-        Long sharedBudgetExpense = expenseRepository.getTotalSharedBudgetExpense();
+        Long sharedBudgetIncome = calculationRepository.getTotalSharedBudgetIncome();
+        Long sharedBudgetExpense = calculationRepository.getTotalSharedBudgetExpense();
         // 충전한 공동경비가 없을 경우 null
         Long leftSharedBudget = (sharedBudgetIncome == 0L) ? null : sharedBudgetIncome - sharedBudgetExpense;
         return new TotalExpenseResponseDto(calculationResultList, leftSharedBudget);
