@@ -29,7 +29,7 @@ public class CustomUserExpenseRepositoryImpl implements CustomUserExpenseReposit
             .leftJoin(userExpense.expense, expense)
             .fetchJoin()
             .leftJoin(userExpense.tripUser, tripUser)
-            .where(getPredicates(filter))
+            .where(getFilterPredicates(filter))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
@@ -38,7 +38,7 @@ public class CustomUserExpenseRepositoryImpl implements CustomUserExpenseReposit
             .from(userExpense)
             .leftJoin(userExpense.expense, expense)
             .leftJoin(userExpense.tripUser, tripUser)
-            .where(getPredicates(filter))
+            .where(getFilterPredicates(filter))
             .fetchOne();
         if (count == null) throw new BusinessException(ErrorCode.USER_EXPENSE_NOT_FOUND);
         return new PageImpl<>(userExpenseList.stream().map(UserExpenseListRetrieveResponseDto::new).toList(),
@@ -46,7 +46,7 @@ public class CustomUserExpenseRepositoryImpl implements CustomUserExpenseReposit
                               count);
     }
 
-    private Predicate[] getPredicates(UserExpenseFilter filter) {
+    private Predicate[] getFilterPredicates(UserExpenseFilter filter) {
         return new Predicate[]{
             tripUserIdEq(filter.tripUserId()),
             expenseMethodEq(filter.expenseMethod()),
