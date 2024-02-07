@@ -30,10 +30,10 @@ public class TripCalculationService {
     public TripCalculationResponseDto calculateTrip(Long tripId) {
         tripRepository.findById(tripId).orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
         // 실제 소비한 금액 총합
-        List<CalculationResult> sharedCalculationResultList = userExpenseRepository
+        List<CalculationResult> sharedCalculationResultList = calculationRepository
             .getCalculationResult(tripId, ExpenseType.SHARED);
         // 공동경비 충전 내역 총합 차감
-        sharedCalculationResultList.addAll(setCalculationSumToMinus(userExpenseRepository.getCalculationResult(
+        sharedCalculationResultList.addAll(setCalculationSumToMinus(calculationRepository.getCalculationResult(
             tripId, ExpenseType.SHARED_BUDGET_INCOME)));
         // 결제자로 등록된 지출 총합 차감
         sharedCalculationResultList.addAll(setCalculationSumToMinus(calculationRepository.getCalculationResult(

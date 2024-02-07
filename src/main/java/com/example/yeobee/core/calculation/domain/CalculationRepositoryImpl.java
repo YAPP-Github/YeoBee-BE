@@ -39,6 +39,24 @@ public class CalculationRepositoryImpl implements CalculationRepository {
     }
 
     @Override
+    public List<CalculationResult> getCalculationResult(Long tripId, ExpenseType expenseType) {
+        return queryFactory.select(Projections.constructor(CalculationResult.class,
+                                                           tripUser,
+                                                           userExpense.amount
+                                                               .multiply(tripCurrency.exchangeRate.value)
+                                                               .divide(tripCurrency.exchangeRate.standard)
+                                                               .sum().coalesce(BigDecimal.ZERO)))
+            .from(userExpense)
+            .leftJoin(userExpense.expense, expense)
+            .leftJoin(userExpense.tripUser, tripUser)
+            .leftJoin(expense.tripCurrency, tripCurrency)
+            .where(expense.trip.id.eq(tripId)
+                       .and(expense.expenseType.eq(expenseType)))
+            .groupBy(tripUser.id)
+            .fetch();
+    }
+
+    @Override
     public Long getTotalSharedBudgetIncome() {
         return queryFactory.select(expense.amount
                                        .multiply(tripCurrency.exchangeRate.value)

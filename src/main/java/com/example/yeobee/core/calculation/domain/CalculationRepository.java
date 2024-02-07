@@ -14,4 +14,6 @@ public interface CalculationRepository {
     Long getTotalSharedBudgetExpense();
 
     List<CalculationResult> getTotalExpensePerTripUser(Long tripId, ExpenseType expenseType);
+
+    List<CalculationResult> getCalculationResult(Long tripId, ExpenseType expenseType);
 }
