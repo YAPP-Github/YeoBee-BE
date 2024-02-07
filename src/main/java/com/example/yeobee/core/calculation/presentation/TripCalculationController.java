@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/trips")
 @RequiredArgsConstructor
-public class TripController {
+public class TripCalculationController {
 
     private final TripCalculationService tripCalculationService;
 
