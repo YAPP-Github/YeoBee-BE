@@ -1,5 +1,6 @@
 package com.example.yeobee.core.trip.domain;
 
+import com.example.yeobee.core.calculation.domain.CalculationResult;
 import com.example.yeobee.core.expense.domain.ExpenseType;
 import java.util.List;
 

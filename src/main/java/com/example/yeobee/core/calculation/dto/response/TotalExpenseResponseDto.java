@@ -1,6 +1,6 @@
-package com.example.yeobee.core.trip.dto.response;
+package com.example.yeobee.core.calculation.dto.response;
 
-import com.example.yeobee.core.trip.domain.CalculationResult;
+import com.example.yeobee.core.calculation.domain.CalculationResult;
 import java.util.List;
 
 public record TotalExpenseResponseDto(List<TotalExpense> totalExpenseList, Long totalAmount, Long leftSharedBudget) {

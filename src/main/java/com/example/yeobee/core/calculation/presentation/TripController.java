@@ -1,8 +1,8 @@
-package com.example.yeobee.core.trip.presentation;
+package com.example.yeobee.core.calculation.presentation;
 
-import com.example.yeobee.core.trip.application.TripCalculationService;
-import com.example.yeobee.core.trip.dto.response.TotalExpenseResponseDto;
-import com.example.yeobee.core.trip.dto.response.TripCalculationResponseDto;
+import com.example.yeobee.core.calculation.application.TripCalculationService;
+import com.example.yeobee.core.calculation.dto.response.TotalExpenseResponseDto;
+import com.example.yeobee.core.calculation.dto.response.TripCalculationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

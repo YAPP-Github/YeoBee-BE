@@ -5,6 +5,7 @@ import static com.example.yeobee.core.expense.domain.QUserExpense.userExpense;
 import static com.example.yeobee.core.trip.domain.QTripCurrency.tripCurrency;
 import static com.example.yeobee.core.trip.domain.QTripUser.tripUser;
 
+import com.example.yeobee.core.calculation.domain.CalculationResult;
 import com.example.yeobee.core.expense.domain.ExpenseType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;

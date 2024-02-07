@@ -7,9 +7,9 @@ import static com.example.yeobee.core.trip.domain.QTripUser.tripUser;
 
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
+import com.example.yeobee.core.calculation.domain.CalculationResult;
 import com.example.yeobee.core.expense.dto.request.UserExpenseFilter;
 import com.example.yeobee.core.expense.dto.response.UserExpenseListRetrieveResponseDto;
-import com.example.yeobee.core.trip.domain.CalculationResult;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;

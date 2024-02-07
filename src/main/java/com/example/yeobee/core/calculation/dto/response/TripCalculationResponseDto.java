@@ -1,4 +1,4 @@
-package com.example.yeobee.core.trip.dto.response;
+package com.example.yeobee.core.calculation.dto.response;
 
 import java.util.List;
 
