@@ -1,6 +1,7 @@
 package com.example.yeobee.core.trip.presentation;
 
 import com.example.yeobee.core.trip.application.TripCalculationService;
+import com.example.yeobee.core.trip.dto.response.TotalExpenseResponseDto;
 import com.example.yeobee.core.trip.dto.response.TripCalculationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,5 +20,10 @@ public class TripController {
     @GetMapping(value = "/{tripId}/calculation")
     public ResponseEntity<TripCalculationResponseDto> getTripCalculationResult(@PathVariable Long tripId) {
         return ResponseEntity.ok(tripCalculationService.calculateTrip(tripId));
+    }
+
+    @GetMapping(value = "/{tripId}/total-expense")
+    public ResponseEntity<TotalExpenseResponseDto> getTotalExpense(@PathVariable Long tripId) {
+        return ResponseEntity.ok(tripCalculationService.getTotalExpense(tripId));
     }
 }

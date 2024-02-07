@@ -12,4 +12,8 @@ public interface CustomExpenseRepository {
     Page<ExpenseListRetrieveResponseDto> findByFilter(ExpenseListFilter filter, Pageable pageable);
 
     List<CalculationResult> getCalculationResult(Long tripId);
+
+    Long getTotalSharedBudgetIncome();
+
+    Long getTotalSharedBudgetExpense();
 }

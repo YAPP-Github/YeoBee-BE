@@ -64,9 +64,10 @@ public class CustomUserExpenseRepositoryImpl implements CustomUserExpenseReposit
             .leftJoin(expense.tripCurrency, tripCurrency)
             .where(expense.trip.id.eq(tripId)
                        .and(expense.expenseType.eq(expenseType)))
-            .groupBy(tripUser)
+            .groupBy(tripUser.id)
             .fetch();
     }
+
 
     private Predicate[] getFilterPredicates(UserExpenseFilter filter) {
         return new Predicate[]{

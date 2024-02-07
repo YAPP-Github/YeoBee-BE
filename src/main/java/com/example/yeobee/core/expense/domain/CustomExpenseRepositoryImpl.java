@@ -70,6 +70,30 @@ public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
             .fetch();
     }
 
+    @Override
+    public Long getTotalSharedBudgetIncome() {
+        return queryFactory.select(expense.amount
+                                       .multiply(tripCurrency.exchangeRate.exchangeRateValue)
+                                       .divide(tripCurrency.exchangeRate.exchangeRateStandard)
+                                       .sum().coalesce(BigDecimal.ZERO).longValue())
+            .from(expense)
+            .leftJoin(expense.tripCurrency, tripCurrency)
+            .where(expense.expenseType.eq(ExpenseType.SHARED_BUDGET_INCOME))
+            .fetchOne();
+    }
+
+    @Override
+    public Long getTotalSharedBudgetExpense() {
+        return queryFactory.select(expense.amount
+                                       .multiply(tripCurrency.exchangeRate.exchangeRateValue)
+                                       .divide(tripCurrency.exchangeRate.exchangeRateStandard)
+                                       .sum().coalesce(BigDecimal.ZERO).longValue())
+            .from(expense)
+            .leftJoin(expense.tripCurrency, tripCurrency)
+            .where(expense.expenseType.eq(ExpenseType.SHARED).and(expense.payer.isNull()))
+            .fetchOne();
+    }
+
     private Predicate[] getPredicates(ExpenseListFilter filter) {
         return new Predicate[]{
             tripIdEq(filter.tripId()),
