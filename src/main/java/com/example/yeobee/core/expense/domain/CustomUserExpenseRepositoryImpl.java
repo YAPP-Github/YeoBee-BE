@@ -1,8 +1,8 @@
 package com.example.yeobee.core.expense.domain;
 
-import static com.example.yeobee.core.currency.domain.QTripCurrency.tripCurrency;
 import static com.example.yeobee.core.expense.domain.QExpense.expense;
 import static com.example.yeobee.core.expense.domain.QUserExpense.userExpense;
+import static com.example.yeobee.core.trip.domain.QTripCurrency.tripCurrency;
 import static com.example.yeobee.core.trip.domain.QTripUser.tripUser;
 
 import com.example.yeobee.common.exception.BusinessException;
@@ -55,8 +55,8 @@ public class CustomUserExpenseRepositoryImpl implements CustomUserExpenseReposit
         return queryFactory.select(Projections.constructor(CalculationResult.class,
                                                            tripUser,
                                                            userExpense.amount
-                                                               .multiply(tripCurrency.exchangeRate.exchangeRateValue)
-                                                               .divide(tripCurrency.exchangeRate.exchangeRateStandard)
+                                                               .multiply(tripCurrency.exchangeRate.value)
+                                                               .divide(tripCurrency.exchangeRate.standard)
                                                                .sum().coalesce(BigDecimal.ZERO)))
             .from(userExpense)
             .leftJoin(userExpense.expense, expense)

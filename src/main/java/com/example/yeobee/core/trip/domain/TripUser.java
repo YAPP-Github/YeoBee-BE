@@ -4,8 +4,8 @@ import com.example.yeobee.core.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-@Entity
 @Getter
+@Entity
 public class TripUser {
 
     @Id

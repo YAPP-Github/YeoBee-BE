@@ -1,8 +1,8 @@
 package com.example.yeobee.core.trip.domain;
 
-import static com.example.yeobee.core.currency.domain.QTripCurrency.tripCurrency;
 import static com.example.yeobee.core.expense.domain.QExpense.expense;
 import static com.example.yeobee.core.expense.domain.QUserExpense.userExpense;
+import static com.example.yeobee.core.trip.domain.QTripCurrency.tripCurrency;
 import static com.example.yeobee.core.trip.domain.QTripUser.tripUser;
 
 import com.example.yeobee.core.expense.domain.ExpenseType;
@@ -26,8 +26,8 @@ public class CustomTripUserRepositoryImpl implements CustomTripUserRepository {
                                             new CaseBuilder()
                                                 .when(expense.expenseType.eq(expenseType))
                                                 .then(userExpense.amount
-                                                          .multiply(tripCurrency.exchangeRate.exchangeRateValue)
-                                                          .divide(tripCurrency.exchangeRate.exchangeRateStandard))
+                                                          .multiply(tripCurrency.exchangeRate.value)
+                                                          .divide(tripCurrency.exchangeRate.standard))
                                                 .otherwise(BigDecimal.ZERO)
                                                 .sum().coalesce(BigDecimal.ZERO)))
             .from(tripUser)

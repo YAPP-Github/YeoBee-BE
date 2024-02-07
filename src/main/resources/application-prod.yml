@@ -9,6 +9,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        order_inserts: true
+        order_updates: true
+        format_sql: true
   cloud:
     aws:
       region:
@@ -37,3 +42,6 @@ oauth:
     authKey: ${APPLE_AUTH_KEY}
   kakao:
     admin-key: ${KAKAO_ADMIN_KEY}
+
+yeobee:
+  init: ${APP_INIT}

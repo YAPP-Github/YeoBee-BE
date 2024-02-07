@@ -1,13 +1,13 @@
 package com.example.yeobee.core.currency.domain;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class Currency {
 
@@ -16,9 +16,15 @@ public class Currency {
 
     private String name;
 
-    @OneToMany(mappedBy = "currency")
-    private List<CountryCurrency> countryCurrencyList = new ArrayList<>();
+    @Embedded
+    private ExchangeRate exchangeRate;
 
-    @OneToMany(mappedBy = "currency")
-    private List<TripCurrency> tripCurrencyList = new ArrayList<>();
+    public Currency(String code) {
+        this.code = code;
+    }
+
+    public Currency(String name, ExchangeRate exchangeRate) {
+        this.name = name;
+        this.exchangeRate = exchangeRate;
+    }
 }

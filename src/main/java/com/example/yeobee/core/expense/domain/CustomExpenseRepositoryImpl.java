@@ -1,8 +1,8 @@
 package com.example.yeobee.core.expense.domain;
 
-import static com.example.yeobee.core.currency.domain.QTripCurrency.tripCurrency;
 import static com.example.yeobee.core.expense.domain.QExpense.expense;
 import static com.example.yeobee.core.trip.domain.QTrip.trip;
+import static com.example.yeobee.core.trip.domain.QTripCurrency.tripCurrency;
 import static com.example.yeobee.core.trip.domain.QTripUser.tripUser;
 
 import com.example.yeobee.common.exception.BusinessException;
@@ -57,8 +57,8 @@ public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
         return queryFactory.select(Projections.constructor(CalculationResult.class,
                                                            expense.payer,
                                                            expense.amount
-                                                               .multiply(tripCurrency.exchangeRate.exchangeRateValue)
-                                                               .divide(tripCurrency.exchangeRate.exchangeRateStandard)
+                                                               .multiply(tripCurrency.exchangeRate.value)
+                                                               .divide(tripCurrency.exchangeRate.standard)
                                                                .sum().coalesce(BigDecimal.ZERO)))
             .from(expense)
             .leftJoin(expense.payer, tripUser)
@@ -73,8 +73,8 @@ public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
     @Override
     public Long getTotalSharedBudgetIncome() {
         return queryFactory.select(expense.amount
-                                       .multiply(tripCurrency.exchangeRate.exchangeRateValue)
-                                       .divide(tripCurrency.exchangeRate.exchangeRateStandard)
+                                       .multiply(tripCurrency.exchangeRate.value)
+                                       .divide(tripCurrency.exchangeRate.standard)
                                        .sum().coalesce(BigDecimal.ZERO).longValue())
             .from(expense)
             .leftJoin(expense.tripCurrency, tripCurrency)
@@ -85,8 +85,8 @@ public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
     @Override
     public Long getTotalSharedBudgetExpense() {
         return queryFactory.select(expense.amount
-                                       .multiply(tripCurrency.exchangeRate.exchangeRateValue)
-                                       .divide(tripCurrency.exchangeRate.exchangeRateStandard)
+                                       .multiply(tripCurrency.exchangeRate.value)
+                                       .divide(tripCurrency.exchangeRate.standard)
                                        .sum().coalesce(BigDecimal.ZERO).longValue())
             .from(expense)
             .leftJoin(expense.tripCurrency, tripCurrency)
