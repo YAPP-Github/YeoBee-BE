@@ -1,7 +1,6 @@
 package com.example.yeobee.core.trip.domain;
 
 import com.example.yeobee.core.trip.dto.response.Calculation;
-import com.example.yeobee.core.trip.dto.response.CalculationUser;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -37,8 +36,7 @@ public class CalculationResult {
             TripUser sender = results.get(i).getTripUser();
             TripUser receiver = results.get(i + 1).getTripUser();
             double amount = results.get(i).calculationSum - average;
-            calculationList.add(new Calculation(new CalculationUser(sender), new CalculationUser(receiver),
-                                                Math.round(amount)));
+            calculationList.add(new Calculation(sender, receiver, Math.round(amount)));
             results.get(i + 1).calculationSum += amount;
         }
         return calculationList;
