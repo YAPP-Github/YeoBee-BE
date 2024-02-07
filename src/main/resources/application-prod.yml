@@ -44,4 +44,5 @@ oauth:
     admin-key: ${KAKAO_ADMIN_KEY}
 
 yeobee:
+  server-url: ${APP_SERVER_URL}
   init: ${APP_INIT}
