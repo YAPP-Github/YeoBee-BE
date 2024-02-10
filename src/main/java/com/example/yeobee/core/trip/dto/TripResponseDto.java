@@ -46,6 +46,7 @@ public record TripResponseDto(
 
     public record TripUserResponseDto(
         long id,
+        Long userId,
         String name,
         String profileImageUrl
     ) {
@@ -53,6 +54,7 @@ public record TripResponseDto(
         public static TripUserResponseDto of(TripUser tripUser) {
             return new TripUserResponseDto(
                 tripUser.getId(),
+                tripUser.getUserId(),
                 tripUser.getName(),
                 tripUser.getProfileImageUrl()
             );

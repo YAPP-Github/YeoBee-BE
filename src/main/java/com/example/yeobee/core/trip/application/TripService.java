@@ -10,6 +10,8 @@ import com.example.yeobee.core.currency.domain.CurrencyRepository;
 import com.example.yeobee.core.trip.domain.*;
 import com.example.yeobee.core.trip.dto.TripResponseDto;
 import com.example.yeobee.core.trip.dto.request.CreateTripRequestDto;
+import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto;
+import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto.TripUserRequestDto;
 import com.example.yeobee.core.user.domain.User;
 import java.util.List;
 import java.util.Set;
@@ -63,6 +65,29 @@ public class TripService {
 
         // save Trip
         tripRepository.save(trip);
+
+        return TripResponseDto.of(trip);
+    }
+
+    @Transactional
+    public TripResponseDto updateTrip(long tripId, UpdateTripRequestDto request, User user) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
+
+        if (!trip.getTripUserList().stream().map(TripUser::getUser).collect(Collectors.toSet()).contains(user)) {
+            throw new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED);
+        }
+
+        trip.setTitle(request.title());
+        trip.setPeriod(new Period(request.startDate(), request.endDate()));
+
+        List<TripUser> tripUsers = trip.getTripUserList();
+        for (TripUser tripUser : tripUsers) {
+            for (TripUserRequestDto tripUserRequest : request.tripUserList()) {
+                if (tripUser.getId().equals(tripUserRequest.id())) {
+                    tripUser.setName(tripUserRequest.name());
+                }
+            }
+        }
 
         return TripResponseDto.of(trip);
     }

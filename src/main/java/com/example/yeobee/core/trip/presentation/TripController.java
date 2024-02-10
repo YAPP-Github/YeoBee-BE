@@ -4,6 +4,7 @@ import com.example.yeobee.core.auth.annotation.AuthUser;
 import com.example.yeobee.core.trip.application.TripService;
 import com.example.yeobee.core.trip.dto.TripResponseDto;
 import com.example.yeobee.core.trip.dto.request.CreateTripRequestDto;
+import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto;
 import com.example.yeobee.core.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,10 +29,10 @@ public class TripController {
     @PutMapping("/{tripId}")
     public TripResponseDto updateTrip(
         @PathVariable long tripId,
-        @RequestBody Object createTripRequest,
+        @RequestBody UpdateTripRequestDto updateTripRequest,
         @AuthUser User user
     ) {
-        return null;
+        return tripService.updateTrip(tripId, updateTripRequest, user);
     }
 
     @GetMapping("/me/upcoming")
