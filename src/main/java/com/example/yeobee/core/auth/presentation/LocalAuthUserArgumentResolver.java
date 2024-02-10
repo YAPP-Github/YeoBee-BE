@@ -1,28 +1,26 @@
 package com.example.yeobee.core.auth.presentation;
 
-import com.example.yeobee.core.auth.annotation.AuthUser;
+import com.example.yeobee.common.exception.BusinessException;
+import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.auth.application.AuthService;
-import com.example.yeobee.core.auth.util.AuthHeaderParser;
+import com.example.yeobee.core.user.domain.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-@Profile("prod")
+@Profile("!prod")
 @Component
-@RequiredArgsConstructor
-public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
+public class LocalAuthUserArgumentResolver extends AuthUserArgumentResolver {
 
-    private final AuthService authService;
+    private final UserRepository userRepository;
 
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterAnnotation(AuthUser.class) != null;
+    public LocalAuthUserArgumentResolver(AuthService authService, UserRepository userRepository) {
+        super(authService);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -33,8 +31,8 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
         WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        String tokenStr = AuthHeaderParser.parseTokenString(request);
-        return authService.getUserByToken(tokenStr);
+        long id = Long.parseLong(request.getHeader("Authorization"));
+        return userRepository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
     }
 }
 
