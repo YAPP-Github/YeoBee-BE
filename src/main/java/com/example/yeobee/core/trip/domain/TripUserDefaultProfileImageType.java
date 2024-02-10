@@ -1,22 +1,27 @@
 package com.example.yeobee.core.trip.domain;
 
-import lombok.Getter;
+import com.example.yeobee.common.util.UrlUtil;
 import lombok.RequiredArgsConstructor;
 
-// TODO: S3 이미지 경로 매핑 구현
-@Getter
 @RequiredArgsConstructor
 public enum TripUserDefaultProfileImageType {
-    IMAGE0("test0"),
-    IMAGE1("test1"),
-    IMAGE2("test2"),
-    IMAGE3("test3"),
-    IMAGE4("test4"),
-    IMAGE5("test5"),
-    IMAGE6("test6"),
-    IMAGE7("test7"),
-    IMAGE8("test8"),
-    IMAGE9("test9");
-    
-    private final String imageUrl;
+    IMAGE0("image0"),
+    IMAGE1("image1"),
+    IMAGE2("image2"),
+    IMAGE3("image3"),
+    IMAGE4("image4"),
+    IMAGE5("image5"),
+    IMAGE6("image6"),
+    IMAGE7("image7"),
+    IMAGE8("image8"),
+    IMAGE9("image9");
+
+    private static final String S3_PROFILE_IMAGE_KEY_PATH = "static/user/profile-image/";
+
+    private final String key;
+
+    // TODO: 동적으로 CDN 주소 설정하도록
+    public String getImageUrl() {
+        return UrlUtil.join("https://cdn.yeobee.me", S3_PROFILE_IMAGE_KEY_PATH, key);
+    }
 }

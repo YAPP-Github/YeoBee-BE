@@ -10,7 +10,7 @@ public record UserExpenseDetailDto(Long id, Long userId, Long tripUserId, String
         this(userExpense.getId(),
              userExpense.getTripUser().getUserId(),
              userExpense.getTripUser().getId(),
-             userExpense.getTripUser().getTripUserName(),
+             userExpense.getTripUser().getName(),
              userExpense.getTripUser().getProfileImageUrl(),
              userExpense.getAmount());
     }

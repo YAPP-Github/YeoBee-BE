@@ -11,7 +11,7 @@ public record Calculation(CalculationUser sender, CalculationUser receiver, Long
     public record CalculationUser(Long userId, String name, String profileImageUrl) {
 
         public CalculationUser(TripUser tripUser) {
-            this(tripUser.getUserId(), tripUser.getTripUserName(), tripUser.getProfileImageUrl());
+            this(tripUser.getUserId(), tripUser.getName(), tripUser.getProfileImageUrl());
         }
     }
 }

@@ -19,7 +19,7 @@ public record TotalExpenseResponseDto(List<TotalExpense> totalExpenseList, Long 
         public TotalExpense(CalculationResult calculationResult) {
             this(calculationResult.getTripUser().getId(),
                  calculationResult.getTripUser().getUserId(),
-                 calculationResult.getTripUser().getTripUserName(),
+                 calculationResult.getTripUser().getName(),
                  calculationResult.getTripUser().getProfileImageUrl(),
                  calculationResult.getCalculationSum().longValue());
         }

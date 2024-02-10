@@ -6,8 +6,10 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class Trip extends BaseEntity {
 
@@ -31,4 +33,9 @@ public class Trip extends BaseEntity {
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<TripCurrency> tripCurrencyList = new ArrayList<>();
+
+    public Trip(String title, Period period) {
+        this.title = title;
+        this.period = period;
+    }
 }
