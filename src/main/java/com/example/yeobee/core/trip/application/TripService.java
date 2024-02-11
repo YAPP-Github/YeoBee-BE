@@ -1,5 +1,6 @@
 package com.example.yeobee.core.trip.application;
 
+import com.example.yeobee.common.dto.request.PageRequestDto;
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.country.domain.Country;
@@ -13,10 +14,12 @@ import com.example.yeobee.core.trip.dto.request.CreateTripRequestDto;
 import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto;
 import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto.TripUserRequestDto;
 import com.example.yeobee.core.user.domain.User;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -113,5 +116,20 @@ public class TripService {
         }
 
         return TripResponseDto.of(trip);
+    }
+
+    public Page<TripResponseDto> getPastTrips(PageRequestDto request, User user) {
+        Page<Trip> trips = tripRepository.findPastTrips(user, LocalDate.now(), request.toPageRequest());
+        return trips.map(TripResponseDto::of);
+    }
+
+    public Page<TripResponseDto> getPresentTrips(PageRequestDto request, User user) {
+        Page<Trip> trips = tripRepository.findPresentTrips(user, LocalDate.now(), request.toPageRequest());
+        return trips.map(TripResponseDto::of);
+    }
+
+    public Page<TripResponseDto> getFutureTrips(PageRequestDto request, User user) {
+        Page<Trip> trips = tripRepository.findFutureTrips(user, LocalDate.now(), request.toPageRequest());
+        return trips.map(TripResponseDto::of);
     }
 }

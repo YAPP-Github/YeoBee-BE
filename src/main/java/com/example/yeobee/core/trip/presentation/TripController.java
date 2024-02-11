@@ -1,5 +1,6 @@
 package com.example.yeobee.core.trip.presentation;
 
+import com.example.yeobee.common.dto.request.PageRequestDto;
 import com.example.yeobee.core.auth.annotation.AuthUser;
 import com.example.yeobee.core.trip.application.TripService;
 import com.example.yeobee.core.trip.dto.TripResponseDto;
@@ -35,19 +36,28 @@ public class TripController {
         return tripService.updateTrip(tripId, updateTripRequest, user);
     }
 
-    @GetMapping("/me/upcoming")
-    public Page<TripResponseDto> getMyUpcomingTrips() {
-        return null;
-    }
-
     @GetMapping("/me/past")
-    public Page<TripResponseDto> getMyPastTrips() {
-        return null;
+    public Page<TripResponseDto> getMyPastTrips(
+        PageRequestDto pageRequest,
+        @AuthUser User user
+    ) {
+        return tripService.getPastTrips(pageRequest, user);
     }
 
     @GetMapping("/me/present")
-    public Page<TripResponseDto> getMyPresentTrips() {
-        return null;
+    public Page<TripResponseDto> getMyPresentTrips(
+        PageRequestDto pageRequest,
+        @AuthUser User user
+    ) {
+        return tripService.getPresentTrips(pageRequest, user);
+    }
+
+    @GetMapping("/me/future")
+    public Page<TripResponseDto> getMyFutureTrips(
+        PageRequestDto pageRequest,
+        @AuthUser User user
+    ) {
+        return tripService.getFutureTrips(pageRequest, user);
     }
 
     @GetMapping("/{tripId}")
