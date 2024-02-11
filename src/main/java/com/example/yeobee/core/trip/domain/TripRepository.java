@@ -17,4 +17,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 
     @Query("SELECT tu.trip FROM TripUser tu WHERE tu.user = :user AND tu.trip.period.startDate > :today ORDER BY tu.trip.period.startDate ASC, tu.trip.period.endDate ASC")
     Page<Trip> findFutureTrips(User user, LocalDate today, Pageable pageable);
+
+    @Query("SELECT CASE WHEN COUNT(tu) > 0 THEN TRUE ELSE FALSE END FROM TripUser tu WHERE tu.user = :user AND tu.trip.period.startDate <= :endDate AND tu.trip.period.endDate >= :startDate")
+    boolean checkMyTripDateOverlap(LocalDate startDate, LocalDate endDate, User user);
 }

@@ -9,10 +9,11 @@ import com.example.yeobee.core.currency.domain.CountryCurrency;
 import com.example.yeobee.core.currency.domain.Currency;
 import com.example.yeobee.core.currency.domain.CurrencyRepository;
 import com.example.yeobee.core.trip.domain.*;
-import com.example.yeobee.core.trip.dto.TripResponseDto;
 import com.example.yeobee.core.trip.dto.request.CreateTripRequestDto;
 import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto;
 import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto.TripUserRequestDto;
+import com.example.yeobee.core.trip.dto.response.DateOverlapResponseDto;
+import com.example.yeobee.core.trip.dto.response.TripResponseDto;
 import com.example.yeobee.core.user.domain.User;
 import java.time.LocalDate;
 import java.util.List;
@@ -131,5 +132,10 @@ public class TripService {
     public Page<TripResponseDto> getFutureTrips(PageRequestDto request, User user) {
         Page<Trip> trips = tripRepository.findFutureTrips(user, LocalDate.now(), request.toPageRequest());
         return trips.map(TripResponseDto::of);
+    }
+
+    public DateOverlapResponseDto checkTripDateOverlap(LocalDate startDate, LocalDate endDate, User user) {
+        boolean overlap = tripRepository.checkMyTripDateOverlap(startDate, endDate, user);
+        return new DateOverlapResponseDto(overlap);
     }
 }

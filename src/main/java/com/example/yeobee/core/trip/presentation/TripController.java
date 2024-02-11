@@ -3,10 +3,12 @@ package com.example.yeobee.core.trip.presentation;
 import com.example.yeobee.common.dto.request.PageRequestDto;
 import com.example.yeobee.core.auth.annotation.AuthUser;
 import com.example.yeobee.core.trip.application.TripService;
-import com.example.yeobee.core.trip.dto.TripResponseDto;
 import com.example.yeobee.core.trip.dto.request.CreateTripRequestDto;
 import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto;
+import com.example.yeobee.core.trip.dto.response.DateOverlapResponseDto;
+import com.example.yeobee.core.trip.dto.response.TripResponseDto;
 import com.example.yeobee.core.user.domain.User;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -74,8 +76,12 @@ public class TripController {
         tripService.delete(tripId, user);
     }
 
-    @GetMapping("/date-overlap")
-    public Object validateTripDateOverlap() {
-        return null;
+    @GetMapping("/me/date-overlap")
+    public DateOverlapResponseDto checkTripDateOverlap(
+        @RequestParam LocalDate startDate,
+        @RequestParam LocalDate endDate,
+        @AuthUser User user
+    ) {
+        return tripService.checkTripDateOverlap(startDate, endDate, user);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.yeobee.core.trip.dto;
+package com.example.yeobee.core.trip.dto.response;
 
 import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.trip.domain.TripCountry;
