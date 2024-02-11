@@ -13,7 +13,6 @@ import com.example.yeobee.core.expense.dto.response.ExpenseDetailRetrieveRespons
 import com.example.yeobee.core.expense.dto.response.ExpenseListRetrieveResponseDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseUpdateResponseDto;
 import com.example.yeobee.core.trip.domain.*;
-import com.example.yeobee.core.user.domain.User;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -54,11 +53,9 @@ public class ExpenseService {
         expenseRepository.delete(expense);
     }
 
-    public ExpenseDetailRetrieveResponseDto retrieveExpenseDetail(Long expenseId, User user) {
+    public ExpenseDetailRetrieveResponseDto retrieveExpenseDetail(Long expenseId) {
         Expense expense = findExpenseById(expenseId);
-        TripUser userTripUser = tripUserRepository.findByTripAndUser(expense.getTrip(), user)
-            .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED));
-        return new ExpenseDetailRetrieveResponseDto(expense, userTripUser.getId());
+        return new ExpenseDetailRetrieveResponseDto(expense);
     }
 
     public Page<ExpenseListRetrieveResponseDto> retrieveExpenseList(ExpenseListRetrieveRequestDto request) {

@@ -1,6 +1,5 @@
 package com.example.yeobee.core.expense.presentation;
 
-import com.example.yeobee.core.auth.annotation.AuthUser;
 import com.example.yeobee.core.expense.application.ExpenseService;
 import com.example.yeobee.core.expense.application.UserExpenseService;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
@@ -8,7 +7,6 @@ import com.example.yeobee.core.expense.dto.request.ExpenseListRetrieveRequestDto
 import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
 import com.example.yeobee.core.expense.dto.request.UserExpenseListRetrieveRequestDto;
 import com.example.yeobee.core.expense.dto.response.*;
-import com.example.yeobee.core.user.domain.User;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,9 +43,8 @@ public class ExpenseController {
 
     @GetMapping("/{expenseId}")
     public ResponseEntity<ExpenseDetailRetrieveResponseDto> retrieveExpenseDetail(
-        @PathVariable Long expenseId,
-        @AuthUser User user) {
-        return ResponseEntity.ok(expenseService.retrieveExpenseDetail(expenseId, user));
+        @PathVariable Long expenseId) {
+        return ResponseEntity.ok(expenseService.retrieveExpenseDetail(expenseId));
     }
 
     @GetMapping
