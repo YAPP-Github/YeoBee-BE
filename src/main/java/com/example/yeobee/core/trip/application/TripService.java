@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class TripService {
@@ -102,5 +103,15 @@ public class TripService {
         }
 
         tripRepository.delete(trip);
+    }
+
+    public TripResponseDto getTrip(long tripId, User user) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
+
+        if (!trip.getTripUserList().stream().map(TripUser::getUser).collect(Collectors.toSet()).contains(user)) {
+            throw new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED);
+        }
+
+        return TripResponseDto.of(trip);
     }
 }

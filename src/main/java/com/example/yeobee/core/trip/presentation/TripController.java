@@ -51,8 +51,11 @@ public class TripController {
     }
 
     @GetMapping("/{tripId}")
-    public TripResponseDto getTrip(@PathVariable long tripId) {
-        return null;
+    public TripResponseDto getTrip(
+        @PathVariable long tripId,
+        @AuthUser User user
+    ) {
+        return tripService.getTrip(tripId, user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
