@@ -9,10 +9,11 @@ import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+@Configuration
 public class SwaggerConfig {
 
     private final Optional<String> serverUrl;
@@ -24,7 +25,6 @@ public class SwaggerConfig {
         this.env = env;
     }
 
-    @ConditionalOnProperty(prefix = "yeobee", name = "server-url")
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()

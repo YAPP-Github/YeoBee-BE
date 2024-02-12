@@ -6,7 +6,7 @@ import com.example.yeobee.core.user.domain.UserState;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record UserInfoResponseDto(Long id, @Schema(nullable = true) String nickname,
-                                  @Schema(nullable = true) String profileImage, AuthProviderType authProviderType,
+                                  @Schema(nullable = true) String profileImageUrl, AuthProviderType authProviderType,
                                   UserState userState) {
 
     public UserInfoResponseDto(User user) {
