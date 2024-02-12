@@ -45,16 +45,8 @@ public class TripUser {
         this.trip = trip;
     }
 
-    // TODO: 로직 다듬기
     public String getProfileImageUrl() {
-        if (profileImageUrl != null) {
-            return profileImageUrl;
-        }
-        if (user != null) {
-            return user.getProfileImageUrl();
-        }
-
-        return null;
+        return (user == null) ? profileImageUrl : user.getProfileImageUrl();
     }
 
     public String getName() {
