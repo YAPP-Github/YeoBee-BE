@@ -10,8 +10,9 @@ import com.example.yeobee.core.currency.domain.Currency;
 import com.example.yeobee.core.currency.domain.CurrencyRepository;
 import com.example.yeobee.core.trip.domain.*;
 import com.example.yeobee.core.trip.dto.request.CreateTripRequestDto;
+import com.example.yeobee.core.trip.dto.request.CreateTripRequestDto.CreateTripCountryRequestDto;
 import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto;
-import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto.TripUserRequestDto;
+import com.example.yeobee.core.trip.dto.request.UpdateTripRequestDto.UpdateTripTripUserRequestDto;
 import com.example.yeobee.core.trip.dto.response.DateOverlapResponseDto;
 import com.example.yeobee.core.trip.dto.response.TripResponseDto;
 import com.example.yeobee.core.user.domain.User;
@@ -41,13 +42,13 @@ public class TripService {
         // create TripUser and add
         trip.getTripUserList().add(new TripUser(user, trip));   // 여행 생성하는 유저
         List<TripUser> tripUsers = request.tripUserList().stream()
-            .map(tu -> new TripUser(tu.name(), tu.profileImageType(), trip)).toList();
+            .map(tu -> new TripUser(tu.name(), tu.profileImageUrl(), trip)).toList();
         trip.getTripUserList().addAll(tripUsers);   // 동행자
 
         // create TripCountry and add
         List<String> countryNames = request.countryList()
             .stream()
-            .map(CreateTripRequestDto.CountryRequestDto::name)
+            .map(CreateTripCountryRequestDto::name)
             .toList();
         List<Country> countries = countryRepository.findAllById(countryNames);
         List<TripCountry> tripCountries = countries.stream().map(country -> new TripCountry(country, trip)).toList();
@@ -87,7 +88,7 @@ public class TripService {
 
         List<TripUser> tripUsers = trip.getTripUserList();
         for (TripUser tripUser : tripUsers) {
-            for (TripUserRequestDto tripUserRequest : request.tripUserList()) {
+            for (UpdateTripTripUserRequestDto tripUserRequest : request.tripUserList()) {
                 if (tripUser.getId().equals(tripUserRequest.id())) {
                     tripUser.setName(tripUserRequest.name());
                 }

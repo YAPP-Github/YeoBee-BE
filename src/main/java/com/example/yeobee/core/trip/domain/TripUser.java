@@ -21,8 +21,7 @@ public class TripUser {
     @Enumerated(EnumType.STRING)
     private TripUserState state;
 
-    @Enumerated(EnumType.STRING)
-    private TripUserDefaultProfileImageType profileImageType;
+    private String profileImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -34,21 +33,28 @@ public class TripUser {
 
     public TripUser(User user, Trip trip) {
         this.state = TripUserState.CONNECTED;
-        this.profileImageType = TripUserDefaultProfileImageType.IMAGE0; // TODO: 유저 프로필 이미지 무조건 설정 되도록
+        this.profileImageUrl = null;
         this.user = user;
         this.trip = trip;
     }
 
-    public TripUser(String name, TripUserDefaultProfileImageType profileImageType, Trip trip) {
+    public TripUser(String name, String profileImageUrl, Trip trip) {
         this.name = name;
         this.state = TripUserState.UNCONNECTED;
-        this.profileImageType = profileImageType;
+        this.profileImageUrl = profileImageUrl;
         this.trip = trip;
     }
 
+    // TODO: 로직 다듬기
     public String getProfileImageUrl() {
-        return (user == null || user.getProfileImageUrl() == null) ?
-            profileImageType.getImageUrl() : user.getProfileImageUrl();
+        if (profileImageUrl != null) {
+            return profileImageUrl;
+        }
+        if (user != null) {
+            return user.getProfileImageUrl();
+        }
+
+        return null;
     }
 
     public String getName() {

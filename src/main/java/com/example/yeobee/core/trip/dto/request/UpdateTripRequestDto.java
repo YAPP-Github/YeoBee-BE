@@ -7,14 +7,10 @@ public record UpdateTripRequestDto(
     String title,
     LocalDate startDate,
     LocalDate endDate,
-    List<TripUserRequestDto> tripUserList
+    List<UpdateTripTripUserRequestDto> tripUserList
 ) {
 
-    public record CountryRequestDto(String name) {
-
-    }
-
-    public record TripUserRequestDto(long id, String name) {
+    public record UpdateTripTripUserRequestDto(long id, String name) {
 
     }
 }
