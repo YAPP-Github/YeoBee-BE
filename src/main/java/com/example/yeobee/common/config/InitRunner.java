@@ -38,6 +38,7 @@ public class InitRunner implements ApplicationRunner {
 
     private static final String S3_FLAG_KEY_PATH = "static/country/flag/";
     private static final String S3_COVER_KEY_PATH = "static/country/cover/";
+    private static final String S3_USER_PROFILE_KEY_PATH = "static/user/profile/";
 
     private final CountryRepository countryRepository;
     private final CurrencyRepository currencyRepository;
@@ -77,6 +78,10 @@ public class InitRunner implements ApplicationRunner {
         for (Resource resource : listResources("classpath*:init/s3/country/cover/**/*.*")) {
             Path file = Path.of(resource.getURI());
             uploadFileToS3(S3_COVER_KEY_PATH, file);
+        }
+        for (Resource resource : listResources("classpath*:init/s3/user/profile/**/*.*")) {
+            Path file = Path.of(resource.getURI());
+            uploadFileToS3(S3_USER_PROFILE_KEY_PATH, file);
         }
     }
 
