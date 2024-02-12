@@ -31,7 +31,7 @@ public class LocalAuthUserArgumentResolver extends AuthUserArgumentResolver {
         WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        long id = Long.parseLong(request.getHeader("Authorization"));
+        long id = Long.parseLong(request.getHeader("Authorization").substring(7));
         return userRepository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
     }
 }
