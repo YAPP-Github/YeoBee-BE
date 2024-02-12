@@ -6,17 +6,22 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity
 @Getter
+@Entity
+@NoArgsConstructor
 public class Trip extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     private String title;
 
+    @Setter
     @Embedded
     private Period period;
 
@@ -31,4 +36,9 @@ public class Trip extends BaseEntity {
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     private List<TripCurrency> tripCurrencyList = new ArrayList<>();
+
+    public Trip(String title, Period period) {
+        this.title = title;
+        this.period = period;
+    }
 }

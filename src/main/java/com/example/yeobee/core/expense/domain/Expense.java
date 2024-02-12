@@ -96,7 +96,7 @@ public class Expense {
     }
 
     public String getPayerName() {
-        return (payer == null) ? "공동경비" : payer.getTripUserName();
+        return (payer == null) ? "공동경비" : payer.getName();
     }
 
     public Long getKoreanAmount() {

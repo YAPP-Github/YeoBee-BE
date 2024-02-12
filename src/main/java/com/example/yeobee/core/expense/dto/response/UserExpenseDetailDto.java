@@ -11,7 +11,7 @@ public record UserExpenseDetailDto(Long id, @Schema(nullable = true) Long userId
         this(userExpense.getId(),
              userExpense.getTripUser().getUserId(),
              userExpense.getTripUser().getId(),
-             userExpense.getTripUser().getTripUserName(),
+             userExpense.getTripUser().getName(),
              userExpense.getTripUser().getProfileImageUrl(),
              userExpense.getAmount());
     }
