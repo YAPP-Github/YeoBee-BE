@@ -4,13 +4,17 @@ import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.calculation.domain.CalculationRepository;
 import com.example.yeobee.core.calculation.domain.CalculationResult;
+import com.example.yeobee.core.calculation.dto.response.BudgetResponseDto;
+import com.example.yeobee.core.calculation.dto.response.BudgetResponseDto.Budget;
 import com.example.yeobee.core.calculation.dto.response.Calculation;
 import com.example.yeobee.core.calculation.dto.response.TotalExpenseResponseDto;
 import com.example.yeobee.core.calculation.dto.response.TripCalculationResponseDto;
 import com.example.yeobee.core.expense.domain.ExpenseType;
-import com.example.yeobee.core.expense.domain.UserExpenseRepository;
+import com.example.yeobee.core.trip.domain.Trip;
 import com.example.yeobee.core.trip.domain.TripRepository;
 import com.example.yeobee.core.trip.domain.TripUser;
+import com.example.yeobee.core.trip.domain.TripUserRepository;
+import com.example.yeobee.core.user.domain.User;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -23,9 +27,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TripCalculationService {
 
-    private final UserExpenseRepository userExpenseRepository;
     private final TripRepository tripRepository;
     private final CalculationRepository calculationRepository;
+    private final TripUserRepository tripUserRepository;
 
     public TripCalculationResponseDto calculateTrip(Long tripId) {
         tripRepository.findById(tripId).orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
@@ -51,8 +55,8 @@ public class TripCalculationService {
         List<CalculationResult> calculationResultList = calculationRepository
             .getTotalExpensePerTripUser(tripId, ExpenseType.SHARED);
         // 남은 공동경비 계산
-        Long sharedBudgetIncome = calculationRepository.getTotalSharedBudgetIncome();
-        Long sharedBudgetExpense = calculationRepository.getTotalSharedBudgetExpense();
+        Long sharedBudgetIncome = calculationRepository.getTotalBudgetIncome(ExpenseType.SHARED_BUDGET_INCOME);
+        Long sharedBudgetExpense = calculationRepository.getTotalBudgetExpense(ExpenseType.SHARED, null);
         // 충전한 공동경비가 없을 경우 null
         Long leftSharedBudget = (sharedBudgetIncome == 0L) ? null : sharedBudgetIncome - sharedBudgetExpense;
         return new TotalExpenseResponseDto(calculationResultList, leftSharedBudget);
@@ -90,5 +94,26 @@ public class TripCalculationService {
 
     private double getAverage(List<CalculationResult> results) {
         return results.stream().mapToDouble(CalculationResult::getCalculationSum).average().orElse(0);
+    }
+
+    public BudgetResponseDto getBudget(Long tripId, User user) {
+        Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
+
+        // shared
+        Long sharedBudgetIncome = calculationRepository.getTotalBudgetIncome(ExpenseType.SHARED_BUDGET_INCOME);
+        Long sharedBudgetExpense = calculationRepository.getTotalBudgetExpense(ExpenseType.SHARED, null);
+        Long leftSharedBudget = (sharedBudgetIncome == 0) ? null : sharedBudgetIncome - sharedBudgetExpense;
+        Budget sharedBudget = new Budget(leftSharedBudget, sharedBudgetIncome, sharedBudgetExpense);
+
+        // individual
+        TripUser tripUser = tripUserRepository.findByTripAndUser(trip, user)
+            .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED));
+        Long individualBudgetIncome = calculationRepository.getTotalBudgetIncome(ExpenseType.INDIVIDUAL_BUDGET_INCOME);
+        Long individualBudgetExpense = calculationRepository.getTotalBudgetExpense(ExpenseType.INDIVIDUAL, tripUser);
+        Long leftIndividualBudget =
+            (individualBudgetIncome == 0) ? null : individualBudgetIncome - individualBudgetExpense;
+        Budget individualBudget = new Budget(leftIndividualBudget, individualBudgetIncome, individualBudgetExpense);
+
+        return new BudgetResponseDto(sharedBudget, individualBudget);
     }
 }

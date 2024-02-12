@@ -1,8 +1,11 @@
 package com.example.yeobee.core.calculation.presentation;
 
+import com.example.yeobee.core.auth.annotation.AuthUser;
 import com.example.yeobee.core.calculation.application.TripCalculationService;
+import com.example.yeobee.core.calculation.dto.response.BudgetResponseDto;
 import com.example.yeobee.core.calculation.dto.response.TotalExpenseResponseDto;
 import com.example.yeobee.core.calculation.dto.response.TripCalculationResponseDto;
+import com.example.yeobee.core.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,5 +28,10 @@ public class TripCalculationController {
     @GetMapping(value = "/{tripId}/total-expense")
     public ResponseEntity<TotalExpenseResponseDto> getTotalExpense(@PathVariable Long tripId) {
         return ResponseEntity.ok(tripCalculationService.getTotalExpense(tripId));
+    }
+
+    @GetMapping(value = "/{tripId}/budget")
+    public ResponseEntity<BudgetResponseDto> getBudget(@PathVariable Long tripId, @AuthUser User user) {
+        return ResponseEntity.ok(tripCalculationService.getBudget(tripId, user));
     }
 }

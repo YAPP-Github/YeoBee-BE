@@ -6,7 +6,9 @@ import static com.example.yeobee.core.trip.domain.QTripCurrency.tripCurrency;
 import static com.example.yeobee.core.trip.domain.QTripUser.tripUser;
 
 import com.example.yeobee.core.expense.domain.ExpenseType;
+import com.example.yeobee.core.trip.domain.TripUser;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.math.BigDecimal;
@@ -57,26 +59,26 @@ public class CalculationRepositoryImpl implements CalculationRepository {
     }
 
     @Override
-    public Long getTotalSharedBudgetIncome() {
+    public Long getTotalBudgetIncome(ExpenseType expenseType) {
         return queryFactory.select(expense.amount
                                        .multiply(tripCurrency.exchangeRate.value)
                                        .divide(tripCurrency.exchangeRate.standard)
                                        .sum().coalesce(BigDecimal.ZERO).longValue())
             .from(expense)
             .leftJoin(expense.tripCurrency, tripCurrency)
-            .where(expense.expenseType.eq(ExpenseType.SHARED_BUDGET_INCOME))
+            .where(expense.expenseType.eq(expenseType))
             .fetchOne();
     }
 
     @Override
-    public Long getTotalSharedBudgetExpense() {
+    public Long getTotalBudgetExpense(ExpenseType expenseType, TripUser tripUser) {
         return queryFactory.select(expense.amount
                                        .multiply(tripCurrency.exchangeRate.value)
                                        .divide(tripCurrency.exchangeRate.standard)
                                        .sum().coalesce(BigDecimal.ZERO).longValue())
             .from(expense)
             .leftJoin(expense.tripCurrency, tripCurrency)
-            .where(expense.expenseType.eq(ExpenseType.SHARED).and(expense.payer.isNull()))
+            .where(expense.expenseType.eq(expenseType).and(payerEq(tripUser)))
             .fetchOne();
     }
 
@@ -99,5 +101,9 @@ public class CalculationRepositoryImpl implements CalculationRepository {
             .where(tripUser.trip.id.eq(tripId))
             .groupBy(tripUser.id)
             .fetch();
+    }
+
+    private BooleanExpression payerEq(TripUser tripUser) {
+        return (tripUser == null) ? expense.payer.isNull() : expense.payer.eq(tripUser);
     }
 }
