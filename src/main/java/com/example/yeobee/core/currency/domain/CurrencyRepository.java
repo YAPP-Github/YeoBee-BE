@@ -8,4 +8,7 @@ public interface CurrencyRepository extends JpaRepository<Currency, String> {
 
     @Query("select c from Currency c join TripCurrency tc on c = tc.currency where tc.trip.id = :tripId")
     List<Currency> findAllByTripId(long tripId);
+
+    @Query("select c.code from Currency c")
+    List<String> findAllCurrencyCodes();
 }
