@@ -130,7 +130,7 @@ public class InitRunner implements ApplicationRunner {
         for (Resource resource : listResources("classpath*:init/s3/country/flag/**/*.*")) {
             String flagFileName = resource.getFilename();
             for (Country country : countries) {
-                if ((country.getName() + ".svg").equals(flagFileName)) {
+                if ((country.getName() + ".png").equals(flagFileName)) {
                     flagImageUrlField.set(country, UrlUtil.join(cdnUrl, S3_FLAG_KEY_PATH, flagFileName));
                 }
             }
