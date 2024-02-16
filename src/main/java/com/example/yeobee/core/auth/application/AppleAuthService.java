@@ -1,6 +1,7 @@
 package com.example.yeobee.core.auth.application;
 
 import com.example.yeobee.core.auth.dto.response.AppleAuthTokenResponseDto;
+import com.example.yeobee.core.auth.util.Base64Decoder;
 import com.example.yeobee.core.user.domain.AuthProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -89,7 +90,8 @@ public class AppleAuthService {
 
     @SneakyThrows
     private PrivateKey getPrivateKey() {
-        Reader pemReader = new StringReader(appleAuthProperties.authKey());
+        String authKey = Base64Decoder.decode(appleAuthProperties.authKey());
+        Reader pemReader = new StringReader(authKey);
         PEMParser pemParser = new PEMParser(pemReader);
         JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
         PrivateKeyInfo object = (PrivateKeyInfo) pemParser.readObject();
