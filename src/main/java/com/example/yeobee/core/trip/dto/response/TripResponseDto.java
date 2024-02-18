@@ -17,13 +17,13 @@ public record TripResponseDto(
     ZonedDateTime createdAt
 ) {
 
-    public static TripResponseDto of(Trip trip) {
+    public static TripResponseDto of(Trip trip, String cdnUrl) {
         return new TripResponseDto(
             trip.getId(),
             trip.getTitle(),
             trip.getPeriod().getStartDate(),
             trip.getPeriod().getEndDate(),
-            trip.getTripCountryList().stream().map(CountryResponseDto::of).toList(),
+            trip.getTripCountryList().stream().map((e) -> CountryResponseDto.of(e, cdnUrl)).toList(),
             trip.getTripUserList().stream().map(TripUserResponseDto::of).toList(),
             trip.getCreatedAt()
         );
@@ -35,11 +35,11 @@ public record TripResponseDto(
         String coverImageUrl
     ) {
 
-        public static CountryResponseDto of(TripCountry tripCountry) {
+        public static CountryResponseDto of(TripCountry tripCountry, String cdnUrl) {
             return new CountryResponseDto(
                 tripCountry.getCountry().getName(),
                 tripCountry.getCountry().getFlagImageUrl(),
-                tripCountry.getCountry().getCoverImageUrl()
+                tripCountry.getCountry().getCoverImageUrlOrRandomImageUrl(cdnUrl)
             );
         }
     }

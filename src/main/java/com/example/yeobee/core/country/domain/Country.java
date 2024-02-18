@@ -35,4 +35,9 @@ public class Country {
         this.coverImageUrl = coverImageUrl;
         this.continent = continent;
     }
+
+    public String getCoverImageUrlOrRandomImageUrl(String cdnUrl) {
+        return (coverImageUrl != null) ? coverImageUrl
+            : cdnUrl + "static/country/cover/random" + (int) (Math.random() * 3 + 1) + ".jpg";
+    }
 }
