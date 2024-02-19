@@ -1,9 +1,9 @@
 package com.example.yeobee.core.currency.domain;
 
+import com.example.yeobee.core.currency.dto.response.CurrencyDto;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,11 +24,12 @@ public class Currency {
         this.code = code;
     }
 
-    public Currency(String code, String name, BigDecimal exchangeRateValue) {
-        this.code = code;
-        this.name = name;
-        this.exchangeRate = new ExchangeRate(exchangeRateValue, 1L);
+    public Currency(CurrencyDto currencyDto) {
+        this.code = currencyDto.code();
+        this.name = currencyDto.name();
+        this.exchangeRate = new ExchangeRate(currencyDto.val(), 1L);
     }
+
 
     public Currency(String name, ExchangeRate exchangeRate) {
         this.name = name;
