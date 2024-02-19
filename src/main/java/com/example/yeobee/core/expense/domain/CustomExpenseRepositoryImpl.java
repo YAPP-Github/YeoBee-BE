@@ -63,7 +63,22 @@ public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
     }
 
     private BooleanExpression expenseTypeEq(ExpenseType expenseType) {
-        return expenseType != null ? expense.expenseType.eq(expenseType) : null;
+        if (expenseType != null) {
+            switch (expenseType) {
+                case SHARED_ALL -> {
+                    return expense.expenseType.eq(ExpenseType.SHARED)
+                        .or(expense.expenseType.eq(ExpenseType.SHARED_BUDGET_INCOME));
+                }
+                case INDIVIDUAL_ALL -> {
+                    return expense.expenseType.eq(ExpenseType.INDIVIDUAL)
+                        .or(expense.expenseType.eq(ExpenseType.INDIVIDUAL_BUDGET_INCOME));
+                }
+                default -> {
+                    return expense.expenseType.eq(expenseType);
+                }
+            }
+        }
+        return null;
     }
 
     private BooleanExpression payedAtEq(LocalDate payedAt) {
