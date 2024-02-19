@@ -1,5 +1,6 @@
 package com.example.yeobee.core.currency.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ExchangeRate {
 
+    @Column(precision = 38, scale = 5)
     private BigDecimal value;
 
     private Long standard;

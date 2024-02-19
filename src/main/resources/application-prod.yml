@@ -46,3 +46,6 @@ oauth:
 yeobee:
   server-url: ${APP_SERVER_URL}
   init: ${APP_INIT}
+
+exchangeRate:
+  accessKey: ${EXCHANGE_RATE_ACCESS_KEY}

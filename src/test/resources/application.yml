@@ -24,3 +24,6 @@ oauth:
     key-id: key-id
     team-id: team-id
     client-id: client-id
+
+exchangeRate:
+  accessKey: accessKey
