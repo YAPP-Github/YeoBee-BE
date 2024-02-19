@@ -7,13 +7,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public record UserInfoResponseDto(Long id, @Schema(nullable = true) String nickname,
                                   @Schema(nullable = true) String profileImageUrl, AuthProviderType authProviderType,
-                                  UserState userState) {
+                                  UserState userState, Integer tripCount) {
 
-    public UserInfoResponseDto(User user) {
+    public UserInfoResponseDto(User user, Integer tripCount) {
         this(user.getId(),
              user.getNickname(),
              user.getProfileImageUrl(),
              user.getAuthProvider().getType(),
-             user.getState());
+             user.getState(),
+             tripCount);
     }
 }

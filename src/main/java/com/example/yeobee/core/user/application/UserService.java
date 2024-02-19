@@ -1,5 +1,6 @@
 package com.example.yeobee.core.user.application;
 
+import com.example.yeobee.core.trip.domain.TripUserRepository;
 import com.example.yeobee.core.user.domain.User;
 import com.example.yeobee.core.user.dto.request.UserStateUpdateRequestDto;
 import com.example.yeobee.core.user.dto.request.UserUpdateRequestDto;
@@ -14,8 +15,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final TripUserRepository tripUserRepository;
+
     public UserInfoResponseDto getUserInfo(User user) {
-        return new UserInfoResponseDto(user);
+        Integer tripCount = tripUserRepository.getTripCountByUserId(user.getId());
+        return new UserInfoResponseDto(user, tripCount);
     }
 
     @Transactional
