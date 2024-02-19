@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,9 @@ public class TripService {
     private final TripRepository tripRepository;
     private final CountryRepository countryRepository;
     private final CurrencyRepository currencyRepository;
+
+    @Value("${spring.cloud.aws.cdn.url}")
+    private String cdnUrl;
 
     @Transactional
     public TripResponseDto createTrip(CreateTripRequestDto request, User user) {
@@ -72,7 +76,7 @@ public class TripService {
         // save Trip
         tripRepository.save(trip);
 
-        return TripResponseDto.of(trip);
+        return TripResponseDto.of(trip, cdnUrl);
     }
 
     @Transactional
@@ -95,7 +99,7 @@ public class TripService {
             }
         }
 
-        return TripResponseDto.of(trip);
+        return TripResponseDto.of(trip, cdnUrl);
     }
 
     @Transactional
@@ -117,22 +121,22 @@ public class TripService {
             throw new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED);
         }
 
-        return TripResponseDto.of(trip);
+        return TripResponseDto.of(trip, cdnUrl);
     }
 
     public Page<TripResponseDto> getPastTrips(PageRequestDto request, User user) {
         Page<Trip> trips = tripRepository.findPastTrips(user, LocalDate.now(), request.toPageRequest());
-        return trips.map(TripResponseDto::of);
+        return trips.map((e) -> TripResponseDto.of(e, cdnUrl));
     }
 
     public Page<TripResponseDto> getPresentTrips(PageRequestDto request, User user) {
         Page<Trip> trips = tripRepository.findPresentTrips(user, LocalDate.now(), request.toPageRequest());
-        return trips.map(TripResponseDto::of);
+        return trips.map((e) -> TripResponseDto.of(e, cdnUrl));
     }
 
     public Page<TripResponseDto> getFutureTrips(PageRequestDto request, User user) {
         Page<Trip> trips = tripRepository.findFutureTrips(user, LocalDate.now(), request.toPageRequest());
-        return trips.map(TripResponseDto::of);
+        return trips.map((e) -> TripResponseDto.of(e, cdnUrl));
     }
 
     public DateOverlapResponseDto checkTripDateOverlap(LocalDate startDate, LocalDate endDate, User user) {

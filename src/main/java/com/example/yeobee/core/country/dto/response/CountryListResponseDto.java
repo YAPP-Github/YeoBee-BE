@@ -9,7 +9,7 @@ import java.util.Map;
 
 public record CountryListResponseDto(Map<String, List<CountryResponseDto>> countryList) {
 
-    public static CountryListResponseDto of(List<Country> countries) {
+    public static CountryListResponseDto of(List<Country> countries, String cdnUrl) {
         Map<String, List<CountryResponseDto>> map = new HashMap<>();
         for (Continent continent : Continent.values()) {
             map.put(continent.getName(), new ArrayList<>());
@@ -20,7 +20,7 @@ public record CountryListResponseDto(Map<String, List<CountryResponseDto>> count
             CountryResponseDto countryResponseDto = new CountryResponseDto(
                 country.getName(),
                 country.getFlagImageUrl(),
-                country.getCoverImageUrl(),
+                country.getCoverImageUrlOrRandomImageUrl(cdnUrl),
                 continentName
             );
             map.get(continentName).add(countryResponseDto);
