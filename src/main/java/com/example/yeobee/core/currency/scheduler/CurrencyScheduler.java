@@ -27,7 +27,7 @@ public class CurrencyScheduler {
     private String accessKey;
     private static final String API_ENDPOINT = "http://apilayer.net/api/live?source=KRW&access_key=";
 
-    @Scheduled(cron = "0 0 9 * * ?")
+    @Scheduled(initialDelay = 10)
     private void updateExchangeRate() {
         log.info("Updating exchange rate started");
         List<Currency> retrievedcurrencyList = currencyRepository.findAll();
