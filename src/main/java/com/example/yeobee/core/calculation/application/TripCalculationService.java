@@ -5,7 +5,8 @@ import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.calculation.domain.CalculationRepository;
 import com.example.yeobee.core.calculation.domain.CalculationResult;
 import com.example.yeobee.core.calculation.dto.response.BudgetResponseDto;
-import com.example.yeobee.core.calculation.dto.response.BudgetResponseDto.Budget;
+import com.example.yeobee.core.calculation.dto.response.BudgetResponseDto.IndividualBudget;
+import com.example.yeobee.core.calculation.dto.response.BudgetResponseDto.SharedBudget;
 import com.example.yeobee.core.calculation.dto.response.Calculation;
 import com.example.yeobee.core.calculation.dto.response.TotalExpenseResponseDto;
 import com.example.yeobee.core.calculation.dto.response.TripCalculationResponseDto;
@@ -99,27 +100,31 @@ public class TripCalculationService {
     public BudgetResponseDto getBudget(Long tripId, User user) {
         Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
 
+        // totalSharedExpense
+        Long totalSharedExpense = calculationRepository.getTotalExpense(tripId, ExpenseType.SHARED);
+
         // shared
         Long sharedBudgetIncome = calculationRepository.getTotalBudgetIncome(tripId, ExpenseType.SHARED_BUDGET_INCOME);
         Long sharedBudgetExpense = calculationRepository.getTotalBudgetExpense(tripId, ExpenseType.SHARED, null);
         Long leftSharedBudget = (sharedBudgetIncome == 0) ? null : sharedBudgetIncome - sharedBudgetExpense;
-        Budget sharedBudget = new Budget(leftSharedBudget, sharedBudgetIncome, sharedBudgetExpense);
+        SharedBudget sharedBudget = new SharedBudget(leftSharedBudget,
+                                                     sharedBudgetIncome,
+                                                     sharedBudgetExpense,
+                                                     totalSharedExpense);
 
         // individual
         TripUser tripUser = tripUserRepository.findByTripAndUser(trip, user)
             .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED));
-        Long individualBudgetIncome = calculationRepository.getTotalBudgetIncome(tripId,
-                                                                                 ExpenseType.INDIVIDUAL_BUDGET_INCOME);
-        Long individualBudgetExpense = calculationRepository.getTotalBudgetExpense(tripId,
-                                                                                   ExpenseType.INDIVIDUAL,
-                                                                                   tripUser);
-        Long leftIndividualBudget =
-            (individualBudgetIncome == 0) ? null : individualBudgetIncome - individualBudgetExpense;
-        Budget individualBudget = new Budget(leftIndividualBudget, individualBudgetIncome, individualBudgetExpense);
+        Long individualBudgetIncome = calculationRepository
+            .getTotalBudgetIncome(tripId, ExpenseType.INDIVIDUAL_BUDGET_INCOME);
+        Long individualBudgetExpense = calculationRepository
+            .getTotalBudgetExpense(tripId, ExpenseType.INDIVIDUAL, tripUser);
+        Long leftIndividualBudget = (individualBudgetIncome == 0) ?
+            null : individualBudgetIncome - individualBudgetExpense;
+        IndividualBudget individualBudget = new IndividualBudget(leftIndividualBudget,
+                                                                 individualBudgetIncome,
+                                                                 individualBudgetExpense);
 
-        // totalSharedExpense
-        Long totalSharedExpense = calculationRepository.getTotalExpense(tripId, ExpenseType.SHARED);
-
-        return new BudgetResponseDto(sharedBudget, individualBudget, totalSharedExpense);
+        return new BudgetResponseDto(sharedBudget, individualBudget);
     }
 }
