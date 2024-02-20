@@ -103,6 +103,18 @@ public class CalculationRepositoryImpl implements CalculationRepository {
             .fetch();
     }
 
+    @Override
+    public Long getTotalExpense(Long tripId, ExpenseType expenseType) {
+        return queryFactory.select(expense.amount
+                                       .multiply(tripCurrency.exchangeRate.value)
+                                       .divide(tripCurrency.exchangeRate.standard)
+                                       .sum().coalesce(BigDecimal.ZERO).longValue())
+            .from(expense)
+            .leftJoin(expense.tripCurrency, tripCurrency)
+            .where(expense.trip.id.eq(tripId).and(expense.expenseType.eq(expenseType)))
+            .fetchOne();
+    }
+
     private BooleanExpression payerEq(TripUser tripUser) {
         return (tripUser == null) ? expense.payer.isNull() : expense.payer.eq(tripUser);
     }

@@ -117,6 +117,9 @@ public class TripCalculationService {
             (individualBudgetIncome == 0) ? null : individualBudgetIncome - individualBudgetExpense;
         Budget individualBudget = new Budget(leftIndividualBudget, individualBudgetIncome, individualBudgetExpense);
 
-        return new BudgetResponseDto(sharedBudget, individualBudget);
+        // totalSharedExpense
+        Long totalSharedExpense = calculationRepository.getTotalExpense(tripId, ExpenseType.SHARED);
+
+        return new BudgetResponseDto(sharedBudget, individualBudget, totalSharedExpense);
     }
 }
