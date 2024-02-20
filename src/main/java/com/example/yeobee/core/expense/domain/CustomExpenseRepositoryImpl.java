@@ -73,6 +73,10 @@ public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
                     return expense.expenseType.eq(ExpenseType.INDIVIDUAL)
                         .or(expense.expenseType.eq(ExpenseType.INDIVIDUAL_BUDGET_INCOME));
                 }
+                case SHARED_BUDGET_EXPENSE -> {
+                    return expense.expenseType.eq(ExpenseType.SHARED)
+                        .and(expense.payer.isNull());
+                }
                 default -> {
                     return expense.expenseType.eq(expenseType);
                 }
