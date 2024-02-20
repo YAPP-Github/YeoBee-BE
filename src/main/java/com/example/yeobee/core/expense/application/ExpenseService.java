@@ -2,10 +2,7 @@ package com.example.yeobee.core.expense.application;
 
 import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
-import com.example.yeobee.core.expense.domain.Expense;
-import com.example.yeobee.core.expense.domain.ExpenseRepository;
-import com.example.yeobee.core.expense.domain.UserExpense;
-import com.example.yeobee.core.expense.domain.UserExpenseRepository;
+import com.example.yeobee.core.expense.domain.*;
 import com.example.yeobee.core.expense.dto.UserExpenseDto;
 import com.example.yeobee.core.expense.dto.request.*;
 import com.example.yeobee.core.expense.dto.response.ExpenseCreateResponseDto;
@@ -13,6 +10,7 @@ import com.example.yeobee.core.expense.dto.response.ExpenseDetailRetrieveRespons
 import com.example.yeobee.core.expense.dto.response.ExpenseListRetrieveResponseDto;
 import com.example.yeobee.core.expense.dto.response.ExpenseUpdateResponseDto;
 import com.example.yeobee.core.trip.domain.*;
+import com.example.yeobee.core.user.domain.User;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,18 +29,18 @@ public class ExpenseService {
     private final UserExpenseRepository userExpenseRepository;
 
     @Transactional
-    public ExpenseCreateResponseDto createExpense(ExpenseCreateRequestDto request) {
+    public ExpenseCreateResponseDto createExpense(ExpenseCreateRequestDto request, User user) {
         Expense expense = new Expense(request);
-        createOrUpdateExpense(expense, new CreateOrUpdateExpenseDto(request));
+        createOrUpdateExpense(expense, new CreateOrUpdateExpenseDto(request), user.getId());
         expenseRepository.save(expense);
         return new ExpenseCreateResponseDto(expense);
     }
 
     @Transactional
-    public ExpenseUpdateResponseDto updateExpense(Long expenseId, ExpenseUpdateRequestDto request) {
+    public ExpenseUpdateResponseDto updateExpense(Long expenseId, ExpenseUpdateRequestDto request, User user) {
         Expense expense = findExpenseById(expenseId);
         expense.update(request);
-        createOrUpdateExpense(expense, new CreateOrUpdateExpenseDto(request));
+        createOrUpdateExpense(expense, new CreateOrUpdateExpenseDto(request), user.getId());
         expenseRepository.save(expense);
         return new ExpenseUpdateResponseDto(expense);
     }
@@ -66,11 +64,11 @@ public class ExpenseService {
                                               PageRequest.of(request.pageIndex(), request.pageSize()));
     }
 
-    private void createOrUpdateExpense(Expense expense, CreateOrUpdateExpenseDto dto) {
+    private void createOrUpdateExpense(Expense expense, CreateOrUpdateExpenseDto dto, Long userId) {
         setTrip(dto.tripId(), expense);
         setTripCurrency(dto.tripId(), dto.currencyCode(), expense);
         setUserExpense(dto.payerList(), expense);
-        setPayer(dto.payerId(), expense);
+        setPayer(dto.payerId(), dto.tripId(), userId, expense);
     }
 
     private void setTrip(Long tripId, Expense expense) {
@@ -100,11 +98,16 @@ public class ExpenseService {
         });
     }
 
-    private void setPayer(Long payerId, Expense expense) {
+    private void setPayer(Long payerId, Long tripId, Long userId, Expense expense) {
         if (payerId != null) {
             TripUser payer = tripUserRepository.findById(payerId).orElseThrow(() -> new BusinessException(
                 ErrorCode.TRIP_USER_NOT_FOUND));
             expense.setPayer(payer);
+        } else if (expense.getExpenseType() == ExpenseType.INDIVIDUAL
+                   || expense.getExpenseType() == ExpenseType.INDIVIDUAL_BUDGET_INCOME) {
+            TripUser userTripUser = tripUserRepository.findByTripIdAndUserId(tripId, userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED));
+            expense.setPayer(userTripUser);
         } else {
             expense.setPayer(null);
         }

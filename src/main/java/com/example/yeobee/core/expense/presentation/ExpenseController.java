@@ -1,5 +1,6 @@
 package com.example.yeobee.core.expense.presentation;
 
+import com.example.yeobee.core.auth.annotation.AuthUser;
 import com.example.yeobee.core.expense.application.ExpenseService;
 import com.example.yeobee.core.expense.application.UserExpenseService;
 import com.example.yeobee.core.expense.dto.request.ExpenseCreateRequestDto;
@@ -7,6 +8,7 @@ import com.example.yeobee.core.expense.dto.request.ExpenseListRetrieveRequestDto
 import com.example.yeobee.core.expense.dto.request.ExpenseUpdateRequestDto;
 import com.example.yeobee.core.expense.dto.request.UserExpenseListRetrieveRequestDto;
 import com.example.yeobee.core.expense.dto.response.*;
+import com.example.yeobee.core.user.domain.User;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,8 +24,10 @@ public class ExpenseController {
     private final UserExpenseService userExpenseService;
 
     @PostMapping
-    public ResponseEntity<ExpenseCreateResponseDto> createExpense(@RequestBody ExpenseCreateRequestDto request) {
-        ExpenseCreateResponseDto expenseCreateResponseDto = expenseService.createExpense(request);
+    public ResponseEntity<ExpenseCreateResponseDto> createExpense(
+        @RequestBody ExpenseCreateRequestDto request,
+        @AuthUser User user) {
+        ExpenseCreateResponseDto expenseCreateResponseDto = expenseService.createExpense(request, user);
         return ResponseEntity.created(URI.create("/v1/expenses/" + expenseCreateResponseDto.id().toString()))
             .body(expenseCreateResponseDto);
     }
@@ -31,8 +35,9 @@ public class ExpenseController {
     @PutMapping("/{expenseId}")
     public ResponseEntity<ExpenseUpdateResponseDto> updateExpense(
         @PathVariable Long expenseId,
-        @RequestBody ExpenseUpdateRequestDto request) {
-        return ResponseEntity.ok(expenseService.updateExpense(expenseId, request));
+        @RequestBody ExpenseUpdateRequestDto request,
+        @AuthUser User user) {
+        return ResponseEntity.ok(expenseService.updateExpense(expenseId, request, user));
     }
 
     @DeleteMapping("/{expenseId}")

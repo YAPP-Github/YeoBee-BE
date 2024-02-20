@@ -26,7 +26,7 @@ public class UserExpense {
     private TripUser tripUser;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "expense_id")
     private Expense expense;
 
