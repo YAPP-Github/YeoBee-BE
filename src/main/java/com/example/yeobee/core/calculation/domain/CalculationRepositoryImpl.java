@@ -59,26 +59,26 @@ public class CalculationRepositoryImpl implements CalculationRepository {
     }
 
     @Override
-    public Long getTotalBudgetIncome(ExpenseType expenseType) {
+    public Long getTotalBudgetIncome(Long tripId, ExpenseType expenseType) {
         return queryFactory.select(expense.amount
                                        .multiply(tripCurrency.exchangeRate.value)
                                        .divide(tripCurrency.exchangeRate.standard)
                                        .sum().coalesce(BigDecimal.ZERO).longValue())
             .from(expense)
             .leftJoin(expense.tripCurrency, tripCurrency)
-            .where(expense.expenseType.eq(expenseType))
+            .where(expense.expenseType.eq(expenseType).and(expense.trip.id.eq(tripId)))
             .fetchOne();
     }
 
     @Override
-    public Long getTotalBudgetExpense(ExpenseType expenseType, TripUser tripUser) {
+    public Long getTotalBudgetExpense(Long tripId, ExpenseType expenseType, TripUser tripUser) {
         return queryFactory.select(expense.amount
                                        .multiply(tripCurrency.exchangeRate.value)
                                        .divide(tripCurrency.exchangeRate.standard)
                                        .sum().coalesce(BigDecimal.ZERO).longValue())
             .from(expense)
             .leftJoin(expense.tripCurrency, tripCurrency)
-            .where(expense.expenseType.eq(expenseType).and(payerEq(tripUser)))
+            .where(expense.expenseType.eq(expenseType).and(payerEq(tripUser)).and(expense.trip.id.eq(tripId)))
             .fetchOne();
     }
 

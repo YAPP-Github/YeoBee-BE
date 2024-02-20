@@ -10,9 +10,9 @@ public interface CalculationRepository {
 
     List<CalculationResult> getCalculationResult(Long tripId);
 
-    Long getTotalBudgetIncome(ExpenseType expenseType);
+    Long getTotalBudgetIncome(Long tripId, ExpenseType expenseType);
 
-    Long getTotalBudgetExpense(ExpenseType expenseType, TripUser tripUser);
+    Long getTotalBudgetExpense(Long tripId, ExpenseType expenseType, TripUser tripUser);
 
     List<CalculationResult> getTotalExpensePerTripUser(Long tripId, ExpenseType expenseType);
 

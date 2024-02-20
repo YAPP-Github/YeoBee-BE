@@ -55,8 +55,8 @@ public class TripCalculationService {
         List<CalculationResult> calculationResultList = calculationRepository
             .getTotalExpensePerTripUser(tripId, ExpenseType.SHARED);
         // 남은 공동경비 계산
-        Long sharedBudgetIncome = calculationRepository.getTotalBudgetIncome(ExpenseType.SHARED_BUDGET_INCOME);
-        Long sharedBudgetExpense = calculationRepository.getTotalBudgetExpense(ExpenseType.SHARED, null);
+        Long sharedBudgetIncome = calculationRepository.getTotalBudgetIncome(tripId, ExpenseType.SHARED_BUDGET_INCOME);
+        Long sharedBudgetExpense = calculationRepository.getTotalBudgetExpense(tripId, ExpenseType.SHARED, null);
         // 충전한 공동경비가 없을 경우 null
         Long leftSharedBudget = (sharedBudgetIncome == 0L) ? null : sharedBudgetIncome - sharedBudgetExpense;
         return new TotalExpenseResponseDto(calculationResultList, leftSharedBudget);
@@ -100,16 +100,19 @@ public class TripCalculationService {
         Trip trip = tripRepository.findById(tripId).orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
 
         // shared
-        Long sharedBudgetIncome = calculationRepository.getTotalBudgetIncome(ExpenseType.SHARED_BUDGET_INCOME);
-        Long sharedBudgetExpense = calculationRepository.getTotalBudgetExpense(ExpenseType.SHARED, null);
+        Long sharedBudgetIncome = calculationRepository.getTotalBudgetIncome(tripId, ExpenseType.SHARED_BUDGET_INCOME);
+        Long sharedBudgetExpense = calculationRepository.getTotalBudgetExpense(tripId, ExpenseType.SHARED, null);
         Long leftSharedBudget = (sharedBudgetIncome == 0) ? null : sharedBudgetIncome - sharedBudgetExpense;
         Budget sharedBudget = new Budget(leftSharedBudget, sharedBudgetIncome, sharedBudgetExpense);
 
         // individual
         TripUser tripUser = tripUserRepository.findByTripAndUser(trip, user)
             .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_ACCESS_UNAUTHORIZED));
-        Long individualBudgetIncome = calculationRepository.getTotalBudgetIncome(ExpenseType.INDIVIDUAL_BUDGET_INCOME);
-        Long individualBudgetExpense = calculationRepository.getTotalBudgetExpense(ExpenseType.INDIVIDUAL, tripUser);
+        Long individualBudgetIncome = calculationRepository.getTotalBudgetIncome(tripId,
+                                                                                 ExpenseType.INDIVIDUAL_BUDGET_INCOME);
+        Long individualBudgetExpense = calculationRepository.getTotalBudgetExpense(tripId,
+                                                                                   ExpenseType.INDIVIDUAL,
+                                                                                   tripUser);
         Long leftIndividualBudget =
             (individualBudgetIncome == 0) ? null : individualBudgetIncome - individualBudgetExpense;
         Budget individualBudget = new Budget(leftIndividualBudget, individualBudgetIncome, individualBudgetExpense);
