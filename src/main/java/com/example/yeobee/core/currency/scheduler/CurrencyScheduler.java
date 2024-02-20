@@ -12,6 +12,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@Profile("prod")
 public class CurrencyScheduler {
 
     private final CurrencyRepository currencyRepository;
@@ -27,7 +29,7 @@ public class CurrencyScheduler {
     private String accessKey;
     private static final String API_ENDPOINT = "http://apilayer.net/api/live?source=KRW&access_key=";
 
-    @Scheduled(initialDelay = 10)
+    @Scheduled(cron = "0 0 9 * * ?")
     private void updateExchangeRate() {
         log.info("Updating exchange rate started");
         List<Currency> retrievedcurrencyList = currencyRepository.findAll();
