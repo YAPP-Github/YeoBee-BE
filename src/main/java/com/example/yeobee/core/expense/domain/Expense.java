@@ -95,6 +95,10 @@ public class Expense {
         return (payer == null) ? null : payer.getId();
     }
 
+    public Long getPayerUserId() {
+        return (payer == null) ? null : payer.getUserId();
+    }
+
     public String getPayerName() {
         return (payer == null) ? "공동경비" : payer.getName();
     }

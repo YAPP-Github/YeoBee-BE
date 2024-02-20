@@ -23,7 +23,7 @@ public record ExpenseDetailRetrieveResponseDto(BigDecimal amount, String currenc
              expense.getExpenseMethod(),
              expense.getExpenseCategory(),
              expense.getName(),
-             expense.getPayer().getUserId(),
+             expense.getPayerUserId(),
              expense.getPayerName(),
              expense.getUserExpenseList()
                  .stream()
