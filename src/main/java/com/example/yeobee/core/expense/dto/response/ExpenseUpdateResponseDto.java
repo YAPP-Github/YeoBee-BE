@@ -1,5 +1,6 @@
 package com.example.yeobee.core.expense.dto.response;
 
+import com.example.yeobee.core.expense.domain.CalculationType;
 import com.example.yeobee.core.expense.domain.Expense;
 import com.example.yeobee.core.expense.domain.ExpenseMethod;
 import com.example.yeobee.core.expense.domain.ExpenseType;
@@ -11,7 +12,8 @@ import java.util.List;
 public record ExpenseUpdateResponseDto(Long id, Long tripId, ExpenseType expenseType,
                                        BigDecimal amount,
                                        String currencyCode, ExpenseMethod expenseMethod, String name, Long payerId,
-                                       List<UserExpenseDto> payerList, List<ExpensePhotoDto> imageList) {
+                                       CalculationType calculationType, List<UserExpenseDto> payerList,
+                                       List<ExpensePhotoDto> imageList) {
 
     public ExpenseUpdateResponseDto(Expense expense) {
         this(expense.getId(),
@@ -22,6 +24,7 @@ public record ExpenseUpdateResponseDto(Long id, Long tripId, ExpenseType expense
              expense.getExpenseMethod(),
              expense.getName(),
              expense.getPayerId(),
+             expense.getCalculationType(),
              expense.getUserExpenseList().stream().map(
                  UserExpenseDto::new).toList(),
              expense.getExpensePhotoList().stream().map(ExpensePhotoDto::new).toList());

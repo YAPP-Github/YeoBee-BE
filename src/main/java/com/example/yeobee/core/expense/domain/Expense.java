@@ -39,6 +39,9 @@ public class Expense {
     @Enumerated(EnumType.STRING)
     private ExpenseType expenseType;
 
+    @Enumerated(EnumType.STRING)
+    private CalculationType calculationType = CalculationType.NONE;
+
     @Setter
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "trip_id")
@@ -67,6 +70,7 @@ public class Expense {
         expenseCategory = request.expenseCategory();
         expenseMethod = request.expenseMethod();
         expenseType = request.expenseType();
+        calculationType = request.calculationType();
         request.imageList().forEach((e) -> expensePhotoList.add(new ExpensePhoto(e, this)));
     }
 
@@ -77,6 +81,7 @@ public class Expense {
         expenseCategory = request.expenseCategory();
         expenseMethod = request.expenseMethod();
         expenseType = request.expenseType();
+        calculationType = request.calculationType();
         request.imageList().forEach((e) -> expensePhotoList.add(new ExpensePhoto(e, this)));
     }
 
