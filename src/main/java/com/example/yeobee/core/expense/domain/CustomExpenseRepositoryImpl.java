@@ -13,7 +13,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -88,8 +87,8 @@ public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
     private BooleanExpression payedAtEq(LocalDate payedAt) {
         if (payedAt != null) {
             LocalDateTime startOfDay = payedAt.atStartOfDay();
-            LocalDateTime endOfDay = payedAt.atTime(LocalTime.MAX);
-            return expense.payedAt.between(startOfDay, endOfDay);
+            LocalDateTime endOfDay = startOfDay.plusDays(1);
+            return expense.payedAt.goe(startOfDay).and(expense.payedAt.lt(endOfDay));
         }
         return null;
     }
