@@ -13,9 +13,9 @@ import java.util.List;
 public record ExpenseDetailRetrieveResponseDto(BigDecimal amount, String currencyCode, Long koreanAmount,
                                                LocalDateTime payedAt, ExpenseMethod expenseMethod,
                                                ExpenseCategory expenseCategory, String name,
-                                               CalculationType calculationType, Long payerId,
+                                               CalculationType calculationType, @Schema(nullable = true) Long payerId,
                                                @Schema(nullable = true) Long payerUserId,
-                                               @Schema(nullable = true) String payerName,
+                                               String payerName,
                                                List<UserExpenseDetailDto> payerList, List<ExpensePhotoDto> imageList) {
 
     public ExpenseDetailRetrieveResponseDto(Expense expense) {
