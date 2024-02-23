@@ -35,10 +35,10 @@ public class CurrencyService {
     }
 
     @Transactional
-    public void updateCurrencyRate(UpdateCurrencyRateRequestDto request, long tripId, String currencyCode) {
+    public void updateCurrencyRate(UpdateCurrencyRateRequestDto request, String currencyCode) {
         // find TripCurrency
-        TripCurrency tripCurrency = tripCurrencyRepository.findByTripIdAndCurrencyCode(tripId, currencyCode)
-            .orElseThrow(); // TODO: 예외 처리
+        TripCurrency tripCurrency = tripCurrencyRepository.findByTripIdAndCurrencyCode(request.tripId(), currencyCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_CURRENCY_NOT_FOUND));
 
         // update TripCurrency
         tripCurrency.getExchangeRate().update(request.value(), request.standard());

@@ -26,9 +26,8 @@ public class CurrencyController {
     @PutMapping("/{currencyCode}/rate")
     public void updateCurrencyRate(
         @RequestBody UpdateCurrencyRateRequestDto request,
-        @RequestParam long tripId,
         @PathVariable String currencyCode
     ) {
-        currencyService.updateCurrencyRate(request, tripId, currencyCode);
+        currencyService.updateCurrencyRate(request, currencyCode);
     }
 }
