@@ -73,19 +73,46 @@ public class TripCalculationService {
             .collect(Collectors.toList());
     }
 
-    private List<Calculation> calculateBalance(List<CalculationResult> results) {
+    public List<Calculation> calculateBalance(List<CalculationResult> results) {
         double average = getAverage(results);
-        results.sort(Comparator.comparing(CalculationResult::getCalculationSum).reversed());
-        // 평균과의 차이 계산 후, 가장 큰 값을 갖는 객체(가장 많은 돈을 소비한 사람)부터 내야 할 돈 계산 후, 다음 사람으로 넘김
-        List<Calculation> calculationList = new ArrayList<>();
-        for (int i = 0; i < results.size() - 1; i++) {
-            TripUser sender = results.get(i).getTripUser();
-            TripUser receiver = results.get(i + 1).getTripUser();
-            double amount = results.get(i).getCalculationSum() - average;
-            calculationList.add(new Calculation(sender, receiver, Math.round(amount)));
-            results.get(i + 1).addCalculationSum(amount);
+        List<Calculation> calculations = new ArrayList<>();
+
+        // 유저별 평균과의 차이 계산
+        for (CalculationResult result : results) {
+            double balance = result.getCalculationSum() - average;
+            result.setCalculationSum(balance);
         }
-        return calculationList;
+
+        // 정산액에 따라 정렬
+        results.sort(Comparator.comparing(CalculationResult::getCalculationSum));
+
+        int i = 0;
+        int j = results.size() - 1;
+
+        // 최소 현금 흐름 알고리즘 적용
+        while (i < j) {
+            double debit = -results.get(i).getCalculationSum();
+            double credit = results.get(j).getCalculationSum();
+
+            double min = Math.min(debit, credit);
+            results.get(i).addCalculationSum(min);
+            results.get(j).addCalculationSum(-min);
+
+            calculations.add(new Calculation(results.get(j).getTripUser(),
+                                             results.get(i).getTripUser(),
+                                             Math.round(min)));
+
+            if (debit == credit) {
+                i++;
+                j--;
+            } else if (debit < credit) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+
+        return calculations;
     }
 
     private List<CalculationResult> setCalculationSumToMinus(List<CalculationResult> results) {
