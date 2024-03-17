@@ -60,8 +60,15 @@ public class ExpenseService {
         if (request.pageIndex() == null || request.pageSize() == null || request.tripId() == null) {
             throw new BusinessException(ErrorCode.BAD_REQUEST);
         }
-        return expenseRepository.findByFilter(new ExpenseListFilter(request),
-                                              PageRequest.of(request.pageIndex(), request.pageSize()));
+        Trip trip = tripRepository.findById(request.tripId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.TRIP_NOT_FOUND));
+        return expenseRepository.findByFilter(
+            new ExpenseListFilter(trip,
+                                  request.expenseType(),
+                                  request.payedAt(),
+                                  request.expenseMethod(),
+                                  request.currencyCode()),
+            PageRequest.of(request.pageIndex(), request.pageSize()));
     }
 
     private void createOrUpdateExpense(Expense expense, CreateOrUpdateExpenseDto dto, Long userId) {
