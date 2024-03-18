@@ -8,6 +8,7 @@ import com.example.yeobee.common.exception.BusinessException;
 import com.example.yeobee.common.exception.ErrorCode;
 import com.example.yeobee.core.expense.dto.request.ExpenseListFilter;
 import com.example.yeobee.core.expense.dto.response.ExpenseListRetrieveResponseDto;
+import com.example.yeobee.core.trip.domain.Trip;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -48,17 +49,29 @@ public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
     }
 
     private Predicate[] getPredicates(ExpenseListFilter filter) {
+        // 여행 전, 중, 후 분기처리
+        Predicate payedAtPredicate = null;
+        if (filter.payedAt() != null) {
+            if (filter.payedAt().isBefore(filter.trip().getPeriod().getStartDate())) {
+                payedAtPredicate = payedAtLt(filter.payedAt());
+            } else if (filter.payedAt().isAfter(filter.trip().getPeriod().getEndDate())) {
+                payedAtPredicate = payedAtGoe(filter.payedAt());
+            } else {
+                payedAtPredicate = payedAtEq(filter.payedAt());
+            }
+        }
+
         return new Predicate[]{
-            tripIdEq(filter.tripId()),
+            tripIdEq(filter.trip()),
             expenseTypeEq(filter.expenseType()),
-            payedAtEq(filter.payedAt()),
+            payedAtPredicate,
             expenseMethodEq(filter.expenseMethod()),
             currencyCodeEq(filter.currencyCode())
         };
     }
 
-    private BooleanExpression tripIdEq(Long tripId) {
-        return tripId != null ? expense.trip.id.eq(tripId) : null;
+    private BooleanExpression tripIdEq(Trip trip) {
+        return trip != null ? expense.trip.eq(trip) : null;
     }
 
     private BooleanExpression expenseTypeEq(ExpenseType expenseType) {
@@ -85,12 +98,19 @@ public class CustomExpenseRepositoryImpl implements CustomExpenseRepository {
     }
 
     private BooleanExpression payedAtEq(LocalDate payedAt) {
-        if (payedAt != null) {
-            LocalDateTime startOfDay = payedAt.atStartOfDay();
-            LocalDateTime endOfDay = startOfDay.plusDays(1);
-            return expense.payedAt.goe(startOfDay).and(expense.payedAt.lt(endOfDay));
-        }
-        return null;
+        LocalDateTime startOfDay = payedAt.atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
+        return expense.payedAt.goe(startOfDay).and(expense.payedAt.lt(endOfDay));
+    }
+
+    private BooleanExpression payedAtGoe(LocalDate payedAt) {
+        LocalDateTime startOfDay = payedAt.atStartOfDay();
+        return expense.payedAt.goe(startOfDay);
+    }
+
+    private BooleanExpression payedAtLt(LocalDate payedAt) {
+        LocalDateTime endOfDay = payedAt.atStartOfDay().plusDays(1);
+        return expense.payedAt.lt(endOfDay);
     }
 
     private BooleanExpression expenseMethodEq(ExpenseMethod expenseMethod) {
